@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#688B72</color>
+    <color name="colorPrimaryDark">#46B899</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="MaterialcolorPrimary">#6200EE</color>
+    <color name="MaterialcolorPrimaryDark">#3700B3</color>
+    <color name="MaterialcolorAccent">#03DAC5</color>
+    <color name="verdeToolbar">#46B899</color>
+    <color name="verdeBotao">#688B72</color>
+    <color name="preto">#000000</color>
+    <color name="cinzento">#494949</color>
+</resources>

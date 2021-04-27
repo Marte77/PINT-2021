@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "CrowdZero_V0.0.0"
