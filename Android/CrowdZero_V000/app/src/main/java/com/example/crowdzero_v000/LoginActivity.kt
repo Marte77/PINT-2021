@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
         layout = findViewById(R.id.layoutLoginIni)
         var topbar:MaterialToolbar = findViewById(R.id.topAppBar_Login)
         //topbar.navigationIcon = R.drawable.ic_menu_24dp
+        
         topbar.setLogo(R.drawable.outline_menu_white_24)
 
     }
