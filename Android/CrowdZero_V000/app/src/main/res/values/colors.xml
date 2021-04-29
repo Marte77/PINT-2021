@@ -11,4 +11,5 @@
     <color name="preto">#000000</color>
     <color name="cinzento">#494949</color>
     <color name="hyperlink">#304FFE</color>
+    <color name="cinzento_claro_background">#E3E3E3</color>
 </resources>

@@ -49,63 +49,86 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-
-
-    <Button
-        android:id="@+id/botaoRegisto"
-        android:layout_width="145dp"
-        android:layout_height="53dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:text="@string/botao_Registo_Inicio"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.498"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="312dp"
+        android:layout_height="459dp"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
+        app:layout_constraintVertical_bias="0.363"
+        app:cardBackgroundColor="@color/cinzento_claro_background"
+        >
 
-    <Button
-        android:id="@+id/botaoEntrar"
-        android:layout_width="145dp"
-        android:layout_height="53dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:text="@string/botao_Entrar_Inicio"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="292dp"
+            android:layout_height="431dp"
+            android:layout_gravity="center">
 
 
+            <ImageView
+                android:id="@+id/imagem_logotipo_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="imagem_logotipo_app"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.178"
+                app:srcCompat="@drawable/ic_launcher_background"
+                tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/hiperlink_Sem_registo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sem_registo_ou_login"
-        android:textColor="@color/hyperlink"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/botaoRegisto"
-        app:layout_constraintVertical_bias="0.238" />
 
-    <ImageView
-        android:id="@+id/imagem_logotipo_app"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="imagem_logotipo_app"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26"
-        tools:srcCompat="@tools:sample/avatars" />
+            <Button
+                android:id="@+id/botaoEntrar"
+                android:layout_width="149dp"
+                android:layout_height="53dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="@string/botao_Entrar_Inicio"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.592" />
+
+            <Button
+                android:id="@+id/botaoRegisto"
+                android:layout_width="149dp"
+                android:layout_height="53dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="@string/botao_Registo_Inicio"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.801" />
+
+            <TextView
+                android:id="@+id/hiperlink_Sem_registo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sem_registo_ou_login"
+                android:textColor="@color/hyperlink"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/botaoRegisto"
+                app:layout_constraintVertical_bias="0.4" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <ImageView
         android:id="@+id/imagem_logotipo_camara"
@@ -117,6 +140,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
+        app:srcCompat="@drawable/ic_launcher_background"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -130,6 +154,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
+        app:srcCompat="@drawable/ic_launcher_background"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -143,6 +168,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
+        app:srcCompat="@drawable/ic_launcher_background"
         tools:srcCompat="@tools:sample/avatars" />
 
 
