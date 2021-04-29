@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">CrowdZero_V0.0.0</string>
+    <string name="app_name">CrowdZero</string>
     <string name="titulo_Login">Login</string>
     <string name="email_Login">Email</string>
+    <string name="botao_Entrar_Inicio">Entrar</string>
+    <string name="botao_Registo_Inicio">Registo</string>
     <string name="password_Login">Password</string>
+    <string name="sem_registo_ou_login"><u>Sem registo, clique aqui</u></string>
 </resources>

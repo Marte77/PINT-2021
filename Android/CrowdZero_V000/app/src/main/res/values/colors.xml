@@ -10,4 +10,5 @@
     <color name="verdeBotao">#688B72</color>
     <color name="preto">#000000</color>
     <color name="cinzento">#494949</color>
+    <color name="hyperlink">#304FFE</color>
 </resources>
