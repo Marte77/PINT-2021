@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/cinzento_claro_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -21,7 +22,7 @@
 
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar_Login"
+        android:id="@+id/topAppBar_Main"
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -60,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.363"
-        app:cardBackgroundColor="@color/cinzento_claro_background"
+        app:cardBackgroundColor="@color/branco"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,10 +98,11 @@
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.592" />
+                app:layout_constraintVertical_bias="0.592"
+                android:onClick="onClick"/>
 
             <Button
-                android:id="@+id/botaoRegisto"
+                android:id="@+id/botaoRegistoMain"
                 android:layout_width="149dp"
                 android:layout_height="53dp"
                 android:backgroundTint="@color/colorPrimaryDark"
@@ -111,7 +113,8 @@
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.801" />
+                app:layout_constraintVertical_bias="0.801"
+                android:onClick="onClick"/>
 
             <TextView
                 android:id="@+id/hiperlink_Sem_registo"
@@ -124,7 +127,10 @@
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/botaoRegisto"
-                app:layout_constraintVertical_bias="0.4" />
+                app:layout_constraintVertical_bias="0.4"
+                android:clickable="true"
+                android:onClick="onClick"
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

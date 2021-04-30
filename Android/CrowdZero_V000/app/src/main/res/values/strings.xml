@@ -7,4 +7,12 @@
     <string name="password_Login">Password</string>
     <string name="sem_registo_ou_login"><u>Sem registo, clique aqui</u></string>
     <string name="esquecer_password"><u>Esqueci-me da palavra passe</u></string>
+    <string name="nome_utilizador_registo">Nome de Utilizador</string>
+    <string name="nome_proprio_registo">Nome Próprio</string>
+    <string name="codigo_empresa_registo">Código da Empresa</string>
+    <string name="cidade">Cidade</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="selecionar">Selecionar</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="data_nascimento_registo">Data de Nascimento</string>
 </resources>

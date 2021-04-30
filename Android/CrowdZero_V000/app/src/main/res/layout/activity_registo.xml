@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layoutRegistoActivity"
+    >
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:paddingBottom="00dp"
+        tools:context=".RegistoActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar_Registo"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/verdeToolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/botao_Registo_Inicio"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:translationX="20dip"
+                android:translationY="8dip"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="10dp">
+
+            </TextView>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="91dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="40dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/email_Login"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.195"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailInputRegisto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="9dp"
+            android:hint="@string/email_Login"
+            android:textColorHint="@color/cinzento"
+            app:boxStrokeColor="@color/verdeBotao"
+            app:hintTextColor="@color/preto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="91dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="168dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/password_Login"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.201"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordInputRegisto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="9dp"
+            android:hint="@string/password_Login"
+            android:textColorHint="@color/cinzento"
+            app:boxStrokeColor="@color/verdeBotao"
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/preto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="165dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="301dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/nome_utilizador_registo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.258"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/NomeUtilizadorInputRegisto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="9dp"
+            android:hint="@string/nome_utilizador_registo"
+            android:textColorHint="@color/cinzento"
+            app:boxStrokeColor="@color/verdeBotao"
+            app:hintTextColor="@color/preto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="165dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="301dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/nome_proprio_registo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.258"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.198" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/NomeProprioInputRegisto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="9dp"
+            android:hint="@string/nome_proprio_registo"
+            android:textColorHint="@color/cinzento"
+            app:boxStrokeColor="@color/verdeBotao"
+            app:hintTextColor="@color/preto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="165dp"
+            android:layout_height="19dp"
+            android:layout_marginTop="301dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/data_nascimento_registo"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.267"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.385" />
+
+        <Button
+            android:id="@+id/botaoDataNascimentoRegisto"
+            style="@style/botao_input_registo"
+            android:layout_width="275dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:onClick="onClick"
+            android:text="@string/data_nascimento_registo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.517"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <!--<com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/botaoDataNascimentoRegisto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="9dp"
+            android:hint="@string/data_nascimento_registo"
+            android:textColorHint="@color/cinzento"
+            app:boxStrokeColor="@color/verdeBotao"
+            app:hintTextColor="@color/preto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="onClick"
+            app:layout_constraintTop_toBottomOf="@+id/textView12">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>-->
+
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="201dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="484dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/codigo_empresa_registo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.307"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.387" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/CodigoEmpresaInputRegisto"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:hint="@string/codigo_empresa_registo"
+            android:textColorHint="@color/cinzento"
+            app:boxStrokeColor="@color/verdeBotao"
+            app:hintTextColor="@color/preto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="201dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="604dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/cidade"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.317"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar_Registo"
+            app:layout_constraintVertical_bias="0.484" />
+
+        <Button
+            android:id="@+id/botaoCidadeRegisto"
+            style="@style/botao_input_registo"
+            android:layout_width="275dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="8dp"
+            android:onClick="onClick"
+            android:text="@string/cidade"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.517"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <Button
+            android:id="@+id/botaoRegistarRegisto"
+            android:layout_width="274dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/botao_Registo_Inicio"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/botaoCidadeRegisto" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView >

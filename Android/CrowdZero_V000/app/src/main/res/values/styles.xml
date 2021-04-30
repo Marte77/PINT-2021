@@ -7,5 +7,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
+    <style name="botao_input_registo" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColorHint">@color/cinzento</item>
+        <item name="android:textColor">@color/cinzento</item>
+        <item name="boxStrokeColor">@color/verdeBotao</item>
+        <item name="strokeColor">@color/cinzento</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
 </resources>
