@@ -23,7 +23,7 @@
         tools:context=".RegistoActivity">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+            android:id="@+id/appBarLayoutRegisto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -330,7 +330,7 @@
             android:layout_marginTop="28dp"
             android:text="@string/botao_Registo_Inicio"
             app:layout_constraintBottom_toBottomOf="parent"
-
+            android:onClick="onClick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"

@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
 
     @Override
@@ -19,6 +21,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         Button botaoRegisto = findViewById(R.id.botaoRegistoMain);
         TextView hyperlink_sem_registo= findViewById(R.id.hiperlink_Sem_registo);
 
+
+        MaterialToolbar tb = findViewById(R.id.topAppBar_mainActivity);
+        String titulo = "      "+getResources().getString(R.string.app_name);
+        tb.setTitle(titulo);
     }
 
     public void onClick(View v){

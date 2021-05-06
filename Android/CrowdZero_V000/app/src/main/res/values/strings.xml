@@ -15,4 +15,5 @@
     <string name="selecionar">Selecionar</string>
     <string name="confirmar">Confirmar</string>
     <string name="data_nascimento_registo">Data de Nascimento</string>
+    <string name="titulo_pagina_principal">HOME</string>
 </resources>

@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,6 +45,10 @@ public class RegistoActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.botaoDataNascimentoRegisto:
                     abrirCalendario();
                 break;
+            case R.id.botaoRegistarRegisto:
+                    Intent i = new Intent(getApplicationContext(),PaginaPrincipal.class);
+                    startActivity(i);
+                break;
         }
     }
 
@@ -63,6 +69,7 @@ public class RegistoActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void abrirCidadeDialog(){
+        //TODO: buscar cidades
         final String[] cidades = {"Aveiro","Beja","Braga","Bragança","Castelo Branco","Coimbra","Évora","Faro","Guarda","Leiria","Lisboa","Portalegre","Porto","Santarém","Setúbal","Viana do Castelo","Vila Real","Viseu"};
 
         final int opcao = 0;
