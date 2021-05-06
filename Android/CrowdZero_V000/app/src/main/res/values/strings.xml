@@ -15,8 +15,23 @@
     <string name="selecionar">Selecionar</string>
     <string name="confirmar">Confirmar</string>
     <string name="data_nascimento_registo">Data de Nascimento</string>
-    <string name="titulo_pagina_principal">HOME</string>
-    
+    <string name="opcoes_navbar_procurar">Procurar</string>
+    <string name="opcoes_navbar_home">Home</string>
+    <string name="opcoes_navbar_lista_favs">Lista de Favoritos</string>
+    <string name="opcoes_navbar_notificacoes">Notificações</string>
+    <string name="opcoes_navbar_instituicoes">Instituições</string>
+    <string name="opcoes_navbar_mapa">Mapa</string>
+    <string name="opcoes_navbar_forum">Fórum</string>
+    <string name="opcoes_navbar_definicoes">Definições</string>
+
+    <string name="titulo_pagina_principal">@string/opcoes_navbar_home</string>
+    <string name="titulo_pagina_lista_favs">@string/opcoes_navbar_lista_favs</string>
+    <string name="titulo_pagina_procurar">@string/opcoes_navbar_procurar</string>
+    <string name="titulo_pagina_notificacoes">@string/opcoes_navbar_notificacoes</string>
+    <string name="titulo_pagina_mapa">@string/opcoes_navbar_mapa</string>
+    <string name="titulo_pagina_forum">@string/opcoes_navbar_forum</string>
+    <string name="titulo_pagina_definicoes">@string/opcoes_navbar_definicoes</string>
+
     <string-array name="opcoes_navbar">
         <item>@string/opcoes_navbar_procurar</item>
         <item>@string/opcoes_navbar_home</item>
@@ -27,13 +42,6 @@
         <item>@string/opcoes_navbar_forum</item>
         <item>@string/opcoes_navbar_definicoes</item>
     </string-array>
-    <string name="opcoes_navbar_procurar">Procurar</string>
-    <string name="opcoes_navbar_home">Home</string>
-    <string name="opcoes_navbar_lista_favs">Lista de Favoritos</string>
-    <string name="opcoes_navbar_notificacoes">Notificações</string>
-    <string name="opcoes_navbar_instituicoes">Instituições</string>
-    <string name="opcoes_navbar_mapa">Mapa</string>
-    <string name="opcoes_navbar_forum">Fórum</string>
-    <string name="opcoes_navbar_definicoes">Definições</string>
+
 
 </resources>
