@@ -4,14 +4,45 @@
         android:id="@+id/group1"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/item1"
-            android:title="swag 1"
+            android:icon="@drawable/ic_home_24px"
+            android:id="@+id/opcoes_navbar_home"
+            android:title="@string/opcoes_navbar_home"
             android:checked="true" />
         <item
-            android:id="@+id/item2"
-            android:title="swag 2" />
+            android:icon="@drawable/ic_search_24px"
+            android:id="@+id/opcoes_navbar_procurar"
+            android:title="@string/opcoes_navbar_procurar"
+            android:checked="true" />
         <item
-            android:id="@+id/item3"
-            android:title="swag 3" />
+            android:icon="@drawable/ic_favorite_24px"
+            android:id="@+id/opcoes_navbar_lista_favs"
+            android:title="@string/opcoes_navbar_lista_favs"
+            android:checked="true" />
+        <item
+            android:icon="@drawable/ic_notification_24px"
+            android:id="@+id/opcoes_navbar_notificacoes"
+            android:title="@string/opcoes_navbar_notificacoes"
+            android:checked="true" />
+        <item
+            android:icon="@drawable/ic_storefront_24px"
+            android:id="@+id/opcoes_navbar_instituicoes"
+            android:title="@string/opcoes_navbar_instituicoes"
+            android:checked="true" />
+        <item
+            android:icon="@drawable/ic_map_24px"
+            android:id="@+id/opcoes_navbar_mapa"
+            android:title="@string/opcoes_navbar_mapa"
+            android:checked="true" />
+        <item
+            android:icon="@drawable/ic_forum_24px"
+            android:id="@+id/opcoes_navbar_forum"
+            android:title="@string/opcoes_navbar_forum"
+            android:checked="true" />
+        <item
+            android:icon="@drawable/ic_settings_24px"
+            android:id="@+id/opcoes_navbar_definicoes"
+            android:title="@string/opcoes_navbar_definicoes"
+            android:checked="true" />
+
     </group>
 </menu>

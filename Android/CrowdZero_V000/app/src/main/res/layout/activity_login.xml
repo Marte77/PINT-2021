@@ -50,13 +50,12 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
         android:fitsSystemWindows="true"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/appbar_login"
-            style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"

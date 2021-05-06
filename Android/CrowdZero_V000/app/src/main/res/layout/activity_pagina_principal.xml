@@ -16,17 +16,16 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar_paginaprincipal"
-                style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
-                app:navigationIcon="@android:drawable/btn_star_big_on"
+                app:navigationIcon="@drawable/ic_menu_black_24dp"
                 app:title="@string/titulo_pagina_principal" />
 
         </com.google.android.material.appbar.AppBarLayout>
