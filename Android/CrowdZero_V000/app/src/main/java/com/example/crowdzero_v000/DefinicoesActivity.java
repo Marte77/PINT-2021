@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 public class DefinicoesActivity extends NavDrawerActivity {
 
@@ -17,8 +18,7 @@ public class DefinicoesActivity extends NavDrawerActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        tb.setTitle(R.string.titulo_pagina_definicoes);
-
+        //tb.setTitle(R.string.titulo_pagina_definicoes);
 
     }
 }

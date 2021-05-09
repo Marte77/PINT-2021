@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/groupomenunavbar" >
+        <item android:title="    "></item>
+    </group>
     <group
         android:id="@+id/group_menu_navigationbar"
-        android:checkableBehavior="single">
+        android:checkableBehavior="single"
+        >
         <item
             android:icon="@drawable/ic_home_24px"
             android:id="@+id/opcoes_navbar_home"
