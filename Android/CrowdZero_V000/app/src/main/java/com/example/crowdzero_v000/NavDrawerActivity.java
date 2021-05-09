@@ -1,15 +1,22 @@
 package com.example.crowdzero_v000;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -112,14 +119,21 @@ public class NavDrawerActivity extends AppCompatActivity {
         DisplayMetrics dpMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
         int widthEcra = dpMetrics.widthPixels;
-        ViewGroup.LayoutParams lp = nv.getLayoutParams();
-        lp.width = (int) (widthEcra *0.6);
-        nv.setLayoutParams(lp);
+        //ViewGroup.LayoutParams lp = nv.getLayoutParams();
+        //lp.width = (int) (widthEcra *0.6);
+        //nv.setLayoutParams(lp);
+        //TODO:FAZER COM QUE A HEADER VIEW FIQUE COM ESTE PARAMETRO DE WIDTH E NAO O ORIGINAL
+
             //colocar a header com a mesma width da nav drawer
         View LL = nv.getHeaderView(0);
         ViewGroup.LayoutParams LLP = LL.getLayoutParams();
         LLP.width = (int) (widthEcra * 0.6);
         LL.setLayoutParams(LLP);
+
+        TextView tvPontos = LL.findViewById(R.id.PontuacaoUtilizadorHeaderNavBar);
+        TextView tvNome = LL.findViewById(R.id.NomeUtilizadorHeaderNavBar);
+        tvPontos.setText("150 Pontos");
+        tvNome.setText("Martinho Tavares Malhão");
 
         //colocar os listeners dos botoes
         tb.setNavigationOnClickListener(new View.OnClickListener() {
@@ -182,8 +196,26 @@ public class NavDrawerActivity extends AppCompatActivity {
         }
         if(i != null)
         {
+            DrawerLayout dl = findViewById(R.id.drawerlayout_navdrawer);
+            dl.closeDrawers();
             i.putExtra("opcaoEscolhidaItemID",item.getItemId());
-            startActivity(i);
+
+            // Check if we're running on Android 5.0 or higher
+            // porque APIs de transição de atividade estão disponíveis no Android 5.0 (API 21) e versões posteriores.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // Apply activity transition
+                //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+                // set an exit transition
+                Slide s = new Slide();
+                s.setSlideEdge(Gravity.LEFT); //colocar a deslizar da esquerda
+                getWindow().setExitTransition(s);
+                startActivity(i, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
+            } else {
+                // Swap without transition
+                startActivity(i);
+            }
         }
     }
 }

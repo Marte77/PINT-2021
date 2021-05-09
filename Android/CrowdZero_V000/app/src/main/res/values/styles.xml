@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/verdeToolbar</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="botao_input_registo" parent="Widget.MaterialComponents.Button.OutlinedButton">
