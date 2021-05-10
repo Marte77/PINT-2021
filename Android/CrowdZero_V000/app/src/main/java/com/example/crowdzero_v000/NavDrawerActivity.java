@@ -3,6 +3,8 @@ package com.example.crowdzero_v000;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.util.DisplayMetrics;
@@ -11,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +22,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -201,28 +206,28 @@ public class NavDrawerActivity extends AppCompatActivity {
                 i.putExtra("opcaoEscolhida","definicoes");
                 break;
             case R.id.opcoes_navbar_forum:
-                //i = new Intent(this,ForumActivity.class);
-                //i.putExtra("opcaoEscolhida","forum");
+                i = new Intent(this,ForumActivity.class);
+                i.putExtra("opcaoEscolhida","forum");
                 break;
             case R.id.opcoes_navbar_home:
                 i = new Intent(this,PaginaPrincipal.class);
                 i.putExtra("opcaoEscolhida","home");
                 break;
             case R.id.opcoes_navbar_instituicoes:
-                //i = new Intent(this,InstituicoesActivity.class);
-                //i.putExtra("opcaoEscolhida","insituicoes");
+                i = new Intent(this,InstituicoesActivity.class);
+                i.putExtra("opcaoEscolhida","insituicoes");
                 break;
             case R.id.opcoes_navbar_lista_favs:
-                //i = new Intent(this,ListaFavoritosActivity.class);
-                //i.putExtra("opcaoEscolhida","favs");
+                i = new Intent(this,ListaFavoritosActivity.class);
+                i.putExtra("opcaoEscolhida","favs");
                 break;
             case R.id.opcoes_navbar_mapa:
                 //i = new Intent(this,MapaActivity.class);
                 //i.putExtra("opcaoEscolhida","mapa");
                 break;
             case R.id.opcoes_navbar_notificacoes:
-                //i = new Intent(this,NotificacoesActivity.class);
-                //i.putExtra("opcaoEscolhida","notificacoes");
+                i = new Intent(this,NotificacoesActivity.class);
+                i.putExtra("opcaoEscolhida","notificacoes");
                 break;
             case R.id.opcoes_navbar_procurar:
                 //i = new Intent(this,ProcurarActivity.class);
@@ -244,20 +249,10 @@ public class NavDrawerActivity extends AppCompatActivity {
     }
 
     private void comecarNovaActivity(Intent i){
-        //DrawerLayout dl = findViewById(R.id.drawerlayout_navdrawer);
         this.dl.closeDrawers();
+        startActivity(i);
 
-
-        // Check if we're running on Android 5.0 or higher
-        // porque APIs de transição de atividade estão disponíveis no Android 5.0 (API 21) e versões posteriores.
-        // Apply activity transition
-        //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-
-        // set an exit transition
-        Slide s = new Slide();
-        s.setSlideEdge(Gravity.LEFT); //colocar a deslizar da esquerda
-        getWindow().setExitTransition(s);
-        startActivity(i, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-
+        //isto faz com que a proxima activity entre da direita, e a activity atual vá para trás
+        overridePendingTransition(R.anim.slide_in_right,R.anim.zoom_out);
     }
 }
