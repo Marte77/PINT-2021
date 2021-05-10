@@ -16,4 +16,9 @@
         <item name="android:gravity">left|center_vertical</item>
     </style>
 
+    <style name="header_nav_TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
 </resources>

@@ -23,6 +23,7 @@
     <string name="opcoes_navbar_mapa">Mapa</string>
     <string name="opcoes_navbar_forum">Fórum</string>
     <string name="opcoes_navbar_definicoes">Definições</string>
+    <string name="opcoes_navbar_classificacao">Classificações</string>
 
     <string name="titulo_pagina_principal">@string/opcoes_navbar_home</string>
     <string name="titulo_pagina_lista_favs">@string/opcoes_navbar_lista_favs</string>

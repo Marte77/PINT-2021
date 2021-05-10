@@ -1,5 +1,6 @@
 package com.example.crowdzero_v000;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
@@ -21,11 +22,14 @@ import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Arrays;
 
 //https://stackoverflow.com/a/49500446/10676498
 //agora, todas as atividades vao fazer "extend" desta classe e nao da AppCompatActivity
@@ -98,7 +102,43 @@ public class NavDrawerActivity extends AppCompatActivity {
             case "procurar":
                 tb.setTitle(R.string.opcoes_navbar_procurar);
                 break;
+            case "Classificacao":
+                tb.setTitle(R.string.opcoes_navbar_classificacao);
         }
+    }
+
+
+    private void adicionarListenersDrawer(){
+        this.dl.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerOpened(@NonNull  View drawerView) {
+                LinearLayout ll = findViewById(R.id.linearLayoutPontuacaoHeaderNav);
+                if(!ll.hasOnClickListeners()){
+                    ll.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(getApplicationContext(),ClassificacaoActivity.class);
+                            i.putExtra("opcaoEscolhida","Classificacao");
+                            comecarNovaActivity(i);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+
+            }
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+
+        });
+
     }
 
     @Override
@@ -110,7 +150,8 @@ public class NavDrawerActivity extends AppCompatActivity {
         this.dl = findViewById(R.id.drawerlayout_navdrawer);
         this.nv = findViewById(R.id.NavViewNavDrawerBase);
 
-
+        //adicionar listener de abrir a drawer
+        adicionarListenersDrawer();
 
         definirTituloEMenu();
 
@@ -119,15 +160,15 @@ public class NavDrawerActivity extends AppCompatActivity {
         DisplayMetrics dpMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
         int widthEcra = dpMetrics.widthPixels;
-        //ViewGroup.LayoutParams lp = nv.getLayoutParams();
-        //lp.width = (int) (widthEcra *0.6);
-        //nv.setLayoutParams(lp);
+        ViewGroup.LayoutParams lp = nv.getLayoutParams();
+        lp.width = (int) (widthEcra *0.73);
+        nv.setLayoutParams(lp);
         //TODO:FAZER COM QUE A HEADER VIEW FIQUE COM ESTE PARAMETRO DE WIDTH E NAO O ORIGINAL
 
             //colocar a header com a mesma width da nav drawer
         View LL = nv.getHeaderView(0);
         ViewGroup.LayoutParams LLP = LL.getLayoutParams();
-        LLP.width = (int) (widthEcra * 0.6);
+        LLP.width = (int) (widthEcra * 0.73);
         LL.setLayoutParams(LLP);
 
         TextView tvPontos = LL.findViewById(R.id.PontuacaoUtilizadorHeaderNavBar);
@@ -155,6 +196,7 @@ public class NavDrawerActivity extends AppCompatActivity {
     }
 
     //funcao para abrir a activity escolhida no menu
+    @SuppressLint("NonConstantResourceId")
     void abrirSeparadorItem(MenuItem item){
         Intent i = null;
         switch (item.getItemId()){
@@ -190,32 +232,36 @@ public class NavDrawerActivity extends AppCompatActivity {
                 //i = new Intent(this,ProcurarActivity.class);
                 //i.putExtra("opcaoEscolhida","procurar");
                 break;
+            case R.id.linearLayoutPontuacaoHeaderNav:
+                i = new Intent(this,ClassificacaoActivity.class);
+                i.putExtra("opcaoEscolhida","Classificacao");
+                break;
             default:
                     return;
 
         }
         if(i != null)
         {
-            DrawerLayout dl = findViewById(R.id.drawerlayout_navdrawer);
-            dl.closeDrawers();
             i.putExtra("opcaoEscolhidaItemID",item.getItemId());
-
-            // Check if we're running on Android 5.0 or higher
-            // porque APIs de transição de atividade estão disponíveis no Android 5.0 (API 21) e versões posteriores.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                // Apply activity transition
-                //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-
-                // set an exit transition
-                Slide s = new Slide();
-                s.setSlideEdge(Gravity.LEFT); //colocar a deslizar da esquerda
-                getWindow().setExitTransition(s);
-                startActivity(i, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-
-            } else {
-                // Swap without transition
-                startActivity(i);
-            }
+            comecarNovaActivity(i);
         }
+    }
+
+    private void comecarNovaActivity(Intent i){
+        //DrawerLayout dl = findViewById(R.id.drawerlayout_navdrawer);
+        this.dl.closeDrawers();
+
+
+        // Check if we're running on Android 5.0 or higher
+        // porque APIs de transição de atividade estão disponíveis no Android 5.0 (API 21) e versões posteriores.
+        // Apply activity transition
+        //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+        // set an exit transition
+        Slide s = new Slide();
+        s.setSlideEdge(Gravity.LEFT); //colocar a deslizar da esquerda
+        getWindow().setExitTransition(s);
+        startActivity(i, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
     }
 }

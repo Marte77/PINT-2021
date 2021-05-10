@@ -4,45 +4,58 @@
     android:id="@+id/headerNavBarMenuTableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TableRow android:layout_width="fill_parent" android:layout_height="wrap_content">
+    <TableRow android:id="@+id/tableRowExteriorHeaderNavBar"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+
         <TableRow
-            android:layout_width="139dp"
+            android:layout_width="118dp"
             android:layout_height="match_parent">
             <!--imagem da pessoa-->
             <ImageView
                 android:id="@+id/fotoPerfilUtilizadorHeaderNavBar"
-                app:srcCompat="@drawable/ic_launcher_background"
-                android:layout_width="137dp"
-                android:layout_height="wrap_content" />
+                android:layout_width="118dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_launcher_background" />
         </TableRow>
+
         <TableRow
-            android:layout_width="210dp"
+            android:id="@+id/SegundotableRowInteriorHeaderNavBar"
+            android:layout_width="203dp"
             android:layout_height="match_parent">
+
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/tableLayoutInteriorHeaderNavBar">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/NomeUtilizadorHeaderNavBar"
+                        style="@style/header_nav_TextView"
                         android:layout_width="match_parent"
-                        android:gravity="center_vertical"
                         android:layout_height="match_parent"
+                        android:gravity="center_vertical"
                         android:text="UTILIZADOR" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:layout_weight="1">
+                    android:id="@+id/linearLayoutPontuacaoHeaderNav">
+
                     <LinearLayout
                         android:layout_width="158dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:orientation="vertical">
+
                         <ImageView
                             android:id="@+id/trofeuHeaderNavBar"
                             android:layout_width="match_parent"
@@ -50,17 +63,20 @@
                             android:layout_weight="0.5"
                             app:srcCompat="@drawable/ic_trofeu_24px" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/PontuacaoUtilizadorHeaderNavBar"
+                            style="@style/header_nav_TextView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="PONTUACAO"
-                            android:gravity="center_vertical"/>
+                            android:gravity="center_vertical"
+                            android:text="PONTUACAO" />
                     </LinearLayout>
                 </LinearLayout>
             </TableLayout>
