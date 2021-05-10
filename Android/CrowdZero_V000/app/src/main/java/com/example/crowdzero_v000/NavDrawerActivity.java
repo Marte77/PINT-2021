@@ -3,33 +3,25 @@ package com.example.crowdzero_v000;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.transition.Slide;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.Arrays;
 
 //https://stackoverflow.com/a/49500446/10676498
 //agora, todas as atividades vao fazer "extend" desta classe e nao da AppCompatActivity
@@ -113,7 +105,10 @@ public class NavDrawerActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(@NonNull  View drawerView) {
                 LinearLayout ll = findViewById(R.id.linearLayoutPontuacaoHeaderNav);
-                if(!ll.hasOnClickListeners()){
+                if(!ll.hasOnClickListeners()){ //aplicar o listener apenas se ainda nao tiver um
+                    //fiz desta maneira pq se tentasse fazer o findview() o layout ia sempre ficar nulo
+                    //entao isto so mete o listener quando se abre a drawer
+                    // , pois eu acho que aparecia nulo devido ao layout ainda nao ter sido instanciado
                     ll.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -125,6 +120,7 @@ public class NavDrawerActivity extends AppCompatActivity {
                 }
             }
 
+            //estes eventos ainda nao tem nada pq nao os usei, mas era preciso declará-los
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
