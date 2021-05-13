@@ -43,6 +43,8 @@
         <item>@string/opcoes_navbar_forum</item>
         <item>@string/opcoes_navbar_definicoes</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

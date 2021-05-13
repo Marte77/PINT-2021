@@ -56,7 +56,9 @@ public class NavDrawerActivity extends AppCompatActivity {
             opcaoEscolhida = (String) savedInstanceState.getSerializable("opcaoEscolhida");
             opcaoEscolhidaItemID = (int) savedInstanceState.getSerializable("opcaoEscolhidaItemID");
         }
-
+        tb = findViewById(R.id.topAppBar_navdrawerBase);
+        dl = findViewById(R.id.drawerlayout_navdrawer);
+        nv = findViewById(R.id.NavViewNavDrawerBase);
     }
 
     @Override
