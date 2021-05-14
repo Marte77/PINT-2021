@@ -19,11 +19,12 @@ public class InstituicoesActivity extends NavDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instituicoes);
 
-        int alturatb = this.tb.getLayoutParams().height;
-        ScrollView SV = findViewById(R.id.ScrollViewListaInstituicoes);
+
         /*
         * adicionar padding em cima da SV, caso contrário ficaria a sobrepor a topbar
         * */
+        int alturatb = this.tb.getLayoutParams().height;
+        ScrollView SV = findViewById(R.id.ScrollViewListaInstituicoes);
         SV.setPadding(SV.getLeft(),alturatb+1,SV.getRight(),SV.getBottom());
 
         adicionarCard();
