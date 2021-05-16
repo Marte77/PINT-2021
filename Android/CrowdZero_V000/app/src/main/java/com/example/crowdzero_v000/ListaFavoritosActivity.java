@@ -1,10 +1,11 @@
 package com.example.crowdzero_v000;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.widget.ScrollView;
+
+import com.example.crowdzero_v000.fragmentos.CardInstituicoesFragment;
 
 public class ListaFavoritosActivity extends NavDrawerActivity {
 

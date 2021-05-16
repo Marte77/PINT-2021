@@ -1,15 +1,12 @@
 package com.example.crowdzero_v000;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.example.crowdzero_v000.fragmentos.CardInstituicoesFragment;
 
 public class InstituicoesActivity extends NavDrawerActivity {
 
@@ -36,7 +33,7 @@ public class InstituicoesActivity extends NavDrawerActivity {
 
     public void adicionarCard(){
         nCards++;
-        Fragment cardInicial = CardInstituicoesFragment.newInstance("Instituicao"+nCards,"bem bonita"+nCards);
+        CardInstituicoesFragment cardInicial = CardInstituicoesFragment.newInstance("Instituicao"+nCards,"bem bonita"+nCards);
         //cardInicial.getView().findViewById(R.id.DetalhesFragmentoBotao).setOnClickListener(new View.OnClickListener() {
         //    @Override
         //    public void onClick(View v) {
@@ -48,5 +45,6 @@ public class InstituicoesActivity extends NavDrawerActivity {
 
                 .add(findViewById(R.id.linearLayoutFragmentsInstituicoes).getId(),cardInicial,"instituicao"+nCards).
                 commit();
+
     }
 }
