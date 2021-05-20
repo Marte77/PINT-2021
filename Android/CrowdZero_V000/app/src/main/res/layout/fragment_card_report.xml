@@ -41,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Nome\nData e hora report" />
+                        android:text="NomeData e hora report" />
 
                     <TextView
                         android:id="@+id/TipoDescricaoTxtReport"
@@ -52,33 +52,54 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <ImageButton
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"/>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_thumb_down_black_24dp"
-                    android:id="@+id/botaoDislikeReport"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    style="@style/Widget.MaterialComponents.TimePicker.ImageButton"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_thumb_up_black_24dp"
-                    android:id="@+id/botaoLikeReport"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    style="@style/Widget.MaterialComponents.TimePicker.ImageButton"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_favorite_black_24dp"
-                    android:id="@+id/botaoCoracaoReport"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    style="@style/Widget.MaterialComponents.TimePicker.ImageButton"/>
-
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_rounded_corners">
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_thumb_down_black_24dp"
+                        android:id="@+id/botaoDislikeReport"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        style="@style/Widget.MaterialComponents.TimePicker.ImageButton"/>
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_thumb_up_black_24dp"
+                        android:id="@+id/botaoLikeReport"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        style="@style/Widget.MaterialComponents.TimePicker.ImageButton"/>
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"/>
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_favorite_black_24dp"
+                        android:id="@+id/botaoCoracaoReport"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        style="@style/Widget.MaterialComponents.TimePicker.ImageButton"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

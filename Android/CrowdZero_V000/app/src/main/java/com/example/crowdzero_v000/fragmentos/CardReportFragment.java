@@ -1,9 +1,17 @@
 package com.example.crowdzero_v000.fragmentos;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,10 +84,29 @@ public class CardReportFragment extends Fragment {
             }
         });
 
+        //cortar as strings para depois se meter a negrito certas partes
+        String populacao, descricao;
+        String parts[] = getArguments().getString("descricao").split("-");
+        populacao = parts[0];
+        descricao = "";
+        for(int i = 1;i<parts.length;i++)
+            descricao = descricao + "-" +parts[i];
+        populacao = "<b>"+populacao+"</b>"+descricao;
+        ((TextView) v.findViewById(R.id.TipoDescricaoTxtReport)).setText(Html.fromHtml(populacao));
 
+        String nome, data;
+        parts = getArguments().getString("nome").split("\n");
+        nome = parts[0];
+        data = parts[1];
+        nome =nome+'\n';
+        SpannableStringBuilder ssbNome = new SpannableStringBuilder(nome);
+        ssbNome.setSpan(new StyleSpan(Typeface.BOLD),0,nome.length()-1,0);
+        SpannableString ssbData = new SpannableString(data);
+        ssbData.setSpan(new RelativeSizeSpan(0.7f),0,data.length(),0);
+        ssbNome.append(ssbData);
+        ssbNome.setSpan(new RelativeSizeSpan(1.1f),0,ssbNome.length(),0);
+        ((TextView) v.findViewById(R.id.NomeDataHoraTxtReport)).setText(ssbNome);
 
-        ((TextView) v.findViewById(R.id.NomeDataHoraTxtReport)).setText(getArguments().getString("nome"));
-        ((TextView) v.findViewById(R.id.TipoDescricaoTxtReport)).setText(getArguments().getString("descricao"));
         return v;
     }
 }
