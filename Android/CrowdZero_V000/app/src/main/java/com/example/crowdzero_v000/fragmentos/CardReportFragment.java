@@ -51,24 +51,28 @@ public class CardReportFragment extends Fragment {
         IBDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(botaoDislike){
-                    IBDislike.setImageResource(R.drawable.ic_thumb_down_black_24dp);
-                }else{
-                    IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                if (!botaoLike) {
+                    if (botaoDislike) {
+                        IBDislike.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                    } else {
+                        IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                    }
+                    botaoDislike = !botaoDislike;
                 }
-                botaoDislike =!botaoDislike;
             }
         });
         final ImageButton IBLike = v.findViewById(R.id.botaoLikeReport);
         IBLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(botaoLike){
-                    IBLike.setImageResource(R.drawable.ic_thumb_up_black_24dp);
-                }else{
-                    IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                if(!botaoDislike) {
+                    if (botaoLike) {
+                        IBLike.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+                    } else {
+                        IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                    }
+                    botaoLike = !botaoLike;
                 }
-                botaoLike =!botaoLike;
             }
         });
         final ImageButton IBCoracao = v.findViewById(R.id.botaoCoracaoReport);
