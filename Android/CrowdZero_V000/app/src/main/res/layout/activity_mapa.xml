@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutMapa"
-        android:layout_width="407dp"
-        android:layout_height="682dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

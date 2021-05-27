@@ -22,6 +22,7 @@ public class InstituicoesActivity extends NavDrawerActivity {
         * */
         int alturatb = this.tb.getLayoutParams().height;
         ScrollView SV = findViewById(R.id.ScrollViewListaInstituicoes);
+        //TODO: O SV fica sobreposto à topbar na mesma :'(
         SV.setPadding(SV.getLeft(),alturatb,SV.getRight(),SV.getBottom());
 
         adicionarCard();

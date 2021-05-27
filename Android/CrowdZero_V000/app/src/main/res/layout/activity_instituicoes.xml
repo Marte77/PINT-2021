@@ -9,17 +9,22 @@
 
 
     <ScrollView
+        android:id="@+id/ScrollViewListaInstituicoes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/ScrollViewListaInstituicoes"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
+
         <LinearLayout
             android:id="@+id/linearLayoutFragmentsInstituicoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:orientation="vertical">
 
 
         </LinearLayout>

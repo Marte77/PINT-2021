@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -38,6 +39,7 @@ public class NavDrawerActivity extends AppCompatActivity {
     MaterialToolbar tb = null;
     DrawerLayout dl = null;
     NavigationView nv = null;
+    AppBarLayout abl = null;
     protected String opcaoEscolhida;
     protected int opcaoEscolhidaItemID;
     @Override
@@ -63,6 +65,7 @@ public class NavDrawerActivity extends AppCompatActivity {
         tb = findViewById(R.id.topAppBar_navdrawerBase);
         dl = findViewById(R.id.drawerlayout_navdrawer);
         nv = findViewById(R.id.NavViewNavDrawerBase);
+        abl = findViewById(R.id.AppBarrLayout_navdrawerBase);
     }
 
     @Override
