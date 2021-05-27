@@ -1,17 +1,22 @@
 package com.example.crowdzero_v000;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.crowdzero_v000.fragmentos.CardReportFragment;
@@ -43,7 +48,7 @@ public class PaginaPrincipal extends NavDrawerActivity {
         * if(utilizador pertence a empresa){
         *   adicionarPieChartUtilizadorEmpresa()}
         * else adicionarPieChartOutrosUtilizadores()*/
-        //adicionarPieChartOutrosUtilizadores();
+        adicionarPieChartOutrosUtilizadores();
         //adicionarPieChartUtilizadorEmpresa();
     }
 
@@ -51,9 +56,16 @@ public class PaginaPrincipal extends NavDrawerActivity {
 
 
     private void adicionarPieChartOutrosUtilizadores(){
-        MaterialCardView MCVPieCharts = findViewById(R.id.cardPieChartsPaginaPrincipal);
-        PieChart graficoReports = new PieChart(getApplicationContext());
-        MCVPieCharts.addView(graficoReports);
+        //MaterialCardView MCVPieCharts = findViewById(R.id.cardPieChartsPaginaPrincipal);
+        LinearLayout LLGraficoReports = findViewById(R.id.linearLayoutCardGraficoReport);
+        TextView textView = findViewById(R.id.textViewCardReportPaginaPrincipal);
+        textView.setText(Html.fromHtml("<h2><b>"+textView.getText()+"</b></h2>"));
+        textView.setGravity(Gravity.CENTER);
+        //textView.setText("Concentração em Viseu");
+        //LLGraficoReports.addView(textView);
+
+        PieChart graficoReports = findViewById(R.id.GraficoReportCardPagPrincipal);
+        //LLGraficoReports.addView(graficoReports);
 
         setupGrafico(graficoReports);
 

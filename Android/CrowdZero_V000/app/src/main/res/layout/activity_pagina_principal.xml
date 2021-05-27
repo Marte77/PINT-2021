@@ -7,6 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".PaginaPrincipal">
 
+    <!--para mudar a posicao alterar apenas o vertical bias-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Report com Mais Likes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.228" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="400dp"
@@ -14,11 +30,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.214"/>
-        <!--para mudar a posicao alterar apenas o vertical bias-->
+        app:layout_constraintVertical_bias="0.35" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardPieChartsPaginaPrincipal"
@@ -28,8 +43,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.769">
+        app:layout_constraintVertical_bias="0.89">
 
+        <LinearLayout
+            android:id="@+id/linearLayoutCardGraficoReport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewCardReportPaginaPrincipal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Concentração em Viseu" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/GraficoReportCardPagPrincipal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
