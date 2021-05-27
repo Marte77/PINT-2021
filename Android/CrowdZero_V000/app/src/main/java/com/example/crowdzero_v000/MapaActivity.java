@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -59,6 +60,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mapa = googleMap;
+
         mapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -67,7 +69,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         });
         //tipo do mapa e zoom default
         mapa.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.65810312603541,-7.9150425642728806),14.0f));
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),15.0f));
 
         //TODO:obter lista de instituicoes
         /*
@@ -81,33 +83,42 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                                                 .fillColor(Color.parseColor("#7Ffa0000"))
                                                 .visible(true));*/
 
-        adicionarMarcador(new LatLng(40.6577125,-7.9141467),"Camara de Viseu","Camara de Viseu",101);
-        adicionarMarcador(new LatLng(40.6435252,-7.9112907),"Palacio do Gelo","Palacio do Gelo",62);
-        adicionarMarcador(new LatLng(40.6559245,-7.9159877),"Parque da Cidade","Parque da Cidade",30);
-        adicionarMarcador(new LatLng(40.6510224,-7.9495194),"Café da ti joana","Café da ti joana",0);
+        adicionarMarcador(new LatLng(40.6577125,-7.9141467),"Camara de Viseu","Camara de Viseu",101,"Muito");
+        adicionarMarcador(new LatLng(40.6435252,-7.9112907),"Palacio do Gelo","Palacio do Gelo",62,"Medio");
+        adicionarMarcador(new LatLng(40.6559245,-7.9159877),"Parque da Cidade","Parque da Cidade",30,"Pouco");
+        adicionarMarcador(new LatLng(40.6510224,-7.9495194),"Café da ti joana","Café da ti joana",0,"Sem populacao");
+        adicionarMarcador(new LatLng(40.6629263,-7.9110049),"Gaming Swag","Gaming Swag",150,"Pouco");
     }
 
 
-    void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports){
-        mapa.addMarker(marcadorComIcone(latLng,nomeLocal,"Número de reports: " + numeroReports));
-        CircleOptions circuloMarcador = new CircleOptions().center(latLng).radius(100.0f);
+    void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports, String populacao){
+        MarkerOptions marcadorNovo = marcadorComIcone(latLng,nomeLocal,"Número de reports: " + numeroReports);
+        mapa.addMarker(marcadorNovo);
+        CircleOptions circuloMarcador = new CircleOptions().center(latLng);
         circuloMarcador.strokeWidth(2.0f);
         String corTransparencia50 ="#7F"; //adicionar os 6 digitos respetivos a cor dependendo do numero de reports
 
-        if(numeroReports >= 100){
+
+        circuloMarcador.radius(numeroReports*0.5f);
+        if(populacao =="Muito"){
+            marcadorNovo.snippet("Extremamente populado"+marcadorNovo.getSnippet());
             corTransparencia50 += "e81313"; // vermelho
             circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
             mapa.addCircle(circuloMarcador);
-
-        }else if(numeroReports >= 50){
+        }else if(populacao == "Medio"){
+            marcadorNovo.snippet("Muito populado"+marcadorNovo.getSnippet());
             corTransparencia50 += "e4e813"; //amarelo
             circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
             mapa.addCircle(circuloMarcador);
-        }else if(numeroReports > 0){
+        }else if(populacao == "Pouco"){
+            marcadorNovo.snippet("Pouco populado"+marcadorNovo.getSnippet());
             corTransparencia50 += "13e84b"; //verde
             circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
             mapa.addCircle(circuloMarcador);
-        }else return;
+        }else if(populacao == "Sem populacao"){
+            marcadorNovo.snippet("Sem população"+marcadorNovo.getSnippet());
+
+        }
 
     }
 
