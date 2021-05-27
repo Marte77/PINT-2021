@@ -3,6 +3,7 @@ package com.example.crowdzero_v000;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,12 +29,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import static androidx.core.content.PermissionChecker.PERMISSION_DENIED;
 
-public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallback {
+public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private int LOCATION_PERMISSION_COARSE_REQUEST = 100;
     private int LOCATION_PERMISSION_FINE_REQUEST = 101;
@@ -61,15 +63,24 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         this.mapa = googleMap;
 
+        //tipo do mapa e zoom default
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),15.0f));
+        try {
+            boolean success = googleMap.setMapStyle( //adicionar estilo ao mapa para tirar os marcadores
+                    MapStyleOptions.loadRawResourceStyle(
+                            getApplicationContext(), R.raw.map_style));
+
+        }catch(Resources.NotFoundException ignored){
+
+        }
+
+
         mapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
             }
         });
-        //tipo do mapa e zoom default
-        mapa.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),15.0f));
 
         //TODO:obter lista de instituicoes
         /*
@@ -144,5 +155,12 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        //todo: abrir menu de fazer report ou wtv
+        return false;
     }
 }
