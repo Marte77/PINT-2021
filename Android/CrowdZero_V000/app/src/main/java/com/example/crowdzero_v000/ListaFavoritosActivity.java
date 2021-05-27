@@ -20,7 +20,7 @@ public class ListaFavoritosActivity extends NavDrawerActivity {
          * */
         int alturatb = this.tb.getLayoutParams().height;
         ScrollView SV = findViewById(R.id.ScrollViewListaInstituicoesFavs);
-        SV.setPadding(SV.getLeft(),alturatb+1,SV.getRight(),SV.getBottom());
+        SV.setPadding(SV.getLeft(),alturatb,SV.getRight(),SV.getBottom());
 
         adicionarCard();
         adicionarCard();

@@ -44,6 +44,9 @@ public class PaginaPrincipal extends NavDrawerActivity {
         CardReportFragment cardInicial = CardReportFragment.newInstance("Martinho\nàs 09:47 de 20/05/21","Muito populado - Muitas pessoas na fila da cantina assustei-me");
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayout,cardInicial).commit();
+
+
+
         /*
         * if(utilizador pertence a empresa){
         *   adicionarPieChartUtilizadorEmpresa()}

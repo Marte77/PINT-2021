@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -37,6 +38,11 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                     , Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_COARSE_REQUEST);
         }
 
+        //colocar altura do linearlayout certa para nao sobre por a toolbar
+        int alturatb = this.tb.getLayoutParams().height;
+        LinearLayout linearLayout = ((LinearLayout)findViewById(R.id.linearLayoutMapa));
+        linearLayout.setPadding(linearLayout.getLeft(),alturatb,linearLayout.getRight(),linearLayout.getBottom());
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
         mapFragment.getMapAsync(this);
 
@@ -48,7 +54,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         mapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Log.i("testar",mapa.getCameraPosition().toString());
+
             }
         });
         mapa.setMapType(GoogleMap.MAP_TYPE_TERRAIN);

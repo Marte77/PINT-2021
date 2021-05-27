@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayoutMapa"
         android:layout_width="407dp"
         android:layout_height="682dp"
         android:orientation="vertical"

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,7 +70,6 @@ public class NavDrawerActivity extends AppCompatActivity {
         ViewStub stub = findViewById(R.id.navdrawer_stubview);
         stub.setLayoutResource(layoutResID);
         stub.inflate();
-
         // super.setContentView(layoutResID);
     }
 
