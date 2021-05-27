@@ -30,6 +30,9 @@ import com.google.android.material.navigation.NavigationView;
 
 //https://stackoverflow.com/a/49500446/10676498
 //agora, todas as atividades vao fazer "extend" desta classe e nao da AppCompatActivity
+
+//esta activity serve de base para todas as activities desta app para ser possível manipular a toolbar
+//e para ser possível usar o mesmo menu lateral em todas as activities
 public class NavDrawerActivity extends AppCompatActivity {
     MaterialToolbar tb = null;
     DrawerLayout dl = null;
@@ -224,8 +227,8 @@ public class NavDrawerActivity extends AppCompatActivity {
                 i.putExtra("opcaoEscolhida","favs");
                 break;
             case R.id.opcoes_navbar_mapa:
-                //i = new Intent(this,MapaActivity.class);
-                //i.putExtra("opcaoEscolhida","mapa");
+                i = new Intent(this,MapaActivity.class);
+                i.putExtra("opcaoEscolhida","mapa");
                 break;
             case R.id.opcoes_navbar_notificacoes:
                 i = new Intent(this,NotificacoesActivity.class);
