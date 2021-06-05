@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -19,11 +19,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import com.google.android.gms.maps.CameraUpdate;
+import com.example.crowdzero_v000.fragmentos.FragmentModalBottomSheet;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -31,15 +32,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 
-import static androidx.core.content.PermissionChecker.PERMISSION_DENIED;
 
-public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+import java.util.ArrayList;
+
+public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallback {
 
     private int LOCATION_PERMISSION_COARSE_REQUEST = 100;
     private int LOCATION_PERMISSION_FINE_REQUEST = 101;
     private GoogleMap mapa;
+    private UiSettings uiSettingsMapa;
+    private ArrayList<MarkerOptions> markerOptionsArray = new ArrayList<>();
+    private ArrayList<Marker> markerArray = new ArrayList<>();
+    private ArrayList<CircleOptions> circleOptionsArray = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +58,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
                     , Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_COARSE_REQUEST);
         }
+
 
         //colocar altura do linearlayout certa para nao sobre por a toolbar
         int alturatb = this.tb.getLayoutParams().height;
@@ -59,28 +70,10 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
 
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.mapa = googleMap;
-
-        //tipo do mapa e zoom default
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),15.0f));
-        try {
-            boolean success = googleMap.setMapStyle( //adicionar estilo ao mapa para tirar os marcadores
-                    MapStyleOptions.loadRawResourceStyle(
-                            getApplicationContext(), R.raw.map_style));
-
-        }catch(Resources.NotFoundException ignored){
-
-        }
-
-
-        mapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-            }
-        });
+        inicializarGoogleMapa(googleMap);
 
         //TODO:obter lista de instituicoes
         /*
@@ -101,32 +94,78 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         adicionarMarcador(new LatLng(40.6629263,-7.9110049),"Gaming Swag","Gaming Swag",150,"Pouco");
     }
 
+    private void inicializarGoogleMapa(GoogleMap googleMap) {
+        this.mapa = googleMap;
+        this.uiSettingsMapa = googleMap.getUiSettings();
+        uiSettingsMapa.setCompassEnabled(true);
+
+        /*TODO: Se nao funcionar para meter o long click fazer este
+        mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(marker.getTitle());
+                fmBS.show(getSupportFragmentManager(),marker.getTitle());
+
+                return false;
+            }
+        });*/
+
+        //Fazer click longo para abrir o menu de infos do local
+        mapa.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                double tresholdLatitude = Math.pow(5.705,-4);
+                double tresholdLongitude = Math.pow(5.705,-4);
+                for(Marker m : markerArray){
+
+                    if(Math.abs(m.getPosition().latitude - latLng.latitude) < tresholdLatitude && Math.abs(m.getPosition().longitude - latLng.longitude) < tresholdLongitude){
+                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle());
+                        fmBS.show(getSupportFragmentManager(),m.getTitle());
+                    }
+                }
+            }
+        });
+
+        //tipo do mapa e zoom default
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),15.0f));
+        try {
+            boolean success = googleMap.setMapStyle( //adicionar estilo ao mapa para tirar os marcadores
+                    MapStyleOptions.loadRawResourceStyle(
+                            getApplicationContext(), R.raw.map_style));
+
+        }catch(Resources.NotFoundException ignored){
+
+        }
+    }
 
     void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports, String populacao){
         MarkerOptions marcadorNovo = marcadorComIcone(latLng,nomeLocal,"Número de reports: " + numeroReports);
-        mapa.addMarker(marcadorNovo);
+        Marker marker= mapa.addMarker(marcadorNovo);
+        markerArray.add(marker);
+        markerOptionsArray.add(marcadorNovo);
         CircleOptions circuloMarcador = new CircleOptions().center(latLng);
+        circleOptionsArray.add(circuloMarcador);
         circuloMarcador.strokeWidth(2.0f);
         String corTransparencia50 ="#7F"; //adicionar os 6 digitos respetivos a cor dependendo do numero de reports
 
 
         circuloMarcador.radius(numeroReports*0.5f);
-        if(populacao =="Muito"){
+        if(populacao.equals("Muito")){
             marcadorNovo.snippet("Extremamente populado"+marcadorNovo.getSnippet());
             corTransparencia50 += "e81313"; // vermelho
             circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
             mapa.addCircle(circuloMarcador);
-        }else if(populacao == "Medio"){
+        }else if(populacao.equals("Medio")){
             marcadorNovo.snippet("Muito populado"+marcadorNovo.getSnippet());
             corTransparencia50 += "e4e813"; //amarelo
             circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
             mapa.addCircle(circuloMarcador);
-        }else if(populacao == "Pouco"){
+        }else if(populacao.equals("Pouco")){
             marcadorNovo.snippet("Pouco populado"+marcadorNovo.getSnippet());
             corTransparencia50 += "13e84b"; //verde
             circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
             mapa.addCircle(circuloMarcador);
-        }else if(populacao == "Sem populacao"){
+        }else if(populacao.equals("Sem populacao")){
             marcadorNovo.snippet("Sem população"+marcadorNovo.getSnippet());
 
         }
@@ -157,10 +196,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         return bitmap;
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
 
-        //todo: abrir menu de fazer report ou wtv
-        return false;
-    }
+
+
 }
