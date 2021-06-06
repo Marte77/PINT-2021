@@ -49,35 +49,85 @@
             android:paddingEnd="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageButton
-                android:layout_width="55dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/adicionar_aos_favoritos"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_favorite_black_24dp" />
-            <ImageButton
-            android:layout_width="55dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/adicionar_aos_favoritos"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_favorite_black_24dp" />
-            <ImageButton
-                android:layout_width="55dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/adicionar_aos_favoritos"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_favorite_black_24dp" />
-            <ImageButton
-                android:layout_width="55dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/adicionar_aos_favoritos"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_favorite_black_24dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="40dp"
+            android:id="@+id/linearLayoutBotoesInformacoesInstituicao"
+            tools:ignore="RtlSymmetry">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoMapaInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/adicionar_aos_favoritos"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_map_24px" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/opcoes_navbar_mapa"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoReportsInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/adicionar_aos_favoritos"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_report_black_24dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reports"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoOpinioesInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/adicionar_aos_favoritos"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_rate_review_black_24dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/opinioes"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/linearLayoutBotaoInteriorInstiuicaoInfo">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoInteriorInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/interior"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_storefront_24px" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interior"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
 
         </LinearLayout>
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.crowdzero_v000.fragmentos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.crowdzero_v000.InstituicaoInformacoesActivity;
 import com.example.crowdzero_v000.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -64,9 +66,18 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
         imgBtnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"ola",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
+                i.putExtra("nome",getArguments().getString("nome"));
+                //todo: fazer pedido para obter a descricao da instituicao
+                i.putExtra("descricao",getDescricaoInstituicao());
+                startActivity(i);
+
             }
         });
+    }
+
+    String getDescricaoInstituicao(){
+        return "descricao";
     }
 
     public void getWidthFragmento(final View v) {

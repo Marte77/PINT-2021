@@ -40,8 +40,8 @@ public class NavDrawerActivity extends AppCompatActivity {
     DrawerLayout dl = null;
     NavigationView nv = null;
     AppBarLayout abl = null;
-    protected String opcaoEscolhida;
-    protected int opcaoEscolhidaItemID;
+    protected String opcaoEscolhida ="home";
+    protected int opcaoEscolhidaItemID = -1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +57,14 @@ public class NavDrawerActivity extends AppCompatActivity {
             else{
                 opcaoEscolhida= (String) bundle.get("opcaoEscolhida");
                 opcaoEscolhidaItemID = (int) bundle.getInt("opcaoEscolhidaItemID");
+                if(opcaoEscolhida==null)
+                    opcaoEscolhida="home";
             }
         }else{
             opcaoEscolhida = (String) savedInstanceState.getSerializable("opcaoEscolhida");
             opcaoEscolhidaItemID = (int) savedInstanceState.getSerializable("opcaoEscolhidaItemID");
+            if(opcaoEscolhida==null)
+                opcaoEscolhida="home";
         }
         tb = findViewById(R.id.topAppBar_navdrawerBase);
         dl = findViewById(R.id.drawerlayout_navdrawer);

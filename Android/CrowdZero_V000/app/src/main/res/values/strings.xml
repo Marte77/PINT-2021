@@ -47,12 +47,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_mapa">Map</string>
     <string name="imageminstituicao">imagemInstituicao</string>
-    <string name="reports">Reports</string>
-    <string name="historico">Histórico</string>
-    <string name="informacoes">Informações</string>
     <string name="detalhes">Detalhes</string>
     <string name="informacao_e_contactos">Informação e Contactos:</string>
     <string name="adicionar_aos_favoritos">Adicionar aos Favoritos</string>
+    <string name="historico">Histórico</string>
+    <string name="reports">Reportes</string>
+    <string name="informacoes">Informações</string>
+    <string name="opinioes">Opiniões</string>
+    <string name="interior">Interior</string>
+    <string name="report_com_mais_likes">Report com Mais Likes</string>
 
 
 </resources>

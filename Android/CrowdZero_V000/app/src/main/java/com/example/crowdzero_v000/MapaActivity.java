@@ -17,7 +17,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -43,7 +42,7 @@ import java.util.ArrayList;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallback {
+public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private float zoom = 15.0f;
     protected LocationManager locationManager = null;
@@ -56,7 +55,10 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     private boolean isLocationEnabled = false, isUserMarkerSet = false;
     private Marker userMarker = null;
     private MarkerOptions userMarkerOptions = null;
-    private boolean gpsLigado =false;
+    private LatLng latLngInfoInstituicao= null;
+    private boolean gpsLigado =false,
+            veioDoInfoInstituicao = false;//este serve para verificar se veio
+                                            // do info instituicao, se sim, mete a camara nessa isntituicao
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,19 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         } else {
             isLocationEnabled = true;
         }
+
+        if(savedInstanceState== null){
+            Bundle extras = getIntent().getExtras();
+            if(extras!=null){
+                if(extras.get("coords") !=null) {
+                    veioDoInfoInstituicao=true;
+                    Bundle e = (Bundle) extras.get("coords");
+                    latLngInfoInstituicao = new LatLng(e.getDouble("lat"),e.getDouble("lng"));
+                }
+            }
+        }
+
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         //colocar altura do linearlayout certa para nao sobre por a toolbar
@@ -124,10 +139,13 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                 LatLng locUtil = new LatLng(location.getLatitude(), location.getLongitude());
                 String locUtilS = String.valueOf(locUtil.latitude).substring(0, 5) + ", " + String.valueOf(locUtil.longitude).substring(0, 5);
                 userMarkerOptions = marcadorComIcone(locUtil, "Localização Utilizador", locUtilS, true);
-                Log.i("testar",locUtil.toString());
                 if (mapa != null && !isUserMarkerSet) {
                     userMarker = mapa.addMarker(userMarkerOptions);
-                    mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(locUtil,zoom));
+                    if(!veioDoInfoInstituicao)
+                        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(locUtil,zoom));
+                    else{
+                        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngInfoInstituicao,zoom));
+                    }
                     isUserMarkerSet = true;
                 } else if (mapa != null) {
                     userMarker.setPosition(locUtil);
@@ -205,7 +223,6 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         });
 
         //tipo do mapa e zoom default
-
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),zoom));
 
         try {
@@ -292,6 +309,9 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     }
 
 
-
-
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),zoom));
+        return false;
+    }
 }

@@ -48,10 +48,10 @@ public class CardInstituicoesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View inflatedView =  inflater.inflate(R.layout.fragment_card_instituicoes, container, false);
-
+        //todo:fazer pedido da imagem e adicionar a imgview
         ((TextView) inflatedView.findViewById(R.id.NomeTxtViewFrag)).setText(getArguments().getString("nome"));
         ((TextView) inflatedView.findViewById(R.id.DescTxtViewFrag)).setText(getArguments().getString("descricao"));
-        ((Button)inflatedView.findViewById(R.id.DetalhesFragmentoBotao)).setOnClickListener(new View.OnClickListener() {
+        inflatedView.findViewById(R.id.DetalhesFragmentoBotao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
