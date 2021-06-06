@@ -93,7 +93,6 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             MapaActivity.this.startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),123);
-
                         }
                     })
                     .setNegativeButton("Cancelar",null).create();
@@ -106,7 +105,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode){
-            case 123://requestcode das settings
+            case 123://requestcode da activity que abre as settings
                 //fazer refresh da activity
                 finish();
                 startActivity(getIntent());
@@ -150,10 +149,10 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         if(isLocationEnabled){
             atualizarLocalizacaoEMarcador();
         }else{
-            AlertDialog a = new AlertDialog.Builder(MapaActivity.this).
-                    setMessage("Tem dar permissões para aceder a localização")
-                    .setPositiveButton("Dar permissão", null)
-                    .setNegativeButton("Cancelar",null).create();
+            AlertDialog a = new AlertDialog.Builder(MapaActivity.this)
+                    .setMessage("Tem dar permissões para aceder a localização")
+                    .setPositiveButton("", null)
+                    .setNegativeButton("",null).create();
             a.show();
         }
     }
@@ -187,17 +186,6 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         this.mapa = googleMap;
         this.uiSettingsMapa = googleMap.getUiSettings();
         uiSettingsMapa.setCompassEnabled(true);
-
-        /*TODO: Se nao funcionar para meter o long click fazer este
-        mapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(marker.getTitle());
-                fmBS.show(getSupportFragmentManager(),marker.getTitle());
-
-                return false;
-            }
-        });*/
 
         //Fazer click longo para abrir o menu de infos do local
         mapa.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {

@@ -5,20 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ListaFavoritosActivity">
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/ScrollViewListaInstituicoesFavs"
-
-        >
-        <LinearLayout
-            android:id="@+id/linearLayoutFragmentsInstituicoesFavs"
+        android:id="@+id/linearLayoutListaFavoritos">
+        <ScrollView
+            android:id="@+id/ScrollViewListaInstituicoesFavs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="2">
+            android:layout_height="match_parent"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutFragmentsInstituicoesFavs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

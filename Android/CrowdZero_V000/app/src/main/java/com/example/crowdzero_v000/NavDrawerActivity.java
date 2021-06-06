@@ -172,9 +172,9 @@ public class NavDrawerActivity extends AppCompatActivity {
         ViewGroup.LayoutParams lp = nv.getLayoutParams();
         lp.width = (int) (widthEcra *0.73);
         nv.setLayoutParams(lp);
-        //TODO:FAZER COM QUE A HEADER VIEW FIQUE COM ESTE PARAMETRO DE WIDTH E NAO O ORIGINAL
 
-            //colocar a header com a mesma width da nav drawer
+
+        //colocar a header com a mesma width da nav drawer
         View LL = nv.getHeaderView(0);
         ViewGroup.LayoutParams LLP = LL.getLayoutParams();
         LLP.width = (int) (widthEcra * 0.73);
@@ -262,5 +262,9 @@ public class NavDrawerActivity extends AppCompatActivity {
 
         //isto faz com que a proxima activity entre da direita, e a activity atual vá para trás
         overridePendingTransition(R.anim.slide_in_right,R.anim.zoom_out);
+    }
+
+    protected void mudarNomeToolBar(String nome){
+        tb.setTitle(nome);
     }
 }

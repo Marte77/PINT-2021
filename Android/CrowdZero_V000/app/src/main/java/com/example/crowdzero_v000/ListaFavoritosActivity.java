@@ -3,6 +3,7 @@ package com.example.crowdzero_v000;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.example.crowdzero_v000.fragmentos.CardInstituicoesFragment;
@@ -19,11 +20,12 @@ public class ListaFavoritosActivity extends NavDrawerActivity {
          * adicionar padding em cima da SV, caso contrário ficaria a sobrepor a topbar
          * */
         int alturatb = this.tb.getLayoutParams().height;
-        ScrollView SV = findViewById(R.id.ScrollViewListaInstituicoesFavs);
-        SV.setPadding(SV.getLeft(),alturatb,SV.getRight(),SV.getBottom());
+        LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.linearLayoutListaFavoritos));
+        linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());
 
         adicionarCard();
         adicionarCard();
+
 
     }
 

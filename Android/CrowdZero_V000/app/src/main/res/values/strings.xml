@@ -43,13 +43,16 @@
         <item>@string/opcoes_navbar_forum</item>
         <item>@string/opcoes_navbar_definicoes</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+    <!--  Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_mapa">Map</string>
     <string name="imageminstituicao">imagemInstituicao</string>
     <string name="reports">Reports</string>
     <string name="historico">Histórico</string>
     <string name="informacoes">Informações</string>
+    <string name="detalhes">Detalhes</string>
+    <string name="informacao_e_contactos">Informação e Contactos:</string>
+    <string name="adicionar_aos_favoritos">Adicionar aos Favoritos</string>
 
 
 </resources>

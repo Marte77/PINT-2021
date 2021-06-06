@@ -69,7 +69,7 @@ public class RegistoActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void abrirCidadeDialog(){
-        //TODO: buscar cidades
+
         final String[] cidades = {"Aveiro","Beja","Braga","Bragança","Castelo Branco","Coimbra","Évora","Faro","Guarda","Leiria","Lisboa","Portalegre","Porto","Santarém","Setúbal","Viana do Castelo","Vila Real","Viseu"};
 
         final int opcao = 0;
