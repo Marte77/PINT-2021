@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InstituicaoInformacoesActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayoutInstituicoesInformacoes">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="182dp"
+            app:srcCompat="@drawable/ic_launcher_background"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/textViewInformacoesEcontacto"
+                android:layout_height="match_parent"
+                android:text="@string/informacao_e_contactos" />
+
+            <TextView
+                android:layout_width="42dp"
+                android:layout_height="match_parent"
+                android:text=" " />
+            <ImageButton
+                android:id="@+id/imgBtnAdicionarInstituicaoFavoritos"
+                android:layout_width="55dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/adicionar_aos_favoritos"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_favorite_black_24dp" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewDescricaoInstituicao"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="40dp"
+            android:id="@+id/linearLayoutBotoesInformacoesInstituicao"
+            tools:ignore="RtlSymmetry">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoMapaInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/adicionar_aos_favoritos"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_map_24px" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/opcoes_navbar_mapa"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoReportsInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/adicionar_aos_favoritos"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_report_black_24dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reports"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoOpinioesInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/adicionar_aos_favoritos"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_rate_review_black_24dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/opinioes"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/linearLayoutBotaoInteriorInstiuicaoInfo">
+                <ImageButton
+                    android:layout_width="80dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/botaoInteriorInfoInstituicao"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/interior"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_storefront_24px" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interior"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

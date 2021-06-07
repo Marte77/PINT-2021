@@ -3,6 +3,7 @@ package com.example.crowdzero_v000;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -21,9 +22,9 @@ public class InstituicoesActivity extends NavDrawerActivity {
         * adicionar padding em cima da SV, caso contrário ficaria a sobrepor a topbar
         * */
         int alturatb = this.tb.getLayoutParams().height;
-        ScrollView SV = findViewById(R.id.ScrollViewListaInstituicoes);
-        //TODO: O SV fica sobreposto à topbar na mesma :'(
-        SV.setPadding(SV.getLeft(),alturatb,SV.getRight(),SV.getBottom());
+        LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.linearLayoutListaInstituicoes));
+        linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());
+
 
         adicionarCard();
         adicionarCard();
@@ -43,7 +44,6 @@ public class InstituicoesActivity extends NavDrawerActivity {
         //});
 
         getSupportFragmentManager().beginTransaction()
-
                 .add(findViewById(R.id.linearLayoutFragmentsInstituicoes).getId(),cardInicial,"instituicao"+nCards).
                 commit();
 

@@ -90,7 +90,7 @@ public class CardReportFragment extends Fragment {
 
         //cortar as strings para depois se meter a negrito certas partes
         String populacao, descricao;
-        String parts[] = getArguments().getString("descricao").split("-");
+        String[] parts = getArguments().getString("descricao").split("-");
         populacao = parts[0];
         descricao = "";
         for(int i = 1;i<parts.length;i++)
