@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "start": "cd Base_de_Dados && npm start"
+      }
+}
