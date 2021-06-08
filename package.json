@@ -1,5 +1,5 @@
 {
     "scripts": {
-        "start": "cd Base_de_Dados && npm start"
+        "start": "cd Base_de_Dados/API/ && npm start"
       }
 }
