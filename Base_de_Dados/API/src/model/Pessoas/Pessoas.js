@@ -13,6 +13,7 @@ Email: Sequelize.STRING,
 UNome: Sequelize.STRING,
 Localização: Sequelize.STRING,
 PNome: Sequelize.STRING,
+Password: Sequelize.TEXT
 },
 {
 timestamps: false,

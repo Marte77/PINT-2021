@@ -6,8 +6,6 @@ type: Sequelize.INTEGER,
 primaryKey: true,
 autoIncrement: true,
 },
-IDPessoa: Sequelize.INTEGER, //fk1
-ID_Util: Sequelize.INTEGER, //fk1
 Descricao: Sequelize.STRING,
 Nivel_Densidade: Sequelize.INTEGER,
 N_Likes: Sequelize.INTEGER,

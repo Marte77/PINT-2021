@@ -6,14 +6,10 @@ type: Sequelize.INTEGER,
 primaryKey: true,
 autoIncrement: true,
 },
-ID_Local_Indoor: Sequelize.INTEGER, //fk
-IDPessoa: Sequelize.INTEGER, //fk
-ID_Util: Sequelize.INTEGER, //fk
-Descricao: Sequelize.STRING,
-Nivel_Densidade: Sequelize.INTEGER,
-N_Likes: Sequelize.INTEGER,
-N_Dislikes: Sequelize.INTEGER,
-Data: Sequelize.DATE
+ID_Report: Sequelize.INTEGER //PK & FK
+ID_Local_Indoor: Sequelize.INTEGER, //FK
+IDPessoa: Sequelize.INTEGER, //FK
+ID_Util: Sequelize.INTEGER //FK
 },
 {
 timestamps: false,
