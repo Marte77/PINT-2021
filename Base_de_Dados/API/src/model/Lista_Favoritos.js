@@ -6,7 +6,7 @@ type: Sequelize.INTEGER,
 primaryKey: true,
 autoIncrement: true,
 },
-ID: Sequelize.INTEGER //SERIA O ID DA PESSOA
+IDPessoa: Sequelize.INTEGER //fk
 Descricao: Sequelize.STRING
 },
 {

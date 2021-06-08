@@ -6,6 +6,7 @@ type: Sequelize.INTEGER,
 primaryKey: true,
 autoIncrement: true,
 },
+ID_Local:Sequelize.INTEGER,//fk
 Nome: Sequelize.STRING,
 Codigo_Postal: Sequelize.INTEGER,
 Descricao: Sequelize.STRING,

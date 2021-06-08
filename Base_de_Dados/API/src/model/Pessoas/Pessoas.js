@@ -1,12 +1,12 @@
 var Sequelize = require('sequelize');
 var sequelize = require('./database');
 var Pessoas = sequelize.define('Pessoas', {
-ID: {
+IDPessoa: {
 type: Sequelize.INTEGER,
 primaryKey: true,
 autoIncrement: true,
 },
-Data_Nascimento: Sequelize.DATE,
+Data_Nascimento: Sequelize.DATEONLY,
 Cidade: Sequelize.STRING,
 Codigo_Postal: Sequelize.INTEGER,
 Email: Sequelize.STRING,
