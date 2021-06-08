@@ -18,4 +18,7 @@ Password: Sequelize.TEXT
 {
 timestamps: false,
 });
+Pessoas.hasOne(Utils_Instituicao);
+Pessoas.hasOne(Admin);
+Pessoas.hasOne(Outros_Util);
 module.exports = Pessoas

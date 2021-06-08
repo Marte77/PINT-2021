@@ -14,4 +14,5 @@ Codigo_Empresa: Sequelize.INTEGER
 {
 timestamps: false,
 });
+Utils_Instituicao.belongsTo(Pessoas);
 module.exports = Utils_Instituicao

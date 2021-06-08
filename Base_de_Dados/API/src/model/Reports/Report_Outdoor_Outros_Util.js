@@ -7,11 +7,12 @@ primaryKey: true,             //PK
 autoIncrement: true,
 },
 ID_Report: Sequelize.INTEGER //PK & FK
-ID_Local: Sequelize.INTEGER, //FK
+//ID_Local: Sequelize.INTEGER, //FK
 IDPessoa: Sequelize.INTEGER, //FK
 ID_Outro_Util: Sequelize.INTEGER //FK
 },
 {
 timestamps: false,
 });
+Report_Outdoor_Outros_Util.belongsTo(Local);
 module.exports = Report_Outdoor_Outros_Util
