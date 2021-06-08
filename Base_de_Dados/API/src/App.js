@@ -5,10 +5,10 @@ app.set('port', process.env.PORT|| 3000);
 //Middlewares
 app.use(express.json());
 //Rotas
-app.use('/teste',(req,res)=>{
+app.get('/teste',(req,res)=>{
 res.send("Rota TESTE.");
 });
-app.use('/',(req,res)=>{
+app.get('/',(req,res)=>{
 res.send("Hello World");
 });
 app.listen(app.get('port'),()=>{
