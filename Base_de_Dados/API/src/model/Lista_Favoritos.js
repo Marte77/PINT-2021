@@ -13,6 +13,6 @@ Descricao: Sequelize.STRING
 {
 timestamps: false,
 });
-pessoa.hasOne(Lista_Favoritos, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
-Lista_Favoritos.belongsTo(pessoa);
+//pessoa.hasOne(Lista_Favoritos, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
+//Lista_Favoritos.belongsTo(pessoa);
 module.exports = Lista_Favoritos

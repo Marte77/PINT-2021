@@ -11,7 +11,8 @@ dialectOptions:{
         ssl:{          
             rejectUnauthorized: false        
         }
-    }
+    },
+    logging:false
 }
 );
 sequelize.sync()
