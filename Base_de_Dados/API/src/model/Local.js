@@ -17,6 +17,4 @@ Coordenadas: Sequelize.DECIMAL
 {
 timestamps: false,
 });
-Local.hasMany(Report_Outdoor_Util_Instituicao);
-Local.hasMany(Report_Outdoor_Outros_Util);
 module.exports = Local

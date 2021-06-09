@@ -6,7 +6,7 @@ const sequelize = new Sequelize(
 {
 host: 'ec2-54-154-101-45.eu-west-1.compute.amazonaws.com',
 port: '5432',
-dialect: 'postgres'
+dialect: 'postgres',
 dialectOptions:{
         ssl:{          
             rejectUnauthorized: false        

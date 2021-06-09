@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = require('./database');
+var sequelize = require('../database');
 var Outros_Util = sequelize.define('Outros_Util', {
 ID_Outro_Util: {
 type: Sequelize.INTEGER,

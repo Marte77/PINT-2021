@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = require('./database');
+var sequelize = require('../database');
 var Report = sequelize.define('Report', {
 ID_Report: {
 type: Sequelize.INTEGER,

@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = require('./database');
+var sequelize = require('../database');
 var Utils_Instituicao = sequelize.define('Utils_Instituicao', {
 ID_Util: {
 type: Sequelize.INTEGER,
@@ -14,5 +14,4 @@ Codigo_Empresa: Sequelize.INTEGER
 {
 timestamps: false,
 });
-Utils_Instituicao.belongsTo(Pessoas);
 module.exports = Utils_Instituicao

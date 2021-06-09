@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = require('./database');
+var sequelize = require('../database');
 var Pessoas = sequelize.define('Pessoas', {
 IDPessoa: {
 type: Sequelize.INTEGER,
@@ -18,7 +18,4 @@ Password: Sequelize.TEXT
 {
 timestamps: false,
 });
-Pessoas.hasOne(Utils_Instituicao);
-Pessoas.hasOne(Admin);
-Pessoas.hasOne(Outros_Util);
 module.exports = Pessoas
