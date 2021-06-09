@@ -12,7 +12,9 @@ Telefone: Sequelize.INTEGER,
 Descricao: Sequelize.STRING,
 URL_Imagem: Sequelize.STRING,
 Coordenadas: Sequelize.DECIMAL,
-Localizacao: Sequelize.STRING
+Localizacao: Sequelize.STRING,
+Localizacao: Sequelize.STRING,
+Codigo_Empresa: Sequelize.INTEGER
 },
 {
 timestamps: false,
