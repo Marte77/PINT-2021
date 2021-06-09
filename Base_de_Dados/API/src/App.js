@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const Pessoas = require('./model/Pessoas/Pessoas');
-/*const Admin = require('./model/Pessoas/Admin');
+const Admin = require('./model/Pessoas/Admin');
 const Outros_Util = require('./model/Pessoas/Outros_Util');
 const Utils_Instituicao = require('./model/Pessoas/Utils_Instituicao');
 const Report = require('./model/Reports/Report');
@@ -17,7 +17,7 @@ const Lista_Favoritos = require('./model/Lista_Favoritos');
 const Local = require('./model/Local');
 const Local_Indoor = require('./model/Local_Indoor');
 const Tipo_Alertas = require('./model/Tipo_Alertas');
-const Util_pertence_Inst = require('./model/Util_pertence_Inst');*/
+const Util_pertence_Inst = require('./model/Util_pertence_Inst');
 //Configurações
 app.set('port', process.env.PORT|| 3000);
 //Middlewares
