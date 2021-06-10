@@ -15,4 +15,7 @@ Data: Sequelize.DATE
 {
 timestamps: false,
 });
+
+
+
 module.exports = Report

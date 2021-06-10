@@ -18,6 +18,8 @@ const Local = require('./model/Local');
 const Local_Indoor = require('./model/Local_Indoor');
 const Tipo_Alertas = require('./model/Tipo_Alertas');
 const Util_pertence_Inst = require('./model/Util_pertence_Inst');
+const herancas = require('./colocarHerancas')
+
 //Configurações
 app.set('port', process.env.PORT|| 3000);
 //Middlewares
