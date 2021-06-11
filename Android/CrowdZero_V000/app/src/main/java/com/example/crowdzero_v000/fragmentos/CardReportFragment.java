@@ -29,15 +29,17 @@ public class CardReportFragment extends Fragment {
     boolean botaoDislike = false;
     boolean botaoLike = false;
     boolean botaoCoracao = false;
+    int idReport= -1;
 
-
-    public static CardReportFragment newInstance(String nome, String descricao) {
+    public static CardReportFragment newInstance(String nomePessoaeData, String descricaoReport, int idReport) {
 
         CardReportFragment f = new CardReportFragment();
 
         Bundle b = new Bundle();
-        b.putString("nome", nome);
-        b.putString("descricao", descricao);
+        b.putString("nome", nomePessoaeData);
+        b.putString("descricao", descricaoReport);
+        b.putInt("idReport", idReport);
+
         f.setArguments(b);
         return f;
     }
@@ -87,7 +89,7 @@ public class CardReportFragment extends Fragment {
                 botaoCoracao =!botaoCoracao;
             }
         });
-
+        this.idReport = getArguments().getInt("idReport");
         //cortar as strings para depois se meter a negrito certas partes
         String populacao, descricao;
         String[] parts = getArguments().getString("descricao").split("-");
@@ -112,5 +114,9 @@ public class CardReportFragment extends Fragment {
         ((TextView) v.findViewById(R.id.NomeDataHoraTxtReport)).setText(ssbNome);
 
         return v;
+    }
+
+    public int getIdReport() {
+        return idReport;
     }
 }

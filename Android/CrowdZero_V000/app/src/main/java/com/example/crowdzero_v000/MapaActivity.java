@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.util.Pair;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -56,6 +58,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     private Marker userMarker = null;
     private MarkerOptions userMarkerOptions = null;
     private LatLng latLngInfoInstituicao= null;
+    private TreeMap<String,Integer> parIdInst_NomeInst = new TreeMap<>();
     private boolean gpsLigado =false,
             veioDoInfoInstituicao = false;//este serve para verificar se veio
                                             // do info instituicao, se sim, mete a camara nessa isntituicao
@@ -193,11 +196,11 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                                                 .fillColor(Color.parseColor("#7Ffa0000"))
                                                 .visible(true));*/
 
-        adicionarMarcador(new LatLng(40.6577125,-7.9141467),"Camara de Viseu","Camara de Viseu",101,"Muito");
-        adicionarMarcador(new LatLng(40.6435252,-7.9112907),"Palacio do Gelo","Palacio do Gelo",62,"Medio");
-        adicionarMarcador(new LatLng(40.6559245,-7.9159877),"Parque da Cidade","Parque da Cidade",30,"Pouco");
-        adicionarMarcador(new LatLng(40.6510224,-7.9495194),"Café da ti joana","Café da ti joana",0,"Sem populacao");
-        adicionarMarcador(new LatLng(40.6629263,-7.9110049),"Gaming Swag","Gaming Swag",150,"Pouco");
+        adicionarMarcador(new LatLng(40.6577125,-7.9141467),"Camara de Viseu","Camara de Viseu",101,"Muito",1);
+        adicionarMarcador(new LatLng(40.6435252,-7.9112907),"Palacio do Gelo","Palacio do Gelo",62,"Medio",2);
+        adicionarMarcador(new LatLng(40.6559245,-7.9159877),"Parque da Cidade","Parque da Cidade",30,"Pouco",3);
+        adicionarMarcador(new LatLng(40.6510224,-7.9495194),"Café da ti joana","Café da ti joana",0,"Sem populacao",4);
+        adicionarMarcador(new LatLng(40.6629263,-7.9110049),"Gaming Swag","Gaming Swag",150,"Pouco",5);
     }
 
     private void inicializarGoogleMapa(GoogleMap googleMap) {
@@ -213,7 +216,13 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                 double thresholdLongitude = Math.pow(5.705,-4);
                 for(Marker m : markerArray){
                     if(Math.abs(m.getPosition().latitude - latLng.latitude) < thresholdLatitude && Math.abs(m.getPosition().longitude - latLng.longitude) < thresholdLongitude){
-                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle());
+                        int idLocal = -1;
+                        try{
+                            idLocal = parIdInst_NomeInst.get(m.getTitle());
+                        }catch (NullPointerException ignored){
+                            return;
+                        }
+                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle(),idLocal );
                         fmBS.show(getSupportFragmentManager(),m.getTitle());
                         Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         vibrator.vibrate(50);
@@ -235,7 +244,9 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         }
     }
 
-    void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports, String populacao){
+    void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports, String populacao, int idLocal){
+        parIdInst_NomeInst.put(nomeLocal,idLocal);
+
         MarkerOptions marcadorNovo = marcadorComIcone(latLng,nomeLocal,"Número de reports: " + numeroReports);
         Marker marker= mapa.addMarker(marcadorNovo);
         markerArray.add(marker);

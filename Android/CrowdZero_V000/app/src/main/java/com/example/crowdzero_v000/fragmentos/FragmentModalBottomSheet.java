@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.crowdzero_v000.InstituicaoInformacoesActivity;
+import com.example.crowdzero_v000.ListaReportsInstituicaoActivity;
 import com.example.crowdzero_v000.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -25,11 +26,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
     private int widthFragmento;
     private String nomeLocal;
+    private int idlocal;
     protected TextView txtViewNomeInstituicao;
     protected ImageView imgViewImagemInstituicao;
     protected ImageButton imgBtnReport,imgBtnHistorico, imgBtnInfo;
-    public FragmentModalBottomSheet(String nomelocal){
+    public FragmentModalBottomSheet(String nomelocal, int idlocal ){
         nomeLocal=nomelocal;
+        idlocal = idlocal;
     }
 
     @Nullable
@@ -54,7 +57,13 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
         imgBtnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"ola",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),"ola",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getActivity().getApplicationContext(), ListaReportsInstituicaoActivity.class);
+                i.putExtra("opcaoEscolhida","Home");
+                i.putExtra("opcaoEscolhidaItemID",-1);
+                i.putExtra("nome",nomeLocal);
+                i.putExtra("descricao",getDescricaoInstituicao());
+                startActivity(i);
             }
         });
         imgBtnHistorico.setOnClickListener(new View.OnClickListener() {
@@ -67,17 +76,18 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
-                i.putExtra("nome",getArguments().getString("nome"));
-                //todo: fazer pedido para obter a descricao da instituicao
+                i.putExtra("opcaoEscolhida","Home");
+                i.putExtra("opcaoEscolhidaItemID",-1);
+                i.putExtra("nome",nomeLocal);
                 i.putExtra("descricao",getDescricaoInstituicao());
                 startActivity(i);
-
             }
         });
     }
 
     String getDescricaoInstituicao(){
-        return "descricao";
+        //todo: fazer pedido para obter a descricao da instituicao
+        return "SWAGGGGGGGGGGGGGGGGGGG";
     }
 
     public void getWidthFragmento(final View v) {

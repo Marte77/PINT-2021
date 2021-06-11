@@ -3,6 +3,7 @@ package com.example.crowdzero_v000;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -24,6 +25,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instituicao_informacoes);
         nome = getIntent().getExtras().getString("nome");
+
         descricao = getIntent().getExtras().getString("descricao");
 
 
@@ -42,7 +44,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         pegarCoordsInstituicao();
 
 
-        //TODO:verificar se é utilizador e verficar se é favorito para ligar o botao do fav
+        //TODO:verificar se é utilizador e verficar se já é favorito para ligar o botao do fav
         verificarSeUtilizadorEmpresa();
         if(!isUtilizadorEmpresa){
             LinearLayout ll = findViewById(R.id.linearLayoutBotaoInteriorInstiuicaoInfo);

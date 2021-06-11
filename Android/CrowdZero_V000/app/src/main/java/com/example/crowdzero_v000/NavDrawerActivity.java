@@ -36,10 +36,10 @@ import com.google.android.material.navigation.NavigationView;
 //esta activity serve de base para todas as activities desta app para ser possível manipular a toolbar
 //e para ser possível usar o mesmo menu lateral em todas as activities
 public class NavDrawerActivity extends AppCompatActivity {
-    MaterialToolbar tb = null;
-    DrawerLayout dl = null;
-    NavigationView nv = null;
-    AppBarLayout abl = null;
+    protected MaterialToolbar tb = null;
+    protected DrawerLayout dl = null;
+    protected NavigationView nv = null;
+    protected AppBarLayout abl = null;
     protected String opcaoEscolhida ="home";
     protected int opcaoEscolhidaItemID = -1;
     @Override
