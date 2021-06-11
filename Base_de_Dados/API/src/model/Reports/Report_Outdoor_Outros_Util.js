@@ -11,10 +11,10 @@ var Report_Outdoor_Outros_Util = sequelize.define('Report_Outdoor_Outros_Util', 
     N_Likes: Sequelize.INTEGER,
     N_Dislikes: Sequelize.INTEGER,
     Data: Sequelize.DATE,
-    ID_Report_Out_Util:Sequelize.INTEGER,
-    ID_Local_RepOutdoorOutrosUtil: Sequelize.INTEGER, //FK
-    IDPessoa_RepOutdoorOutrosUtil: Sequelize.INTEGER, //FK
-    ID_Outro_Util_RepOutdoorOutrosUtil: Sequelize.INTEGER //FK
+    //ID_Report:Sequelize.INTEGER,
+    ID_Local: Sequelize.INTEGER, //FK
+    IDPessoa: Sequelize.INTEGER, //FK
+    ID_Outro_Util: Sequelize.INTEGER //FK
 },
 {
 timestamps: false,
