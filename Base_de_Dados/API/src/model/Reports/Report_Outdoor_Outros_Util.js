@@ -6,13 +6,13 @@ var Report_Outdoor_Outros_Util = sequelize.define('Report_Outdoor_Outros_Util', 
         primaryKey: true,
         autoIncrement: true,
     },
-    ID_Local: Sequelize.INTEGER, //FK
     Descricao: Sequelize.STRING,
     Nivel_Densidade: Sequelize.INTEGER,
     N_Likes: Sequelize.INTEGER,
     N_Dislikes: Sequelize.INTEGER,
     Data: Sequelize.DATE,
     ID_Report_Out_Util:Sequelize.INTEGER,
+    ID_Local: Sequelize.INTEGER, //FK
     IDPessoa: Sequelize.INTEGER, //FK
     ID_Outro_Util: Sequelize.INTEGER //FK
 },
