@@ -13,8 +13,8 @@ var Report_Indoor = sequelize.define('Report_Indoor', {
     Data: Sequelize.DATE,
     ID_Report_Indoor: Sequelize.INTEGER,
     ID_Local_Indoor: Sequelize.INTEGER, //FK
-    IDPessoa: Sequelize.INTEGER, //FK
-    ID_Util: Sequelize.INTEGER //FK
+    IDPessoa_RepIndoor: Sequelize.INTEGER, //FK
+    ID_Util_RepIndoor: Sequelize.INTEGER //FK
 },
 {
 timestamps: false,
