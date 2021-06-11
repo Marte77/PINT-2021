@@ -1,3 +1,5 @@
+var local = require('../Local');
+var insti_utilizador = require('../Pessoas/Utils_Instituicao');
 var Sequelize = require('sequelize');
 var sequelize = require('../database');
 var Report_Outdoor_Util_Instituicao = sequelize.define('Report_Outdoor_Util_Instituicao', {
@@ -12,13 +14,18 @@ var Report_Outdoor_Util_Instituicao = sequelize.define('Report_Outdoor_Util_Inst
     N_Dislikes: Sequelize.INTEGER,
     Data: Sequelize.DATE,
     //ID_Report: Sequelize.INTEGER,
-    ID_Local: Sequelize.INTEGER, //FK
-    IDPessoa: Sequelize.INTEGER, //FK
-    ID_Util: Sequelize.INTEGER //FK
+    //ID_Local: Sequelize.INTEGER, //FK
+    //IDPessoa: Sequelize.INTEGER, //FK
+    //ID_Util: Sequelize.INTEGER //FK
 },
 {
 timestamps: false,
 });
+local.hasMany(Report_Outdoor_Util_Instituicao, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
+Report_Outdoor_Util_Instituicao.belongsTo(local); // vai retornar a FK id_local
+
+insti_utilizador.hasMany(Report_Outdoor_Util_Instituicao, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
+Report_Outdoor_Util_Instituicao.belongsTo(insti_utilizador); //vai retornar a fk IDPessoa
 
 async function meterHeranca(){
     await sequelize.sync()

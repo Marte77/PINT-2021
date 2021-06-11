@@ -18,4 +18,6 @@ Password: Sequelize.TEXT
 {
 timestamps: false,
 });
+//SUPER CLASSE HERANÇA PARA OS OUTROS TIPOS DE PESSOAS
+//todo: Outros_UTIL, Utils_Instituicao, Admin (trigger para os respectivos IDs terem autoincremento)
 module.exports = Pessoas

@@ -1,3 +1,5 @@
+const Admin = require('./model/Pessoas/Admin');
+const Instituicao = require('./model/Instituicao');
 const sequelize = require('./model/database')
 
 async function meterHerancas(){
@@ -74,6 +76,7 @@ async function meterHerancas(){
         .then(function(res){console.log("deu gucci - Utils_Instituicaos");console.log(res);})
         .catch(function(err){console.log("deu mal bem not good"); console.log(err);});   }
     catch(err){console.log(err)}
+    
     
 }
 meterHerancas()

@@ -15,7 +15,7 @@ Data: Sequelize.DATE
 {
 timestamps: false,
 });
-
+//SUPER HERANÇA PARA OS OUTROS REPORTS OUTROS REPORTS
 
 
 module.exports = Report

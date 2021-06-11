@@ -1,3 +1,4 @@
+var instituicao = require('./Instituicao');
 var Sequelize = require('sequelize');
 var sequelize = require('./database');
 var Local = sequelize.define('Local', {
@@ -6,7 +7,7 @@ type: Sequelize.INTEGER,
 primaryKey: true,
 autoIncrement: true,
 },
-ID_Instituicao: Sequelize.INTEGER, //fk
+//ID_Instituicao: Sequelize.INTEGER, //fk
 Nome: Sequelize.STRING,
 Codigo_Postal: Sequelize.INTEGER,
 Descricao: Sequelize.STRING,
@@ -17,4 +18,7 @@ Coordenadas: Sequelize.DECIMAL
 {
 timestamps: false,
 });
+instituicao.hasMany(Local, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
+Local.belongsTo(instituicao);
+
 module.exports = Local

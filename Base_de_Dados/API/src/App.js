@@ -20,6 +20,7 @@ const Tipo_Alertas = require('./model/Tipo_Alertas');
 const Util_pertence_Inst = require('./model/Util_pertence_Inst');
 const herancas = require('./colocarHerancas')
 
+
 //Configurações
 app.set('port', process.env.PORT|| 3000);
 //Middlewares
@@ -84,8 +85,13 @@ app.get('Local_Indoor',(req,res)=>{
 app.get('Tipo_Alertas',(req,res)=>{
 //res.send("Hello World");
 });
-app.get('Util_pertence_Inst',(req,res)=>{
+app.get('/Util_pertence_Inst',(req,res)=>{
 //res.send("Hello World");
+
+    Instituicao.create({Nome:'nome',Codigo_Postal:3670222, Telefone:123,Descricao:'123',URL_Imagem:'123',Coordenadas:'123',Localizacao:123,Codigo_Empresa:'123'})
+Admin.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',ID_Admin:1,ID_Instituicao:1})
+
+
 });
 app.listen(app.get('port'),()=>{
 console.log("Start server on port "+app.get('port'))

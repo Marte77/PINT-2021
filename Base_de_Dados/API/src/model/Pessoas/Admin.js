@@ -14,7 +14,7 @@ var Admin = sequelize.define('Admin', {
     Localização: Sequelize.STRING,
     PNome: Sequelize.STRING,
     Password: Sequelize.TEXT,
-    ID_Admin: Sequelize.INTEGER,
+    ID_Admin: Sequelize.INTEGER,  //falta autoincremento
     ID_Instituicao: Sequelize.INTEGER //FK
 },
 {

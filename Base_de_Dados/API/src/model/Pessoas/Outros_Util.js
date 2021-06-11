@@ -14,7 +14,7 @@ var Outros_Util = sequelize.define('Outros_Util', {
     Localização: Sequelize.STRING,
     PNome: Sequelize.STRING,
     Password: Sequelize.TEXT,
-    ID_Outro_Util: Sequelize.INTEGER,
+    ID_Outro_Util: Sequelize.INTEGER, //falta autoincremento
     Pontos_Outro_Util: Sequelize.INTEGER,
     Ranking: Sequelize.INTEGER
 },

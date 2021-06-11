@@ -14,7 +14,7 @@ var Utils_Instituicao = sequelize.define('Utils_Instituicao', {
     Localização: Sequelize.STRING,
     PNome: Sequelize.STRING,
     Password: Sequelize.TEXT,
-    ID_Util: Sequelize.INTEGER,
+    ID_Util: Sequelize.INTEGER,  //falta autoincremento
     Pontos: Sequelize.INTEGER,
     Ranking: Sequelize.INTEGER,
     Codigo_Empresa: Sequelize.INTEGER
