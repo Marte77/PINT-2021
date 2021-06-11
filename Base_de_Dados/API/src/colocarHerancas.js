@@ -1,6 +1,12 @@
 const sequelize = require('./model/database')
 
 async function meterHerancas(){
+    
+    /**
+     * estes selects servem como um timeout para depois as heranças serem efetuadas sem erros
+     * os selects sao efetuados, por serem assincronos demoram alguns segundos, e depois de os 3 serem feitos
+     * já deve ser o suficiente para as queries alter serem feitas com sucesso
+     */
     try{
         await sequelize.sync()
         sequelize.query(`select * from public."Report_Outdoor_Outros_Utils";`)
