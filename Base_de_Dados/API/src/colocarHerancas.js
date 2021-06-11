@@ -2,6 +2,26 @@ const sequelize = require('./model/database')
 
 async function meterHerancas(){
     try{
+        await sequelize.sync()
+        sequelize.query(`select * from public."Report_Outdoor_Outros_Utils";`)
+            .then(function(res){/*console.log("deu gucci - Report_Outdoor_Outros_Utils");console.log(res);*/})
+            .catch(function(err){/*console.log("deu mal bem not good"); console.log(err);*/});  
+    }catch(err){console.log(err)}
+    try{
+        await sequelize.sync()
+        sequelize.query(`select * from public."Report_Outdoor_Outros_Utils";`)
+            .then(function(res){/*console.log("deu gucci - Report_Outdoor_Outros_Utils");console.log(res);*/})
+            .catch(function(err){/*console.log("deu mal bem not good"); console.log(err);*/});  
+    }catch(err){console.log(err)}
+    try{
+        await sequelize.sync()
+        sequelize.query(`select * from public."Report_Outdoor_Outros_Utils";`)
+            .then(function(res){/*console.log("deu gucci - Report_Outdoor_Outros_Utils");console.log(res);*/})
+            .catch(function(err){/*console.log("deu mal bem not good"); console.log(err);*/});  
+    }catch(err){console.log(err)}
+
+
+    try{
     await sequelize.sync()
     sequelize.query(`alter table public."Report_Outdoor_Outros_Utils" inherit public."Reports";`)
         .then(function(res){console.log("deu gucci - Report_Outdoor_Outros_Utils");console.log(res);})
