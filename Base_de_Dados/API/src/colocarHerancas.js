@@ -68,7 +68,6 @@ async function meterHerancas(){
     }catch(err){console.log(err)}
 
     
-
     try{
     await sequelize.sync()
     sequelize.query(`alter table public."Utils_Instituicaos" inherit public."Pessoas";`)
@@ -76,6 +75,5 @@ async function meterHerancas(){
         .catch(function(err){console.log("deu mal bem not good"); console.log(err);});   }
     catch(err){console.log(err)}
     
-
 }
 meterHerancas()
