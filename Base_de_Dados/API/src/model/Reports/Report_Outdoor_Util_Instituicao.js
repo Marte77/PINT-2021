@@ -12,7 +12,7 @@ var Report_Outdoor_Util_Instituicao = sequelize.define('Report_Outdoor_Util_Inst
     N_Dislikes: Sequelize.INTEGER,
     Data: Sequelize.DATE,
     ID_Report_Out_Insti: Sequelize.INTEGER,
-    //ID_Local: Sequelize.INTEGER, //FK
+    ID_Local: Sequelize.INTEGER, //FK
     IDPessoa: Sequelize.INTEGER, //FK
     ID_Util: Sequelize.INTEGER //FK
 },
