@@ -26,7 +26,7 @@ async function meterHeranca(){
         .then(function(res){console.log("deu gucci");console.log(res);})
         .catch(function(err){console.log("deu mal bem not good"); console.log(err);});  
 }
-meterHeranca()
+//meterHeranca()
 
 module.exports = Admin
 
