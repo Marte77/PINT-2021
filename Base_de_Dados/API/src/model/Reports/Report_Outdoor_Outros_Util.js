@@ -1,18 +1,19 @@
+var Report = require('./Report');
 var local = require('../Local');
 var outro_utilizador = require('../Pessoas/Outros_Util');
 var Sequelize = require('sequelize');
 var sequelize = require('../database');
 var Report_Outdoor_Outros_Util = sequelize.define('Report_Outdoor_Outros_Util', {
-    ID_Report: {
+    ID_Report_Out_Util: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    Descricao: Sequelize.STRING,
-    Nivel_Densidade: Sequelize.INTEGER,
-    N_Likes: Sequelize.INTEGER,
-    N_Dislikes: Sequelize.INTEGER,
-    Data: Sequelize.DATE,
+    //Descricao: Sequelize.STRING,
+    //Nivel_Densidade: Sequelize.INTEGER,
+    //N_Likes: Sequelize.INTEGER,
+    //N_Dislikes: Sequelize.INTEGER,
+    //Data: Sequelize.DATE,
     //ID_Report:Sequelize.INTEGER,
     //ID_Local: Sequelize.INTEGER, //FK
     //IDPessoa: Sequelize.INTEGER, //FK
@@ -21,19 +22,22 @@ var Report_Outdoor_Outros_Util = sequelize.define('Report_Outdoor_Outros_Util', 
 {
 timestamps: false,
 });
+Report.hasOne(Report_Outdoor_Outros_Util, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
+Report_Outdoor_Outros_Util.belongsTo(Report); // vai retornar a FK id_local
+
 local.hasMany(Report_Outdoor_Outros_Util, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
 Report_Outdoor_Outros_Util.belongsTo(local);  // vai retornar a FK id_local
 
 outro_utilizador.hasMany(Report_Outdoor_Outros_Util, {foreignKey: { allowNull: false, type: Sequelize.INTEGER }});
 Report_Outdoor_Outros_Util.belongsTo(outro_utilizador);  //vai retornar a fk IDPessoa
 
-async function meterHeranca(){
+/*async function meterHeranca(){
     await sequelize.sync()
     sequelize.query(`alter table public."Report_Outdoor_Outros_Utils" inherit public."Reports";`)
         .then(function(res){console.log("deu gucci");console.log(res);})
         .catch(function(err){console.log("deu mal bem not good"); console.log(err);});  
 }
-//meterHeranca()
+//meterHeranca()*/
 
 module.exports = Report_Outdoor_Outros_Util
 

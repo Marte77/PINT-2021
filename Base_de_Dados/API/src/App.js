@@ -88,9 +88,14 @@ app.get('Tipo_Alertas',(req,res)=>{
 app.get('/Util_pertence_Inst',(req,res)=>{
 //res.send("Hello World");
 
-    Instituicao.create({Nome:'nome',Codigo_Postal:3670222, Telefone:123,Descricao:'123',URL_Imagem:'123',Coordenadas:'123',Localizacao:123,Codigo_Empresa:'123'})
-Admin.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',ID_Admin:1,ID_Instituicao:1})
-
+  /*  Instituicao.create({Nome:'nome',Codigo_Postal:3670222, Telefone:123,Descricao:'123',URL_Imagem:'123',Coordenadas:'123',Localizacao:123,Codigo_Empresa:123})
+Admin.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',ID_Instituicao:1})
+Utils_Instituicao.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',Pontos:1,Ranking:1,Codigo_Empresa:1})
+Outros_Util.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',Pontos_Outro_Util:1,Ranking:1})
+Admin.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',ID_Instituicao:1})
+Utils_Instituicao.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',Pontos:1,Ranking:1,Codigo_Empresa:1})
+Outros_Util.create({Data_Nascimento:'01/01/2001', Cidade:36702222, Codigo_Postal:123,Email:'123',UNome:'123',Localização:'123',PNome:'123', Password:'123',Pontos_Outro_Util:1,Ranking:1})
+*/
 
 });
 app.listen(app.get('port'),()=>{
