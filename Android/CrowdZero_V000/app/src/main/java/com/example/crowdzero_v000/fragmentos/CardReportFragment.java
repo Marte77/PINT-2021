@@ -31,14 +31,20 @@ public class CardReportFragment extends Fragment {
     boolean botaoCoracao = false;
     int idReport= -1;
 
-    public static CardReportFragment newInstance(String nomePessoaeData, String descricaoReport, int idReport) {
+    /**
+     * O NOME TEM DE TER SEMPRE UM '\n' DO GENERO
+     *  "nome pessoa\ndata e hora
+     * */
+    public static CardReportFragment newInstance(String nomePessoa,String dataReport, String descricaoReport, int idReport, String populacao) {
 
         CardReportFragment f = new CardReportFragment();
 
         Bundle b = new Bundle();
-        b.putString("nome", nomePessoaeData);
+        b.putString("nome", nomePessoa);
+        b.putString("data",dataReport);
         b.putString("descricao", descricaoReport);
         b.putInt("idReport", idReport);
+        b.putString("populacao", populacao);
 
         f.setArguments(b);
         return f;
@@ -89,21 +95,17 @@ public class CardReportFragment extends Fragment {
                 botaoCoracao =!botaoCoracao;
             }
         });
+        assert getArguments() != null;
         this.idReport = getArguments().getInt("idReport");
         //cortar as strings para depois se meter a negrito certas partes
         String populacao, descricao;
-        String[] parts = getArguments().getString("descricao").split("-");
-        populacao = parts[0];
-        descricao = "";
-        for(int i = 1;i<parts.length;i++)
-            descricao = descricao + "-" +parts[i];
-        populacao = "<b>"+populacao+"</b>"+descricao;
+        populacao = getArguments().getString("populacao");
+        descricao = getArguments().getString("descricao");
+        populacao = "<b>"+populacao+"</b><br>"+descricao;
         ((TextView) v.findViewById(R.id.TipoDescricaoTxtReport)).setText(Html.fromHtml(populacao));
-
         String nome, data;
-        parts = getArguments().getString("nome").split("\n");
-        nome = parts[0];
-        data = parts[1];
+        nome = getArguments().getString("nome");
+        data = getArguments().getString("data");
         nome =nome+'\n';
         SpannableStringBuilder ssbNome = new SpannableStringBuilder(nome);
         ssbNome.setSpan(new StyleSpan(Typeface.BOLD),0,nome.length()-1,0);

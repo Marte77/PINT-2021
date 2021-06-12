@@ -84,7 +84,12 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(), ListaReportsInstituicaoActivity.class);
+                i.putExtra("opcaoEscolhida","Home");
+                i.putExtra("opcaoEscolhidaItemID",-1);
+                i.putExtra("nome",nome);
+                i.putExtra("descricao",descricao);
+                startActivity(i);
             }
         });
         btnOpiniao.setOnClickListener(new View.OnClickListener() {

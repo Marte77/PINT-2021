@@ -3,6 +3,7 @@ package com.example.crowdzero_v000;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -28,18 +29,34 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
 
         scrollViewListaReports =findViewById(R.id.ScrollViewListaReportsInstituicoes);
 
-        //adicionarCard("boas","tudo bem",1);
-        //adicionarCard("boas1","tudo bem1",2);
-        //adicionarCard("boas2","tudo bem2",3);
-        //adicionarCard("boas3","tudo bem3",4);
+        adicionarCard("João Soeiro","às 09:47 de 20/05/21",
+                "ola sou gay 1213",
+                1,
+                "Pouco populado");
+        adicionarCard("Martinho","às 09:47 de 20/05/21",
+                "muito 1213",
+                2,
+                "Muito populado");
+        adicionarCard("Altívio","às 09:47 de 20/05/21",
+                "muito 1213",
+                3,
+                "Muito populado");
     }
 
-    void adicionarCard(String nomePessoaEData,String descricaoReport,int idReport){
-        //todo: ver pq e que isto nao coloca os cards na scroll view
-        CardReportFragment card = CardReportFragment.newInstance(nomePessoaEData,descricaoReport + " idreport "+idReport,idReport);
+    void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, String populacao){
+
+        CardReportFragment card = CardReportFragment.newInstance(nomePessoa
+                ,data
+                ,descricaoReport + " idreport "+idReport
+                ,idReport
+                ,populacao);
+
         getSupportFragmentManager().beginTransaction()
-                .add(scrollViewListaReports.getId(),card, "report " + idReport)
-                .commit();
+                .add(R.id.linearLayoutScrollViewListaReportsInstituicoes,card).commit();
+        Log.e("testar", String.valueOf(idReport));
+        //getSupportFragmentManager().beginTransaction()
+        //        .add(scrollViewListaReports.getId(),card, "report " + idReport)
+        //        .commit();
         arrayListCardReportFragment.add(card);
     };
 

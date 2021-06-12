@@ -55,6 +55,8 @@ public class CardInstituicoesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
+                i.putExtra("opcaoEscolhida","Home");
+                i.putExtra("opcaoEscolhidaItemID",-1);
                 i.putExtra("nome",getArguments().getString("nome"));
                 i.putExtra("descricao",getArguments().getString("descricao"));
                 startActivity(i);

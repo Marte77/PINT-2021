@@ -41,8 +41,8 @@ public class PaginaPrincipal extends NavDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_principal);
 
-        CardReportFragment cardInicial = CardReportFragment.newInstance("Martinho\nàs 09:47 de 20/05/21","Muito populado - Muitas pessoas na fila da cantina assustei-me"
-                ,1);
+        CardReportFragment cardInicial = CardReportFragment.newInstance("Martinho","às 09:47 de 20/05/21","Muitas pessoas na fila da cantina assustei-me"
+                ,1,"Muito populado");
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayout,cardInicial).commit();
         TextView textView = findViewById(R.id.textViewPaginaPrincipalReport);
