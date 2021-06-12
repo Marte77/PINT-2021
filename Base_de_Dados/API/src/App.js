@@ -18,8 +18,8 @@ const Local = require('./model/Local');
 const Local_Indoor = require('./model/Local_Indoor');
 const Tipo_Alertas = require('./model/Tipo_Alertas');
 const Util_pertence_Inst = require('./model/Util_pertence_Inst');
-const herancas = require('./colocarHerancas')
-
+const herancas = require('./colocarHerancas');
+const todaspessoasRoute = require('./routes/todaspessoasRoute');
 
 //Configurações
 app.set('port', process.env.PORT|| 3000);
@@ -33,12 +33,11 @@ app.use((req, res, next) => {
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
     }); 
-app.get('/Pessoas',(req,res)=>{
+app.use('/Pessoas',(req,res)=>{
 //res.send("Hello World");
 });
-app.get('/Admin',(req,res)=>{
-//res.send("Rota TESTE.");
-});
+app.use('/Admin', todaspessoasRoute);
+
 app.get('/Outros_Util',(req,res)=>{
 //res.send("Hello World");
 });
