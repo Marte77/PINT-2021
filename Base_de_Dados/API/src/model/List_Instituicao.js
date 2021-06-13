@@ -1,5 +1,5 @@
 var instituicao = require('./Instituicao');
-var lista_favoritos = require('./lista_favoritos');
+var lista_favoritos = require('./Lista_Favoritos');
 var Sequelize = require('sequelize');
 var sequelize = require('./database');
 var List_Instituicao = sequelize.define('List_Instituicao', {
