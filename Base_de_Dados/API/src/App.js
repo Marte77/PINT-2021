@@ -20,7 +20,7 @@ const Tipo_Alertas = require('./model/Tipo_Alertas');
 const Util_pertence_Inst = require('./model/Util_pertence_Inst');
 const herancas = require('./colocarHerancas');
 const todaspessoasRoute = require('./routes/todaspessoasRoute');
-
+const reportsRoute = require('./routes/reportesRoute')
 //Configurações
 app.set('port', process.env.PORT|| 3000);
 //Middlewares
@@ -44,9 +44,7 @@ app.get('/Outros_Util',(req,res)=>{
 app.get('/Utils_Instituicao',(req,res)=>{
 //res.send("Hello World");
 });
-app.get('/Report',(req,res)=>{
-//res.send("Hello World");
-});
+app.use('/Report',reportsRoute);
 app.get('/Report_Indoor',(req,res)=>{
 //res.send("Hello World");
 });
