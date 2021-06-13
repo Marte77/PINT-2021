@@ -1,5 +1,5 @@
 var instituicao = require('./Instituicao');
-var utils = require('./Pessoas/Utils_instituicao');
+var utils = require('./Pessoas/Utils_Instituicao');
 var Sequelize = require('sequelize');
 var sequelize = require('./database');
 var Util_pertence_Inst = sequelize.define('Util_pertence_Inst', {
