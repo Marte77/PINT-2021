@@ -44,7 +44,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:scaleType="fitCenter"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="@dimen/tamanhoBotoesModalBottomSheet"
                         android:id="@+id/imgBtnReportsModalBottomSheet"
                         android:src="@drawable/ic_report_black_24dp"
                         android:contentDescription="@string/reports" />
@@ -64,7 +64,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:scaleType="fitCenter"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="@dimen/tamanhoBotoesModalBottomSheet"
                         android:id="@+id/imgBtnHistoricoModalBottomSheet"
                         android:src="@drawable/ic_timeline_black_24dp"
                         android:contentDescription="@string/historico" />
@@ -84,7 +84,7 @@
                         android:scaleType="fitCenter"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="@dimen/tamanhoBotoesModalBottomSheet"
                         android:id="@+id/imgBtnInfoModalBottomSheet"
                         android:src="@drawable/ic_info_black_24dp"
                         android:contentDescription="@string/informacoes" />

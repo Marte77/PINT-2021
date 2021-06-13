@@ -2,12 +2,19 @@ package com.example.crowdzero_v000;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.example.crowdzero_v000.fragmentos.CardReportFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -15,6 +22,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
     String nome,descricao;
     ArrayList<CardReportFragment> arrayListCardReportFragment = new ArrayList<>();
     ScrollView scrollViewListaReports;
+    Button botaoNovoReport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +36,15 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());
 
         scrollViewListaReports =findViewById(R.id.ScrollViewListaReportsInstituicoes);
+
+        botaoNovoReport = findViewById(R.id.criarReportBotao);
+        botaoNovoReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                criarNovoReport();
+            }
+        });
 
         adicionarCard("João Soeiro","às 09:47 de 20/05/21",
                 "ola sou gay 1213",
@@ -58,6 +75,43 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         //        .add(scrollViewListaReports.getId(),card, "report " + idReport)
         //        .commit();
         arrayListCardReportFragment.add(card);
+    };
+
+    void criarNovoReport(){
+
+        try {
+            FuncoesApi.FuncoesReports.criarNovoReportOutdoorOutrosUtil(
+                    getApplicationContext(),
+                    "muita gente", 3, 3, 1
+                    ,VCB
+            );
+        }catch(JSONException e){
+            Log.i("pedido","ERRO NO LISTAREPORTSINST"+e);
+        }
+    }
+
+    public interface volleycallback{
+        void onSuccess(JSONObject jsonObject) throws JSONException;
+    }
+    volleycallback VCB = new volleycallback() {
+        @Override
+        public void onSuccess(JSONObject response) throws JSONException {
+            /*int statuscode;
+            try {
+                statuscode = jsonObject.getInt("status");
+                Toast.makeText(getApplicationContext(), statuscode, Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+            Log.i("pedido",response.toString());
+            if(response.getInt("status") == 500){
+                Toast.makeText(getApplicationContext(),"ERRO A CRIAR",Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"SUCESSO LETS GOO",Toast.LENGTH_LONG).show();
+
+            }
+        }
     };
 
 }

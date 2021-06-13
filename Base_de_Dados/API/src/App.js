@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
     }); 
-app.get('/',(req,res)=>res.send({res:ola}))
+app.get('/',(req,res)=>res.send({res:"ola"}))
 app.use('/Pessoas', todaspessoasRoute);
 app.use('/Report',reportsRoute);
 app.use('/Alertas', alertasRoute);
