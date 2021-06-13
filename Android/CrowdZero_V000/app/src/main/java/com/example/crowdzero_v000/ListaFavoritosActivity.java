@@ -31,7 +31,7 @@ public class ListaFavoritosActivity extends NavDrawerActivity {
 
     public void adicionarCard(){
         nCards++;
-        Fragment cardInicial = CardInstituicoesFragment.newInstance("Instituicao"+nCards,"bem bonita"+nCards);
+        Fragment cardInicial = CardInstituicoesFragment.newInstance("Instituicao"+nCards,"bem bonita"+nCards,1,"https://i.pinimg.com/originals/61/fe/4e/61fe4e49002d754ec69fcf50210e209c.jpg");
         //cardInicial.getView().findViewById(R.id.DetalhesFragmentoBotao).setOnClickListener(new View.OnClickListener() {
         //    @Override
         //    public void onClick(View v) {

@@ -90,10 +90,8 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         }
     }
 
-    public interface volleycallback{
-        void onSuccess(JSONObject jsonObject) throws JSONException;
-    }
-    volleycallback VCB = new volleycallback() {
+
+    FuncoesApi.volleycallback VCB = new FuncoesApi.volleycallback() {
         @Override
         public void onSuccess(JSONObject response) throws JSONException {
             /*int statuscode;

@@ -22,7 +22,7 @@
                 android:layout_height="194dp"
                 android:src="@drawable/ic_launcher_background"
                 android:scaleType="centerCrop"
-
+                android:id="@+id/idImagemFragmentCardInstituicao"
                 />
 
             <LinearLayout

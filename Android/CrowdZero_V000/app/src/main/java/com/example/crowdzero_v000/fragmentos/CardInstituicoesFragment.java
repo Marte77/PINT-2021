@@ -1,6 +1,7 @@
 package com.example.crowdzero_v000.fragmentos;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.crowdzero_v000.FuncoesApi;
 import com.example.crowdzero_v000.InstituicaoInformacoesActivity;
 import com.example.crowdzero_v000.R;
 
@@ -26,13 +29,15 @@ import java.util.Objects;
 public class CardInstituicoesFragment extends Fragment {
 
                                              /* nome da instituicao e descricao da mesma*/
-    public static CardInstituicoesFragment newInstance(String nome, String descricao) {
+    public static CardInstituicoesFragment newInstance(String nome, String descricao, int idlocal, String urlimagem) {
 
         CardInstituicoesFragment f = new CardInstituicoesFragment();
 
         Bundle b = new Bundle();
         b.putString("nome", nome);
+        b.putString("urlimagem", urlimagem);
         b.putString("descricao", descricao);
+        b.putInt("idlocal",idlocal);
         f.setArguments(b);
         return f;
     }
@@ -48,7 +53,7 @@ public class CardInstituicoesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View inflatedView =  inflater.inflate(R.layout.fragment_card_instituicoes, container, false);
-        //todo:fazer pedido da imagem e adicionar a imgview
+
         ((TextView) inflatedView.findViewById(R.id.NomeTxtViewFrag)).setText(getArguments().getString("nome"));
         ((TextView) inflatedView.findViewById(R.id.DescTxtViewFrag)).setText(getArguments().getString("descricao"));
         inflatedView.findViewById(R.id.DetalhesFragmentoBotao).setOnClickListener(new View.OnClickListener() {
@@ -62,8 +67,21 @@ public class CardInstituicoesFragment extends Fragment {
                 startActivity(i);
             }
         });
+        String urlimagem = getArguments().getString("urlimagem");
+        //Bitmap imagem = FuncoesApi.getBitmapFromURL(getArguments().getString("urlimagem"));
+
+
+        img = inflatedView.findViewById(R.id.idImagemFragmentCardInstituicao);
+        //img.setImageBitmap(
+        //        FuncoesApi.downloadImagem(getArguments().getString("urlimagem")));
+        //TODO: FAZER DOWNLOAD DA IMAGEM E METER NA IMAGE VIEW
+        //FuncoesApi.downloadImagem f = new FuncoesApi.downloadImagem(urlimagem,img);
+        //f.execute();
         return inflatedView;
     }
-
+    ImageView img = null;
+    void ColocarImagemDepoisDownload(Bitmap bit){
+        img.setImageBitmap(bit);
+    }
 
 }
