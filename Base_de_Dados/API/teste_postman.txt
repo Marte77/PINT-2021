@@ -1,18 +1,22 @@
 testes postman: 
 
-POST:http://localhost:3000/Admin/createAdmin
+POST:http://localhost:3000/Pessoas/createAdmin
 { "Data_Nascimento": "01/01/2001", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1}
 
-POST: http://localhost:3000/Admin/createUtil_Instituicao
+POST: http://localhost:3000/Pessoas/createUtil_Instituicao
 { "Data_Nascimento": "01/01/2001", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1, "Pontos":10, "Ranking":1,"Codigo_Empresa":123}
 
-POST: http://localhost:3000/Admin/createOutros_Util
+POST: http://localhost:3000/Pessoas/createOutros_Util
 { "Data_Nascimento": "01/01/2001", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1, "Pontos_Outro_Util":10, "Ranking":1}
 
 POST: http://localhost:3000/Report/novo_report_outdoor_outros
 { "DescricaoReport":"muita genta no escritorio","NivelDensidade":3,"IDLocal":2,"idOutroUtil":1}
 
+POST: http://localhost:3000/Alertas/createTipoAlerta
+{ "Tipo_Alerta": "perigo"}
 
+POST: http://localhost:3000/Alertas/createAlerta
+{ "Descricao": "alerta1", "LocalIDLocal":2, "AdminIDAdmin":1, "TipoAlertaIDTipoAlerta":1}
 
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',
