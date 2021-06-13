@@ -1,4 +1,4 @@
-var instituicao = require('../model/instituicao');
+var instituicao = require('../model/Instituicao');
 var pessoas = require('../model/Pessoas/Pessoas');
 var utils_instituicao = require('../model/Pessoas/Utils_Instituicao');
 var Util_pertence_Inst = require('../model/Util_pertence_Inst');
