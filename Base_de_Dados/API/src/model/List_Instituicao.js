@@ -1,4 +1,4 @@
-var instituicao = require('./instituicao');
+var instituicao = require('./Instituicao');
 var lista_favoritos = require('./lista_favoritos');
 var Sequelize = require('sequelize');
 var sequelize = require('./database');
