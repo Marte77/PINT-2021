@@ -10,10 +10,11 @@ autoIncrement: true,
 //ID_Instituicao: Sequelize.INTEGER, //fk
 Nome: Sequelize.STRING,
 Codigo_Postal: Sequelize.INTEGER,
-Descricao: Sequelize.STRING,
-URL_Imagem: Sequelize.STRING,
-Localizacao: Sequelize.STRING,
-Coordenadas: Sequelize.DECIMAL
+Descricao: Sequelize.TEXT,
+URL_Imagem: Sequelize.TEXT,
+Localizacao: Sequelize.TEXT,
+Longitude: Sequelize.DOUBLE,
+Latitude: Sequelize.DOUBLE,
 },
 {
 timestamps: false,
