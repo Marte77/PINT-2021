@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,8 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         this.mudarNomeToolBar(nome);
         //todo: pegar coords da instituicao
         pegarCoordsInstituicao();
+        ImageView img = findViewById(R.id.imagemInstituicaoInfo);
+        FuncoesApi.downloadImagem(getApplicationContext(),getIntent().getExtras().getString("urlimagem"),img);
 
 
         //TODO:verificar se é utilizador e verficar se já é favorito para ligar o botao do fav

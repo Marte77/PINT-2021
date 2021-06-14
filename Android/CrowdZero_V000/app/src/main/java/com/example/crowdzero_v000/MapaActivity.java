@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.LinearLayout;
 
@@ -39,8 +40,14 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TreeMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -48,12 +55,11 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
 
     private float zoom = 15.0f;
     protected LocationManager locationManager = null;
-    private int LOCATION_PERMISSION_COARSE_REQUEST = 100;
     private GoogleMap mapa = null;
-    private UiSettings uiSettingsMapa;
     private ArrayList<MarkerOptions> markerOptionsArray = new ArrayList<>();
     private ArrayList<Marker> markerArray = new ArrayList<>();
     private ArrayList<CircleOptions> circleOptionsArray = new ArrayList<>();
+    private ArrayList<Bitmap> bitmapImagensInstsArrayList = new ArrayList<>();
     private boolean isLocationEnabled = false, isUserMarkerSet = false;
     private Marker userMarker = null;
     private MarkerOptions userMarkerOptions = null;
@@ -68,6 +74,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
         if ((checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) || (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED)) {
+            int LOCATION_PERMISSION_COARSE_REQUEST = 100;
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
                     , Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_COARSE_REQUEST);
         } else {
@@ -183,29 +190,53 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         inicializarGoogleMapa(googleMap);
+        listarMarcadores();
+    }
 
-        //TODO:obter lista de instituicoes
-        /*
-        //camara de viseu
-        mapa.addMarker(marcadorComIcone(new LatLng(40.658103,-7.9150271),"Camara de Viseu","Camara de Viseu"));
-        //mapa.addMarker(new MarkerOptions().position(new LatLng(40.658103,-7.9150271)).title("Camara de Viseu").snippet("Camara de Viseu"));
-        //Palácio do Gelo
-        mapa.addMarker(marcadorComIcone(new LatLng(40.6436356,-7.9133976),"Palácio do Gelo","Palácio do Gelo"));
-        mapa.addCircle(new CircleOptions().center(new LatLng(40.6436356,-7.9133976))
-                                                .radius(200.0f)
-                                                .fillColor(Color.parseColor("#7Ffa0000"))
-                                                .visible(true));*/
+    private void listarMarcadores() {
+        //TODO: fazer rota que lista os locais e os seus reportes respetivos
+        FuncoesApi.FuncoesLocais.getTodosLocais(getApplicationContext(), new FuncoesApi.volleycallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                if(jsonObject.getInt("status") == 500)
+                    return;
+                JSONArray jsonArray= jsonObject.getJSONArray("Locais");
+                String nome, descricao;
+                double lat, lon;
+                int idLocal;
+                for(int i = 0; i<jsonArray.length();i++){
+                    idLocal = jsonArray.getJSONObject(i).getInt("ID_Local");
+                    nome = jsonArray.getJSONObject(i).getString("Nome");
+                    descricao = jsonArray.getJSONObject(i).getString("Descricao");
+                    lon = jsonArray.getJSONObject(i).getDouble("Longitude");
+                    lat = jsonArray.getJSONObject(i).getDouble("Latitude");
+                    FuncoesApi.downloadImagem(getApplicationContext(), jsonArray.getJSONObject(i).getString("URL_Imagem")
+                            , new FuncoesApi.volleyimagecallback() {
+                                @Override
+                                public void onSuccess(Bitmap bitmap) {
+                                    bitmapImagensInstsArrayList.add(bitmap);
+                                }
+                            });
 
-        adicionarMarcador(new LatLng(40.6577125,-7.9141467),"Camara de Viseu","Camara de Viseu",101,"Muito",1);
-        adicionarMarcador(new LatLng(40.6435252,-7.9112907),"Palacio do Gelo","Palacio do Gelo",62,"Medio",2);
-        adicionarMarcador(new LatLng(40.6559245,-7.9159877),"Parque da Cidade","Parque da Cidade",30,"Pouco",3);
-        adicionarMarcador(new LatLng(40.6510224,-7.9495194),"Café da ti joana","Café da ti joana",0,"Sem populacao",4);
-        adicionarMarcador(new LatLng(40.6629263,-7.9110049),"Gaming Swag","Gaming Swag",150,"Pouco",5);
+                    String populacao = null;
+                    int x =  ThreadLocalRandom.current().nextInt(1, 4 + 1);
+                    if(x == 4)
+                        populacao = "Muito";
+                    else if(x == 3)
+                        populacao = "Medio";
+                    else if(x == 2)
+                        populacao = "Pouco";
+                    else if(x == 1)
+                        populacao = "Sem populacao";
+                    adicionarMarcador(new LatLng(lat,lon),nome,descricao,(i+1)*50,populacao,idLocal);
+                }
+            }
+        });
     }
 
     private void inicializarGoogleMapa(GoogleMap googleMap) {
         this.mapa = googleMap;
-        this.uiSettingsMapa = googleMap.getUiSettings();
+        UiSettings uiSettingsMapa = googleMap.getUiSettings();
         uiSettingsMapa.setCompassEnabled(true);
 
         //Fazer click longo para abrir o menu de infos do local
@@ -219,10 +250,13 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                         int idLocal = -1;
                         try{
                             idLocal = parIdInst_NomeInst.get(m.getTitle());
-                        }catch (NullPointerException ignored){
+                        }catch (NullPointerException e){
+                            e.printStackTrace();
                             return;
                         }
-                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle(),idLocal );
+                        int posMarker = markerArray.indexOf(m);
+                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle(),idLocal, getApplicationContext(), bitmapImagensInstsArrayList.get(posMarker) );
+
                         fmBS.show(getSupportFragmentManager(),m.getTitle());
                         Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                         vibrator.vibrate(50);
@@ -239,10 +273,12 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                     MapStyleOptions.loadRawResourceStyle(
                             getApplicationContext(), R.raw.map_style));
 
-        }catch(Resources.NotFoundException ignored){
-
+        }catch(Resources.NotFoundException e){
+            e.printStackTrace();
         }
     }
+
+
 
     void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports, String populacao, int idLocal){
         parIdInst_NomeInst.put(nomeLocal,idLocal);
@@ -256,7 +292,8 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         circuloMarcador.strokeWidth(2.0f);
         String corTransparencia50 ="#7F"; //adicionar os 6 digitos respetivos a cor dependendo do numero de reports
 
-
+        if(populacao == null)
+            populacao = "Sem populacao";
         circuloMarcador.radius(numeroReports*0.5f);
         if(populacao.equals("Muito")){
             marcadorNovo.snippet("Extremamente populado"+marcadorNovo.getSnippet());

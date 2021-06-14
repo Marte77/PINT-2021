@@ -25,12 +25,13 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|start"
                     android:id="@+id/textViewBottomSheetNomeInstituicao"/>
+
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
                     android:id="@+id/imagemInstituicaoModalBottomSheet"
-                    android:src="@drawable/ic_thumb_down_black_24dp"
-                    android:contentDescription="@string/imageminstituicao" />
+                    android:layout_width="88dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/imageminstituicao"
+                    android:src="@drawable/ic_launcher_background" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

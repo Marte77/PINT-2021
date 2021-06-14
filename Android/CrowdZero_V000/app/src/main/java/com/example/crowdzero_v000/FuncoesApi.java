@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
@@ -14,8 +15,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,15 +31,16 @@ import java.net.URL;
 
 
 public class FuncoesApi {
+
     public interface volleycallback{
         void onSuccess(JSONObject jsonObject) throws JSONException;
     }
     //static String urlGeral ="http://pint2021.herokuapp.com";
-    static String urlGeral = "http://192.168.1.78";
+    static String urlGeral = "http://192.168.3.132:3000";
 
-    static class FuncoesReports{
-        static void criarNovoReportOutdoorOutrosUtil(
-                Context getAppContext,
+    public static class FuncoesReports{
+        public static void criarNovoReportOutdoorOutrosUtil(
+                final Context getAppContext,
                 String descReport, int nivelDensidade, int idLocal, int idOutroUtil,
                 final volleycallback VCB) throws JSONException {
 
@@ -78,6 +83,7 @@ public class FuncoesApi {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.i("pedido","ERRO: " + error);
+                            Toast.makeText(getAppContext,"Erro de conexão",Toast.LENGTH_LONG).show();
                         }
                     }
             );
@@ -85,8 +91,8 @@ public class FuncoesApi {
         }
     }
 
-    static class FuncoesLocais{
-        static void getTodosLocais(Context getAppContext, final volleycallback VCB){
+    public static class FuncoesLocais{
+        public static void getTodosLocais(Context getAppContext, final volleycallback VCB){
             RequestQueue request = Volley.newRequestQueue(getAppContext);
             String url =urlGeral+ "/Locais/listar";
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -95,7 +101,32 @@ public class FuncoesApi {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("pedido","ERRO: " + error);
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void getLocalPorId(Context context, int idLocal, final volleycallback VCB){
+            RequestQueue request = Volley.newRequestQueue(context);
+            String url =urlGeral+"/Locais/getLocalPorId/"+idLocal;
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
                                 VCB.onSuccess(response);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -113,20 +144,43 @@ public class FuncoesApi {
             request.add(jsonObjectRequest);
         }
     }
-/*
-    static public Bitmap downloadImagem(String urlimagem){
-        try{
-            URL url = new URL(urlimagem);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream inputStream= connection.getInputStream();
-            return BitmapFactory.decodeStream(inputStream);
-        }catch (IOException e){
-            e.printStackTrace();
-            return null;
-        }
-    }*/
+
+    static public void downloadImagem(Context context, String url, final ImageView imageView){
+        RequestQueue request = Volley.newRequestQueue(context);
+        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                imageView.setImageBitmap(response);
+            }
+        }, imageView.getMaxWidth(), imageView.getMaxHeight(),
+                null, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("testar",error.toString());
+            }
+        });
+        request.add(imageRequest);
+    }
+
+    public interface volleyimagecallback{
+        public void onSuccess(Bitmap bitmap);
+    }
+    static public void downloadImagem(Context context, String url, final volleyimagecallback VCB){
+        RequestQueue request = Volley.newRequestQueue(context);
+        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                VCB.onSuccess(response);
+            }
+        }, 0, 0,
+                null, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("testar",error.toString());
+            }
+        });
+        request.add(imageRequest);
+    }
 
 
 

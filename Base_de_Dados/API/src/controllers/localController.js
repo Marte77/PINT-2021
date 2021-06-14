@@ -12,10 +12,22 @@ controllers.listarLocais = async(req,res)=>{
     }catch(e){console.log(e);errMessage = e;statuscode = 500; }
     //console.log(listaLocais)
     if(statuscode === 500)
-        res.send({status: statuscode, mensagem: e});
+        res.send({status: statuscode, mensagem: errMessage});
     else res.send({status:200, Locais: listaLocais})
 }
 
+controllers.getLocalbyId = async(req,res)=>{ //get
+    var statuscode = 200;
+    var errMessage="";
+    var {id} = req.params;
+    try{
+        var localNome = await locais.findByPk(id)
+    }
+    catch(e){console.log(e);errMessage = e;statuscode = 500; }
+    if(statuscode === 500)
+        res.send({status: statuscode, mensagem: errMessage});
+    else res.send({status:200, Local: localNome})
+}
 
 
 

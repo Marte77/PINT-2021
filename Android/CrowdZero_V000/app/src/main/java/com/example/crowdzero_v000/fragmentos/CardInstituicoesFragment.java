@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.crowdzero_v000.FuncoesApi;
 import com.example.crowdzero_v000.InstituicaoInformacoesActivity;
 import com.example.crowdzero_v000.R;
@@ -59,29 +62,42 @@ public class CardInstituicoesFragment extends Fragment {
         inflatedView.findViewById(R.id.DetalhesFragmentoBotao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
-                i.putExtra("opcaoEscolhida","Home");
-                i.putExtra("opcaoEscolhidaItemID",-1);
-                i.putExtra("nome",getArguments().getString("nome"));
-                i.putExtra("descricao",getArguments().getString("descricao"));
-                startActivity(i);
+                try{
+                    Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
+                    i.putExtra("opcaoEscolhida", "Home");
+                    i.putExtra("opcaoEscolhidaItemID", -1);
+                    i.putExtra("nome", getArguments().getString("nome"));
+                    i.putExtra("descricao", getArguments().getString("descricao"));
+                    i.putExtra("urlimagem", getArguments().getString("urlimagem"));
+                    startActivity(i);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    Log.e("erroCatch","NullPointerException em CardInstituicoesFragment botao onClick");
+                    Log.e("erroCatch",e.toString());
+                }
             }
         });
         String urlimagem = getArguments().getString("urlimagem");
         //Bitmap imagem = FuncoesApi.getBitmapFromURL(getArguments().getString("urlimagem"));
 
 
-        img = inflatedView.findViewById(R.id.idImagemFragmentCardInstituicao);
-        //img.setImageBitmap(
-        //        FuncoesApi.downloadImagem(getArguments().getString("urlimagem")));
-        //TODO: FAZER DOWNLOAD DA IMAGEM E METER NA IMAGE VIEW
-        //FuncoesApi.downloadImagem f = new FuncoesApi.downloadImagem(urlimagem,img);
-        //f.execute();
+        ImageView img = inflatedView.findViewById(R.id.idImagemFragmentCardInstituicao);
+        try{
+            FuncoesApi.downloadImagem(getActivity().getApplicationContext(), urlimagem, img);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            Log.e("erroCatch","NullPointerException em CardInstituicoesFragment downloadImagem");
+            Log.e("erroCatch",e.toString());
+        }
+
+        //NetworkImageView imageView = inflatedView.findViewById(R.id.idImagemFragmentCardInstituicao);
+        //imageView.setDefaultImageResId(R.drawable.ic_launcher_background);
+        //imageView.setImageUrl(urlimagem,Img);
+
+
         return inflatedView;
     }
-    ImageView img = null;
-    void ColocarImagemDepoisDownload(Bitmap bit){
-        img.setImageBitmap(bit);
-    }
+
+
 
 }

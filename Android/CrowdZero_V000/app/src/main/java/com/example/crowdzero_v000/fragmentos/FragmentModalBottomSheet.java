@@ -1,6 +1,8 @@
 package com.example.crowdzero_v000.fragmentos;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -16,31 +18,63 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.crowdzero_v000.FuncoesApi;
 import com.example.crowdzero_v000.InstituicaoInformacoesActivity;
 import com.example.crowdzero_v000.ListaReportsInstituicaoActivity;
 import com.example.crowdzero_v000.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
     private int widthFragmento;
     private String nomeLocal;
     private int idlocal;
+    private Bitmap bitmapImg;
+    private String descricao;
+    //private Context context;
+    private String urlImagem;
     protected TextView txtViewNomeInstituicao;
     protected ImageView imgViewImagemInstituicao;
     protected ImageButton imgBtnReport,imgBtnHistorico, imgBtnInfo;
-    public FragmentModalBottomSheet(String nomelocal, int idlocal ){
+    public FragmentModalBottomSheet(String nomelocal, int idlocal_, final Context context, Bitmap bitmap){
         nomeLocal=nomelocal;
-        idlocal = idlocal;
+        idlocal = idlocal_;
+        bitmapImg = bitmap;
+        //this.context =context;
+        FuncoesApi.FuncoesLocais.getLocalPorId(context, idlocal, new FuncoesApi.volleycallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                descricao = jsonObject.getString("Descricao");
+                urlImagem = jsonObject.getString("URL_Imagem");
+                //getBitmap(context);
+            }
+        });
     }
+    /*void getBitmap(Context context){
+        FuncoesApi.downloadImagem(context, urlImagem, new FuncoesApi.volleyimagecallback() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                bitmapImg = bitmap;
+            }
+        });
+    }*/
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_modal_bottom_sheet,container,false);
+
+
+
         getWidthFragmento(v);
         inicializarVarsEOnClickListeners(v);
+
+
 
         txtViewNomeInstituicao.setText(Html.fromHtml("<h2>"+nomeLocal+"</h2>"));
 
@@ -54,6 +88,8 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
         imgBtnHistorico = v.findViewById(R.id.imgBtnHistoricoModalBottomSheet);
         imgBtnInfo = v.findViewById(R.id.imgBtnInfoModalBottomSheet);
 
+        imgViewImagemInstituicao.setImageBitmap(bitmapImg);
+
         imgBtnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +98,7 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 i.putExtra("opcaoEscolhida","Home");
                 i.putExtra("opcaoEscolhidaItemID",-1);
                 i.putExtra("nome",nomeLocal);
-                i.putExtra("descricao",getDescricaoInstituicao());
+                i.putExtra("descricao",descricao);
                 startActivity(i);
             }
         });
@@ -79,16 +115,13 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 i.putExtra("opcaoEscolhida","Home");
                 i.putExtra("opcaoEscolhidaItemID",-1);
                 i.putExtra("nome",nomeLocal);
-                i.putExtra("descricao",getDescricaoInstituicao());
+                i.putExtra("descricao",descricao);
+                i.putExtra("urlImagem",urlImagem);
                 startActivity(i);
             }
         });
     }
 
-    String getDescricaoInstituicao(){
-        //todo: fazer pedido para obter a descricao da instituicao
-        return "SWAGGGGGGGGGGGGGGGGGGG";
-    }
 
     public void getWidthFragmento(final View v) {
         v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -124,4 +157,6 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
         });
 
     }
+
+
 }
