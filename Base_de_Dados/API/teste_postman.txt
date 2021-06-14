@@ -12,11 +12,19 @@ POST: http://localhost:3000/Pessoas/createOutros_Util
 POST: http://localhost:3000/Report/novo_report_outdoor_outros
 { "DescricaoReport":"muita genta no escritorio","NivelDensidade":3,"IDLocal":2,"idOutroUtil":1}
 
+POST: http://localhost:3000/Report/novo_report_outdoor_utilsInstituicao
+{ "DescricaoReport":"muita genta no escritorio","NivelDensidade":3,"IDLocal":3,"idUtilInst":1}
+
+POST: http://localhost:3000/Report/novo_report_indoor
+{ "DescricaoReport":"muita genta no escritorio","NivelDensidade":3,"IDLocalIndoor":1,"idUtilInst":1}
+
 POST: http://localhost:3000/Alertas/createTipoAlerta
 { "Tipo_Alerta": "perigo"}
 
 POST: http://localhost:3000/Alertas/createAlerta
 { "Descricao": "alerta1", "LocalIDLocal":2, "AdminIDAdmin":1, "TipoAlertaIDTipoAlerta":1}
+
+
 
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',

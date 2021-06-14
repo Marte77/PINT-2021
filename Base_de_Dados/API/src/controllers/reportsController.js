@@ -30,9 +30,59 @@ controllers.criarReportOutdoorOutrosUtil = async (req,res) => { //post
         }
     )}catch(e){console.log(e);statusCode = 500}
     if(statusCode === 500)
-        res.send({status:statusCode, desc:"erro a criar"})
+        res.send({status:statusCode, desc:"Erro a criar"})
     else res.send({status:statusCode,Report:reportNovo,ReportOut:reportOutdoorOutrosNovo })
-}   
+} 
+controllers.criarReportOutdoorUtilInstituicao = async (req,res) => { //post
+    const { DescricaoReport,NivelDensidade,IDLocal,idUtilInst}= req.body
+    let n_LikesDislikes = 0
+    let statusCode = 200;
+    let dataAgr = new Date()
+    dataAgr = dataAgr.toISOString()
+    try{var reportNovo = await Report.create({
+        Descricao: DescricaoReport,
+        Nivel_Densidade:NivelDensidade,
+        N_Likes: n_LikesDislikes,
+        N_Dislikes: n_LikesDislikes,
+        Data:dataAgr
+    })}catch(e){console.log(e);statusCode = 500}
+
+    try{var reportOutdoorUtilInstituicaoNovo = await Report_Outdoor_Util_Instituicao.create(
+        {
+            ReportIDReport: reportNovo.dataValues.ID_Report,
+            LocalIDLocal: IDLocal,
+            UtilsInstituicaoIDUtil: idUtilInst
+        }
+    )}catch(e){console.log(e);statusCode = 500}
+    if(statusCode === 500)
+        res.send({status:statusCode, desc:"Erro a criar"})
+    else res.send({status:statusCode,Report:reportNovo,ReportOut:reportOutdoorUtilInstituicaoNovo })
+}  
+controllers.criarReportIndoor = async (req,res) => { //post
+    const { DescricaoReport,NivelDensidade,IDLocalIndoor,idUtilInst}= req.body
+    let n_LikesDislikes = 0
+    let statusCode = 200;
+    let dataAgr = new Date()
+    dataAgr = dataAgr.toISOString()
+    try{var reportNovo = await Report.create({
+        Descricao: DescricaoReport,
+        Nivel_Densidade:NivelDensidade,
+        N_Likes: n_LikesDislikes,
+        N_Dislikes: n_LikesDislikes,
+        Data:dataAgr
+    })}catch(e){console.log(e);statusCode = 500}
+
+    try{var reportIndoor = await Report_Indoor.create(
+        {
+            ReportIDReport: reportNovo.dataValues.ID_Report,
+            LocalIndoorIDLocalIndoor: IDLocalIndoor,
+            UtilsInstituicaoIDUtil: idUtilInst
+        }
+    )}catch(e){console.log(e);statusCode = 500}
+    if(statusCode === 500)
+        res.send({status:statusCode, desc:"Erro a criar"})
+    else res.send({status:statusCode,Report:reportNovo,ReportIn:reportIndoor })
+}    
 
 
 module.exports = controllers;
