@@ -24,7 +24,12 @@ POST: http://localhost:3000/Alertas/createTipoAlerta
 POST: http://localhost:3000/Alertas/createAlerta
 { "Descricao": "alerta1", "LocalIDLocal":2, "AdminIDAdmin":1, "TipoAlertaIDTipoAlerta":1}
 
+POST: http://localhost:3000/LikeDislike/novo_likedislike
+{ "Like":true,"Dislike":false, "IDPessoa": 3,"IDReport": 1}
 
+GET: http://localhost:3000/Locais/listar
+
+GET: http://localhost:3000/Locais/getLocalPorId/:id
 
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',
