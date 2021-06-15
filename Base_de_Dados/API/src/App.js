@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const list_instituicaos= require('./model/List_Instituicao');
+const list_instituicaos= require('./model/List_LocalFavorito');
 const list_favoritos= require('./model/Lista_Favoritos');
 const comentarios= require('./model/Comentarios');
 const herancas = require('./colocarHerancas');

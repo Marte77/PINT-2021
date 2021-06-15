@@ -1,16 +1,16 @@
 var sequelize = require('../model/database');
 const controllers = {}
-const List_Instituicao = require('../model/List_Instituicao')
+const List_LocalFavorito = require('../model/List_LocalFavorito')
 const Lista_Favoritos = require('../model/Lista_Favoritos')
 
 const Local = require('../model/Local')
 const Instituicao = require('../model/Instituicao')
 
 controllers.adicionarListaFavoritos = async (req,res) => { //post
-    const { Descricao, IDPessoa, IDInstituicao}= req.body
+    const { Descricao, IDPessoa, LocalIDLocal}= req.body
     let n_LikesDislikes = 0
     let statusCode = 200;
-    let dataAgr = new Date()
+    let dataAgr = new Date();
     dataAgr = dataAgr.toISOString()
     var idlista;
     var mensagemErro;
@@ -39,14 +39,14 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     }
         
     try{
-        var criarFavorito = await List_Instituicao.create({
-            InstituicaoIDInstituicao : IDInstituicao,
+        var criarFavorito = await List_LocalFavorito.create({
+            LocalIDLocal : LocalIDLocal,
             ListaFavoritoIDLista: idlista
         })
     }catch(e){
         console.log(e);
         statusCode = 500;
-        mensagemErro = "instituicao ja existe na lista"
+        mensagemErro = "local ja existe na lista"
     }
     if(statusCode === 500)
         res.send({status:statusCode, desc:mensagemErro})

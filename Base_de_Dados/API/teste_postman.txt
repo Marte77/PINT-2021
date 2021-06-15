@@ -34,6 +34,9 @@ GET: http://localhost:3000/Locais/getLocalPorId/:id
 POST: http://localhost:3000/Comentarios/novo_comentario
 { "Descricao":"estou a comentar","Classificacao":3, "IDLocal": 1,"IDPessoa": 1}
 
+POST: http://localhost:3000/Favoritos/novo_localfavorito
+{ "Descricao":"estou a comentar","IDPessoa": 1, "LocalIDLocal": 3}
+
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',
 										 'https://i.imgur.com/4Nan6CY.png'
@@ -43,7 +46,7 @@ insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,9876
 										 ,-7.9162602,40.6620546,'Viseu ao pe da central de camionagem',2),
 										  (default,'BizDirect',3123123,987654321,'BizDirect aquela empresa no IPV que nao é a deloitte'
 										 ,'https://i.imgur.com/cgPIXvd.jpeg'
-										 ,-7.9196379,40.64481,'Viseu',3)
+										 ,-7.9196379,40.64481,'Viseu',3);
 										 
 insert into public."Locals" values(default,'Palácio do Gelo',3123123,'Forum de viseu descricao epica',
 										 'https://i.imgur.com/4Nan6CY.png'
@@ -53,7 +56,7 @@ insert into public."Locals" values(default,'Palácio do Gelo',3123123,'Forum de 
 										 ,'Viseu ao pe da central de camionagem',-7.9162602,40.6620546,2),
 										  (default,'BizDirect',3123123,'BizDirect aquela empresa no IPV que nao é a deloitte'
 										 ,'https://i.imgur.com/cgPIXvd.jpeg'
-										 ,'Viseu',-7.9196379,40.64481,3)
+										 ,'Viseu',-7.9196379,40.64481,3);
 										 
 
 //updates
