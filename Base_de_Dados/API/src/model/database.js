@@ -12,7 +12,7 @@ dialectOptions:{
             rejectUnauthorized: false        
         }
     },
-   // logging:false
+    logging:false
 }
 );
 sequelize.sync()

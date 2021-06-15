@@ -15,11 +15,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class InstituicaoInformacoesActivity extends NavDrawerActivity {
 
     private String nome="", descricao="";
     TextView textViewDescricao, textViewInformacoesEcontacto;
     boolean isUtilizadorEmpresa = false, btnFavEnabled= false;
+    private int idlocal = 0;
     LatLng coordsInstituicao = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         nome = getIntent().getExtras().getString("nome");
 
         descricao = getIntent().getExtras().getString("descricao");
-
+        idlocal = getIntent().getExtras().getInt("idlocal");
 
         int alturatb = this.tb.getLayoutParams().height;
         LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.linearLayoutInstituicoesInformacoes));
@@ -41,7 +45,6 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         textViewDescricao = findViewById(R.id.textViewDescricaoInstituicao);
         textViewDescricao.setText(descricao);
         this.mudarNomeToolBar(nome);
-        //todo: pegar coords da instituicao
         pegarCoordsInstituicao();
         ImageView img = findViewById(R.id.imagemInstituicaoInfo);
         FuncoesApi.downloadImagem(getApplicationContext(),getIntent().getExtras().getString("urlimagem"),img);
@@ -121,9 +124,15 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
     }
 
     void pegarCoordsInstituicao(){
-        double lat = 40.6510224, lng = -7.9495194;
-        //fazer pedido para pegar coords
-        coordsInstituicao = new LatLng(40.6510224,-7.9495194);
+        FuncoesApi.FuncoesLocais.getLocalPorId(getApplicationContext(), idlocal, new FuncoesApi.volleycallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+
+                coordsInstituicao = new LatLng(jsonObject.getJSONObject("Local").getDouble("Latitude")
+                        ,jsonObject.getJSONObject("Local").getDouble("Longitude"));
+            }
+        });
+
     }
 
 

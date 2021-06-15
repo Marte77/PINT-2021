@@ -117,6 +117,7 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 i.putExtra("nome",nomeLocal);
                 i.putExtra("descricao",descricao);
                 i.putExtra("urlImagem",urlImagem);
+                i.putExtra("idlocal",idlocal);
                 startActivity(i);
             }
         });

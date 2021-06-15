@@ -69,6 +69,7 @@ public class CardInstituicoesFragment extends Fragment {
                     i.putExtra("nome", getArguments().getString("nome"));
                     i.putExtra("descricao", getArguments().getString("descricao"));
                     i.putExtra("urlimagem", getArguments().getString("urlimagem"));
+                    i.putExtra("idlocal",getArguments().getInt("idlocal"));
                     startActivity(i);
                 }catch (NullPointerException e){
                     e.printStackTrace();

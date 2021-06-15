@@ -13,31 +13,47 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     let dataAgr = new Date()
     dataAgr = dataAgr.toISOString()
     var idlista;
-
-    try{var getall = await 
-        Lista_Favoritos.findAll({where:{PessoaIDPessoa: IDPessoa}})
-        idlista= getall.dataValues.ID_Lista}
-    catch(e){console.log(e);//statusCode = 500
-    try{var criarListaParaPessoa = await Lista_Favoritos.create({
-        Descricao: Descricao,
-        PessoaIDPessoa: IDPessoa
-    }) 
-    console.log(criarListaParaPessoa);
-        idlista= criarListaParaPessoa.dataValues.ID_Lista}
-
-    catch(e){console.log(e);statusCode = 500}
+    var mensagemErro;
+    try{
+        var getall = await 
+        Lista_Favoritos.findOne({where:{PessoaIDPessoa: IDPessoa}})
+        console.log("getall");
+        console.log(getall);
+        
+        idlista= getall.dataValues.ID_Lista
     }
-//console.log(getall);
-   try{var criarFavorito = await List_Instituicao.create(
-        {
-            InstituicaoIDInstituicao : IDInstituicao,
-            ListaFavoritosIDLista: idlista
+    catch(e){
+        try{
+            var criarListaParaPessoa = await Lista_Favoritos.create({
+                Descricao: Descricao,
+                PessoaIDPessoa: IDPessoa
+            }) 
+            
+            idlista= criarListaParaPessoa.dataValues.ID_Lista
         }
-    )}catch(e){console.log(e);statusCode = 500}
+        catch(err){
+            console.log(err);
+            statusCode = 500
+            mensagemErro ="ERRO criacao lista favorito" 
+        }
+    }
+        
+    try{
+        var criarFavorito = await List_Instituicao.create({
+            InstituicaoIDInstituicao : IDInstituicao,
+            ListaFavoritoIDLista: idlista
+        })
+    }catch(e){
+        console.log(e);
+        statusCode = 500;
+        mensagemErro = "instituicao ja existe na lista"
+    }
     if(statusCode === 500)
-        res.send({status:statusCode, desc:"Erro a criar"})
+        res.send({status:statusCode, desc:mensagemErro})
     else res.send({status:statusCode, CriarFavorito: criarFavorito})
     
 } 
+
+//todo: remover lista favoritos
 
 module.exports = controllers;
