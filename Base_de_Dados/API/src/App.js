@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const list_instituicaos= require('./model/List_LocalFavorito');
-const list_favoritos= require('./model/Lista_Favoritos');
-const comentarios= require('./model/Comentarios');
-const herancas = require('./colocarHerancas');
+//const list_instituicaos= require('./model/List_LocalFavorito');
+//const list_favoritos= require('./model/Lista_Favoritos');
+//const comentarios= require('./model/Comentarios');
+//const herancas = require('./colocarHerancas');
 const todaspessoasRoute = require('./routes/todaspessoasRoute');
 const alertasRoute = require('./routes/alertasRoute');
 const reportsRoute = require('./routes/reportesRoute')
