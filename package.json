@@ -1,11 +1,6 @@
 {
     "scripts": {
-        "start": "node Base_de_Dados/API/src/App.js && node Web/restodocaminh"
+        "startComFrontend": "node Base_de_Dados/API/src/App.js && cd Web/frontend/ && npm start",
+        "start":"node Base_de_Dados/API/src/App.js"
       }
 }
-/*
-{
-    "scripts": {
-        "start": "cd Base_de_Dados/API/ && node src/App.js"
-      }
-}*/

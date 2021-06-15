@@ -1,13 +1,13 @@
 testes postman: 
 
 POST:http://localhost:3000/Pessoas/createAdmin
-{ "Data_Nascimento": "01/01/2001", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1}
+{ "Data_Nascimento": "2001-01-01", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1}
 
 POST: http://localhost:3000/Pessoas/createUtil_Instituicao
-{ "Data_Nascimento": "01/01/2001", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1, "Pontos":10, "Ranking":1,"Codigo_Empresa":123}
+{ "Data_Nascimento": "2001-01-01", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1, "Pontos":10, "Ranking":1,"Codigo_Empresa":123}
 
 POST: http://localhost:3000/Pessoas/createOutros_Util
-{ "Data_Nascimento": "01/01/2001", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "InstituicaoIDInstituicao":1, "Pontos_Outro_Util":10, "Ranking":1}
+{ "Data_Nascimento": "2001-01-01", "Cidade": "assad", "Codigo_Postal": 7670266, "Email" : "asdasd", "UNome": "sddasd", "Localização": "asdasd", "PNome" : "asdasdasd", "Password":"asdasd", "Pontos_Outro_Util":10, "Ranking":1}
 
 POST: http://localhost:3000/Report/novo_report_outdoor_outros
 { "DescricaoReport":"muita genta no escritorio","NivelDensidade":3,"IDLocal":2,"idOutroUtil":1}

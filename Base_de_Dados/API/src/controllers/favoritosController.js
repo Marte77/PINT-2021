@@ -17,9 +17,6 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     try{
         var getall = await 
         Lista_Favoritos.findOne({where:{PessoaIDPessoa: IDPessoa}})
-        console.log("getall");
-        console.log(getall);
-        
         idlista= getall.dataValues.ID_Lista
     }
     catch(e){
