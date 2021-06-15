@@ -1,0 +1,1 @@
+//partilhar informações

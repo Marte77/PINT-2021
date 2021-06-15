@@ -1,5 +1,11 @@
 {
     "scripts": {
-        "start": "cd Base_de_Dados/API/ && node src/App.js"
+        "start": "node Base_de_Dados/API/src/App.js && node Web/restodocaminh"
       }
 }
+/*
+{
+    "scripts": {
+        "start": "cd Base_de_Dados/API/ && node src/App.js"
+      }
+}*/
