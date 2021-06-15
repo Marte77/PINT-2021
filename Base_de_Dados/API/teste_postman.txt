@@ -37,6 +37,9 @@ POST: http://localhost:3000/Comentarios/novo_comentario
 POST: http://localhost:3000/Favoritos/novo_localfavorito
 { "Descricao":"estou a comentar","IDPessoa": 1, "LocalIDLocal": 3}
 
+POST: http://localhost:3000/Instituicao/createInstituicao
+{ "Nome": "eu", "Codigo_Postal":44532, "Telefone": 916524382, "Descricao":"inseriu bem", "URL_Imagem":"https://i.imgur.com/4Nan6CY.png", "Longitude":443, "Latitude":55, "Localizacao":"vouzela", "Codigo_Empresa":1231213}
+
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',
 										 'https://i.imgur.com/4Nan6CY.png'

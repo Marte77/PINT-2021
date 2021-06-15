@@ -3,7 +3,7 @@
 var sequelize = require('../model/database');
 const controllers = {}
 const locais = require('../model/Local')
-
+const localindoor = require('../model/Local_Indoor')
 controllers.listarLocais = async(req,res)=>{
     var statuscode = 200;
     var errMessage="";
