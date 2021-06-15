@@ -11,7 +11,8 @@ autoIncrement: true,
 //IDPessoa: Sequelize.INTEGER, //fk
 //ID_Local: Sequelize.INTEGER, //fk
 Descricao: Sequelize.STRING,
-Classificacao: Sequelize.INTEGER
+Classificacao: Sequelize.INTEGER,
+Data: Sequelize.DATE
 },
 {
 timestamps: false,
