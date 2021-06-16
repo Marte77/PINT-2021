@@ -5,18 +5,18 @@ var sequelize = require('../model/database');
 const controllers = {}
 
 controllers.criarLikeDislike = async (req,res) => { //post
-  let statusCode = 200;
+    let statusCode = 200;
     const { Like,Dislike,IDPessoa,IDReport}= req.body
-    try{var LikeDislikeNovo = await likedislike.create(
-        {
+    try{
+        var LikeDislikeNovo = await likedislike.create({
             Like: Like,
             Dislike : Dislike,
             PessoaIDPessoa: IDPessoa,
             ReportIDReport: IDReport
-        }
-    )}catch(e){console.log(e);statusCode = 500}
+        })
+    }catch(e){console.log(e);var msgErr = e.original;statusCode = 500}
     if(statusCode === 500)
-        res.send({status:statusCode, desc:"Erro a criar"})
-    else res.send({status:statusCode,LikeDislike:LikeDislikeNovo })
+        res.status(statusCode).send({status:statusCode, desc:"Erro a criar", err:msgErr})
+    else res.status(statusCode).send({status:statusCode,LikeDislike:LikeDislikeNovo })
 } 
 module.exports = controllers;

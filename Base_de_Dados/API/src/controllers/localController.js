@@ -10,10 +10,9 @@ controllers.listarLocais = async(req,res)=>{
     try{
         var listaLocais = await locais.findAll({});
     }catch(e){console.log(e);errMessage = e;statuscode = 500; }
-    //console.log(listaLocais)
     if(statuscode === 500)
-        res.send({status: statuscode, mensagem: errMessage});
-    else res.send({status:200, Locais: listaLocais})
+        res.status(statusCode).send({status: statuscode, err: errMessage});
+    else res.status(statusCode).send({status:200, Locais: listaLocais})
 }
 
 controllers.getLocalbyId = async(req,res)=>{ //get
@@ -25,10 +24,10 @@ controllers.getLocalbyId = async(req,res)=>{ //get
     }
     catch(e){console.log(e);errMessage = e;statuscode = 500; }
     if(statuscode === 500)
-        res.send({status: statuscode, mensagem: errMessage});
-    else res.send({status:200, Local: localNome})
+        res.status(statusCode).send({status: statuscode, mensagem: errMessage});
+    else res.status(statusCode).send({status:200, Local: localNome})
 }
-
+//todo:criar locais e locaisindoor
 
 
 module.exports = controllers;

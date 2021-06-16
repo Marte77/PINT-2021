@@ -48,8 +48,8 @@ controllers.createAdmin = async (req,res) => { //post
         }
     }
     if(statusCode===500)
-        res.send({status:statusCode, desc:descricao,err:msg})
-    else res.send({status:statusCode,Pessoa: dataPessoa,Admin:dataAdmin})
+        res.status(statusCode).send({status:statusCode, desc:descricao,err:msg})
+    else res.status(statusCode).send({status:statusCode,Pessoa: dataPessoa,Admin:dataAdmin})
     
 }
 
@@ -101,8 +101,8 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
     }
     
     if(statusCode===500)
-        res.send({status: statusCode, desc:descricao,err:msgErr})
-    else res.send({status: statusCode, Pessoa:dataPessoa, Utilizador:dataUtil, Util_pertence_Inst:dataUtil_pertence_Inst})
+        res.status(statusCode).send({status: statusCode, desc:descricao,err:msgErr})
+    else res.status(statusCode).send({status: statusCode, Pessoa:dataPessoa, Utilizador:dataUtil, Util_pertence_Inst:dataUtil_pertence_Inst})
 }
 
 controllers.createOutros_Util = async (req,res) => { //post
@@ -141,8 +141,8 @@ controllers.createOutros_Util = async (req,res) => { //post
     }
     
     if(statusCode===500)
-        res.send({status:statusCode, desc:descricao,err:msgErr})
-    else res.send({status:statusCode,Pessoa:dataPessoa,Outros_Util:dataOutros_Util})
+        res.status(statusCode).send({status:statusCode, desc:descricao,err:msgErr})
+    else res.status(statusCode).send({status:statusCode,Pessoa:dataPessoa,Outros_Util:dataOutros_Util})
 }
 
 

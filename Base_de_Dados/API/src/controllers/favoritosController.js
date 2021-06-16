@@ -15,9 +15,10 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     var idlista;
     var mensagemErro;
     try{
-        var getall = await 
-        Lista_Favoritos.findOne({where:{PessoaIDPessoa: IDPessoa}})
+        var getall = await Lista_Favoritos.findOne({where:{PessoaIDPessoa: IDPessoa}})
         idlista= getall.dataValues.ID_Lista
+        //se este falhar, quer dizer que o utilizador nao tem lista de favoritos criada
+        //esta lista vai ser criada dentro do catch
     }
     catch(e){
         try{
@@ -28,13 +29,18 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
             
             idlista= criarListaParaPessoa.dataValues.ID_Lista
         }
-        catch(err){
-            console.log(err);
+        catch(error){
+            console.log(error);
             statusCode = 500
             mensagemErro ="ERRO criacao lista favorito" 
+            var msgErr = error.original; 
+            res.status(statusCode).send({status:statusCode, desc:mensagemErro, err:msgErr})
+            
         }
     }
-        
+    if(statusCode===500)//terminar funcao caso tenha dado erro em cima
+        return;
+    
     try{
         var criarFavorito = await List_LocalFavorito.create({
             LocalIDLocal : LocalIDLocal,
@@ -43,14 +49,15 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     }catch(e){
         console.log(e);
         statusCode = 500;
+        msgErr = e.original;
         mensagemErro = "local ja existe na lista"
     }
     if(statusCode === 500)
-        res.send({status:statusCode, desc:mensagemErro})
-    else res.send({status:statusCode, CriarFavorito: criarFavorito})
+        res.status(statusCode).send({status:statusCode, desc:mensagemErro, err:msgErr})
+    else res.status(statusCode).send({status:statusCode, CriarFavorito: criarFavorito})
     
 } 
 
-//todo: remover lista favoritos
+//todo: remover local da lista favoritos
 
 module.exports = controllers;
