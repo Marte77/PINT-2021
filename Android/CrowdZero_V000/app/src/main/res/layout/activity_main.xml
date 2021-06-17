@@ -63,7 +63,7 @@
                 android:id="@+id/botaoEntrar"
                 android:layout_width="149dp"
                 android:layout_height="53dp"
-                android:backgroundTint="@color/colorPrimaryDark"
+
                 android:text="@string/botao_Entrar_Inicio"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +78,7 @@
                 android:id="@+id/botaoRegistoMain"
                 android:layout_width="149dp"
                 android:layout_height="53dp"
-                android:backgroundTint="@color/colorPrimaryDark"
+
                 android:text="@string/botao_Registo_Inicio"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"

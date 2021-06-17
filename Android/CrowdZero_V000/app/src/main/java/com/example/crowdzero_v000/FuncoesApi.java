@@ -37,7 +37,7 @@ public class FuncoesApi {
     }
     //static String urlGeral ="http://pint2021.herokuapp.com";
     static String urlGeral = "http://192.168.3.132:3000";
-
+//todo: verificar se o status da resposta é 500, o status que esta na resposta ou no header da resposta
     public static class FuncoesReports{
         public static void criarNovoReportOutdoorOutrosUtil(
                 final Context getAppContext,

@@ -99,6 +99,7 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 i.putExtra("opcaoEscolhidaItemID",-1);
                 i.putExtra("nome",nomeLocal);
                 i.putExtra("descricao",descricao);
+                i.putExtra("idlocal",idlocal);
                 startActivity(i);
             }
         });

@@ -95,6 +95,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
                 i.putExtra("opcaoEscolhidaItemID",-1);
                 i.putExtra("nome",nome);
                 i.putExtra("descricao",descricao);
+                i.putExtra("idlocal",idlocal);
                 startActivity(i);
             }
         });
