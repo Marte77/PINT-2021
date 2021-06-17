@@ -21,7 +21,7 @@ controllers.createAdmin = async (req,res) => { //post
     var descricao="Erro a criar Admin";
     try{
         var dataPessoa = await pessoas.create({
-            Data_Nascimento : stringDataNasc, 
+            Data_Nascimento : Data_Nascimento, 
             Cidade : Cidade, 
             Codigo_Postal : Codigo_Postal,
             Email : Email,
@@ -38,7 +38,7 @@ controllers.createAdmin = async (req,res) => { //post
         })
     }catch(e){
         statusCode=500;
-        //console.log(e); 
+        console.log(e); 
         var msg=e.original
         
         if(dataPessoa!= undefined)

@@ -8,6 +8,7 @@ var Admin = sequelize.define('Admin', {
         primaryKey: true,
         autoIncrement: true,
     },
+    /*Verificado: Sequelize.BOOLEAN*/
      //Data_Nascimento: Sequelize.DATEONLY,
     //Cidade: Sequelize.STRING,
     //Codigo_Postal: Sequelize.INTEGER,

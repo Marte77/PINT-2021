@@ -18,7 +18,8 @@ var Utils_Instituicao = sequelize.define('Utils_Instituicao', {
     //ID_Util: Sequelize.INTEGER,  //falta autoincremento
     Pontos: Sequelize.INTEGER,
     Ranking: Sequelize.INTEGER,
-    Codigo_Empresa: Sequelize.INTEGER
+    Codigo_Empresa: Sequelize.INTEGER,
+    /*Verificado: Sequelize.BOOLEAN*/
 },
 {
 timestamps: false,

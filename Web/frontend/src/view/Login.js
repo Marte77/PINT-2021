@@ -3,7 +3,7 @@ import logo from "./img/logo.png"; // import imagem
 import background from "./img/background.png"; // import imagem
 
 export default class Login extends Component {
-    render() {
+    render(){
         return (
             <form>
             <div className="cor_form">
@@ -22,8 +22,8 @@ export default class Login extends Component {
                 </div>
 
                 <p className="pedir-acesso">
-                    Ainda não tem uma conta?  <a href="/registar">Pedir acesso</a>
-                </p>
+                    Ainda não tem uma conta? <a href="/registar">Pedir acesso</a>
+                    </p>
                 <br/>
                 <button type="submit" className="btn btn-dark btn-lg btn-block"> Iniciar sessão </button>  
                  </div>
