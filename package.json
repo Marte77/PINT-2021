@@ -4,6 +4,6 @@
         "startdasddd":"cd Web/frontend/ && npm install && npm start && cd .. && cd .. && node src/App.js",
         "start":"cd Web/frontend/ && npm install && npm start",
         "heroku-postbuilddasdas": "cd .. && cd .. && node Base_de_Dados/API/src/App.js",
-        "heroku-postbuild": "node Base_de_Dados/API/src/App.js",
+        "heroku-postbuild": "cd client && node Base_de_Dados/API/src/App.js"
       }
 }
