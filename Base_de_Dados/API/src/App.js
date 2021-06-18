@@ -13,7 +13,8 @@ const comentariosRoute = require('./routes/comentariosRoute')
 const favoritosRoute = require('./routes/favoritosRoute')
 const instituicaoRoute = require('./routes/instituicaoRoute')
 //Configurações
-app.set('port', process.env.PORT|| 3000);
+//app.set('port', process.env.PORT|| 3000);
+app.set('port', 3001);
 //Middlewares
 app.use(express.json());
 
