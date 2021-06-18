@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.loader.content.AsyncTaskLoader;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,15 +30,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 
 public class FuncoesApi {
 
     public interface volleycallback{
         void onSuccess(JSONObject jsonObject) throws JSONException;
+        void onError(JSONObject jsonObjectErr) throws JSONException;
     }
     //static String urlGeral ="http://pint2021.herokuapp.com";
     static String urlGeral = "http://192.168.3.132:3000";
+
 //todo: verificar se o status da resposta é 500, o status que esta na resposta ou no header da resposta
     public static class FuncoesReports{
         public static void criarNovoReportOutdoorOutrosUtil(
@@ -45,14 +51,12 @@ public class FuncoesApi {
                 final volleycallback VCB) throws JSONException {
 
             String url = urlGeral + "/Report/novo_report_outdoor_outros";
-            final JSONObject resposta = new JSONObject();
             RequestQueue request = Volley.newRequestQueue(getAppContext);
             JSONObject bodyReq = new JSONObject();
             bodyReq.put("DescricaoReport",descReport);
             bodyReq.put("NivelDensidade",nivelDensidade);
             bodyReq.put("IDLocal",idLocal);
             bodyReq.put("idOutroUtil",idOutroUtil);
-
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST, url, bodyReq,
                     new Response.Listener<JSONObject>() {
@@ -82,8 +86,14 @@ public class FuncoesApi {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("pedido","ERRO: " + error);
                             Toast.makeText(getAppContext,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            Log.i("pedido","ERRO: "+new String(error.networkResponse.data, StandardCharsets.UTF_8));
+
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
             );
@@ -111,7 +121,12 @@ public class FuncoesApi {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("pedido","ERRO: " + error);
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
                         }
                     }
             );
@@ -137,7 +152,48 @@ public class FuncoesApi {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("pedido","ERRO: " + error);
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+    }
+
+    public static class FuncoesPessoas{
+        public static void fazerLogin(Context context, String email, String password,final volleycallback VCB) throws JSONException {
+            String url = urlGeral + "/Pessoas/login";
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("Email", email);
+            // TODO: 18/06/2021 encriptar a password
+            body.put("Password", password);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url,body,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
                         }
                     }
             );
@@ -156,14 +212,14 @@ public class FuncoesApi {
                 null, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("testar",error.toString());
+                Log.i("pedido","ErroImagem: " +new String(error.networkResponse.data, StandardCharsets.UTF_8));
             }
         });
         request.add(imageRequest);
     }
 
     public interface volleyimagecallback{
-        public void onSuccess(Bitmap bitmap);
+        void onSuccess(Bitmap bitmap);
     }
     static public void downloadImagem(Context context, String url, final volleyimagecallback VCB){
         RequestQueue request = Volley.newRequestQueue(context);
@@ -176,7 +232,7 @@ public class FuncoesApi {
                 null, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("testar",error.toString());
+                Log.i("pedido","ErroImagem: "+ new String(error.networkResponse.data, StandardCharsets.UTF_8));
             }
         });
         request.add(imageRequest);

@@ -53,6 +53,11 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 urlImagem = jsonObject.getString("URL_Imagem");
                 //getBitmap(context);
             }
+
+            @Override
+            public void onError(JSONObject jsonObjectErr) throws JSONException {
+                Log.i("pedido",jsonObjectErr.toString());
+            }
         });
     }
     /*void getBitmap(Context context){

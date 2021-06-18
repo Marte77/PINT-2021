@@ -94,7 +94,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         }catch(JSONException e){
             Log.i("pedido","ERRO NO LISTAREPORTSINST"+e);
         }*/
-        Intent i = new Intent(getApplicationContext(),CriarReportInstituicao.class);
+        Intent i = new Intent(getApplicationContext(),CriarReportLocal.class);
         i.putExtra("idlocal",idlocal);
         i.putExtra("nome",nome);
         i.putExtra("descricao",descricao);
@@ -120,6 +120,11 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
                 Toast.makeText(getApplicationContext(),"SUCESSO LETS GOO",Toast.LENGTH_LONG).show();
 
             }
+        }
+
+        @Override
+        public void onError(JSONObject jsonObjectErr) throws JSONException {
+            Log.i("pedido",jsonObjectErr.toString());
         }
     };
 

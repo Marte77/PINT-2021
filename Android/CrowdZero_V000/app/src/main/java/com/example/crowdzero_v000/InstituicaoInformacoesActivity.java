@@ -132,6 +132,11 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
                 coordsInstituicao = new LatLng(jsonObject.getJSONObject("Local").getDouble("Latitude")
                         ,jsonObject.getJSONObject("Local").getDouble("Longitude"));
             }
+
+            @Override
+            public void onError(JSONObject jsonObjectErr) throws JSONException {
+                Log.i("pedido",jsonObjectErr.toString());
+            }
         });
 
     }

@@ -4,6 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CriarReportInstituicao">
+    tools:context=".CriarReportLocal">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descricaoNovoReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/descricao"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="255">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:id="@+id/inputDescricaoNovoReport"
+            android:layout_height="wrap_content"
+            android:maxLength="255"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:insetLeft="20dp"
+        android:insetRight="20dp"
+        android:id="@+id/submeterNovoReport"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.787"
+        android:text="@string/submeter_novo_report"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/menuNivelDensidade"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nivel_de_densidade"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2">
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteNivelReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:labelFor="@+id/menuNivelDensidade"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

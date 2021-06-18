@@ -57,5 +57,8 @@
     <string name="interior">Interior</string>
     <string name="report_com_mais_likes">Report com Mais Likes</string>
     <string name="novo_report">Novo Report</string>
+    <string name="descricao">Descrição</string>
+    <string name="nivel_de_densidade">Nível de densidade</string>
+    <string name="submeter_novo_report">Submeter novo report</string>
 
 </resources>

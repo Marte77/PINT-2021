@@ -41,6 +41,11 @@ public class InstituicoesActivity extends NavDrawerActivity {
                 adicionarCard(nome,idLocal,descricao, urlimagem);
             }
         }
+
+        @Override
+        public void onError(JSONObject jsonObjectErr) throws JSONException {
+            Log.i("pedido",jsonObjectErr.toString());
+        }
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -231,6 +231,11 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                     adicionarMarcador(new LatLng(lat,lon),nome,descricao,(i+1)*50,populacao,idLocal);
                 }
             }
+
+            @Override
+            public void onError(JSONObject jsonObjectErr) throws JSONException {
+                Log.i("pedido",jsonObjectErr.toString());
+            }
         });
     }
 
