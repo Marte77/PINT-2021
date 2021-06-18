@@ -5,9 +5,9 @@ var Util_pertence_Inst = require('../model/Util_pertence_Inst');
 var outros_util = require('../model/Pessoas/Outros_Util');
 var admin = require('../model/Pessoas/Admin');
 var sequelize = require('../model/database');
-const moment = require('../../node_modules/moment')
 const controllers = {}
-
+const { Op } = require('sequelize');
+const Pessoas = require('../model/Pessoas/Pessoas');
 
 //nas criacoes de pessoas, se algum der erro, ele apaga os anteriores da BD
 //, garantindo que nao existam pessoas repetidas
@@ -55,7 +55,8 @@ controllers.createAdmin = async (req,res) => { //post
 
 controllers.createUtil_Instituicao = async (req,res) => { //post
     sequelize.sync()
-    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, InstituicaoIDInstituicao,Pontos,Ranking,Codigo_Empresa,ID_Util,UtilsInstituicaoIDUtil
+    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, InstituicaoIDInstituicao,//Pontos,Ranking,
+        Codigo_Empresa,//ID_Util,UtilsInstituicaoIDUtil
     } = req.body;
     var statusCode = 200;
     var descricao = "Erro a criar UtilInst"
@@ -108,7 +109,7 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
 controllers.createOutros_Util = async (req,res) => { //post
     // data
     sequelize.sync()
-    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, Pontos_Outro_Util , Ranking
+    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, //Pontos_Outro_Util , Ranking
     } = req.body;
     var statusCode = 200;
     try{
@@ -126,8 +127,8 @@ controllers.createOutros_Util = async (req,res) => { //post
         var id=dataPessoa.dataValues.IDPessoa;
         var dataOutros_Util = await outros_util.create({
             PessoaIDPessoa : id ,
-            Pontos_Outro_Util : Pontos_Outro_Util,
-            Ranking : Ranking,
+            Pontos_Outro_Util : 0,
+            Ranking : 0,
         })
     }catch(e){
         console.log(e);
@@ -144,6 +145,79 @@ controllers.createOutros_Util = async (req,res) => { //post
         res.status(statusCode).send({status:statusCode, desc:descricao,err:msgErr})
     else res.status(statusCode).send({status:statusCode,Pessoa:dataPessoa,Outros_Util:dataOutros_Util})
 }
+
+controllers.getTop3Pessoas=async (req,res) => {
+    var {numerotoppessoas} = req.params
+    try{
+        var top3outrosUtil = await outros_util.findAll({
+            limit:numerotoppessoas,
+            order:['Ranking','Pontos_Outro_Util'],
+            where:{
+                Ranking:{ 
+                    [Op.ne]:0
+                }
+            },include:[pessoas]
+        })
+
+        var top3UtilInst = await utils_instituicao.findAll({
+            limit:numerotoppessoas,
+            order:['Ranking','Pontos'],
+            where:{
+                Ranking:{
+                    [Op.ne]:0
+                }
+            },include:[pessoas]
+        })
+
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a fazer a selecao das pessoas"})
+    }
+
+    var arr = new Array()
+    for(let pessoa3 of top3UtilInst)
+        arr.push(pessoa3)
+    for(let pessoa3 of top3outrosUtil)
+        arr.push(pessoa3)
+    arr = organizarPessoasPorPontos(arr)
+    
+    var arrayresposta = new Array(), j = 0
+    for(let i = arr.length-1; i>=0;i--){
+        j++;
+        arrayresposta.push(arr[i])
+        if(j ==numerotoppessoas)
+            break;
+    }
+    
+    res.status(200).send(arrayresposta)
+}
+
+function organizarPessoasPorPontos(arraypessoas)
+{
+    for(let i = 0; i<arraypessoas.length-1;i++){
+        for(let j = 0; j<arraypessoas.length-i-1;j++)
+        {
+            let pontosJ, pontosJ1
+            if(arraypessoas[j].dataValues.hasOwnProperty('ID_Outro_Util'))
+                pontosJ = arraypessoas[j].dataValues.Pontos_Outro_Util
+            else pontosJ= arraypessoas[j].dataValues.Pontos
+            if(arraypessoas[j+1].dataValues.hasOwnProperty('ID_Outro_Util'))
+                pontosJ1 = arraypessoas[j+1].dataValues.Pontos_Outro_Util
+            else pontosJ1= arraypessoas[j+1].dataValues.Pontos
+            if(pontosJ>pontosJ1)
+            {
+                let temp = arraypessoas[j]
+                arraypessoas[j] = arraypessoas[j+1]
+                arraypessoas[j+1] = temp
+            }
+        }
+    }
+
+    
+
+    return arraypessoas
+}
+
 
 
 module.exports= controllers;

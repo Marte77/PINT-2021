@@ -27,10 +27,6 @@ POST: http://localhost:3000/Alertas/createAlerta
 POST: http://localhost:3000/LikeDislike/novo_likedislike
 { "Like":true,"Dislike":false, "IDPessoa": 3,"IDReport": 1}
 
-GET: http://localhost:3000/Locais/listar
-
-GET: http://localhost:3000/Locais/getLocalPorId/:id
-
 POST: http://localhost:3000/Comentarios/novo_comentario
 { "Descricao":"estou a comentar","Classificacao":3, "IDLocal": 1,"IDPessoa": 1}
 
@@ -39,6 +35,12 @@ POST: http://localhost:3000/Favoritos/novo_localfavorito
 
 POST: http://localhost:3000/Instituicao/createInstituicao
 { "Nome": "eu", "Codigo_Postal":44532, "Telefone": 916524382, "Descricao":"inseriu bem", "URL_Imagem":"https://i.imgur.com/4Nan6CY.png", "Longitude":443, "Latitude":55, "Localizacao":"vouzela", "Codigo_Empresa":1231213}
+
+GET : http://localhost:3000/Pessoas/getTop3Pessoas/3 o numero 3 pode ser alterado para qualquer outro que funciona na mesma
+
+GET: http://localhost:3000/Locais/listar
+
+GET: http://localhost:3000/Locais/getLocalPorId/:id
 
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',
