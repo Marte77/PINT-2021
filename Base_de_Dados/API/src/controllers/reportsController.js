@@ -38,7 +38,7 @@ controllers.criarReportOutdoorOutrosUtil = async (req,res) => { //post
         }
     }
     if(statusCode === 500)
-        res.send({status:statusCode, desc:descricao, err:msgErr})
+        res.status(500).send({status:statusCode, desc:descricao, err:msgErr})
     else res.send({status:statusCode,Report:reportNovo,ReportOut:reportOutdoorOutrosNovo })
 } 
 controllers.criarReportOutdoorUtilInstituicao = async (req,res) => { //post

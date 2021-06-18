@@ -242,6 +242,7 @@ controllers.getInfoPessoa=async (req,res) => {//get
 
 controllers.login = async (req,res) => {//post
     const {Email, Password} = req.body
+    var tipo="";
     try{
         var pessoalogin = await pessoas.findOne({
             where:{
@@ -267,12 +268,17 @@ controllers.login = async (req,res) => {//post
                 include:[pessoas]
             })
             if(tipoUtil === null) //é admin
-                tipoUtil = await admin.findOne({
+            {
+                    tipoUtil = await admin.findOne({
                     where:{
                         PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
                     },
                     include:[pessoas]
                 })
+                tipo="Admin"
+            }else tipo="Outros_Util"
+        }else{
+            tipo="Util_Instituicao"
         }
     }catch(e){
         console.log(e)
@@ -280,7 +286,8 @@ controllers.login = async (req,res) => {//post
         return;
     }
     
-    res.status(200).send({desc:"Login com sucesso", login:true,Pessoa:tipoUtil})
+    res.status(200).send({desc:"Login com sucesso",TipoPessoa:tipo, login:true,PessoaLogin:tipoUtil})
+    //TipoPessoa retorna Util_Instituicao ou Outros_Util ou Admin
 }
 
 
