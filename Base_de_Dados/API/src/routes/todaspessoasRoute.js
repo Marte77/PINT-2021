@@ -8,5 +8,7 @@ router.post('/createAdmin',todaspessoasController.createAdmin);
 router.post('/createUtil_Instituicao',todaspessoasController.createUtil_Instituicao);
 router.post('/createOutros_Util',todaspessoasController.createOutros_Util);
 router.get('/getTop3Pessoas/:numerotoppessoas',todaspessoasController.getTop3Pessoas)
+router.get('/getInfoPessoa/:idpessoa',todaspessoasController.getInfoPessoa);
+router.post('/login',todaspessoasController.login)
 
 module.exports = router;

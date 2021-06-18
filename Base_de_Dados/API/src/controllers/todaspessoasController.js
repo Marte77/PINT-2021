@@ -32,6 +32,7 @@ controllers.createAdmin = async (req,res) => { //post
         })
 
         var id=dataPessoa.dataValues.IDPessoa;
+
         var dataAdmin = await admin.create({
                 InstituicaoIDInstituicao: InstituicaoIDInstituicao, 
                 PessoaIDPessoa : id 
@@ -146,7 +147,7 @@ controllers.createOutros_Util = async (req,res) => { //post
     else res.status(statusCode).send({status:statusCode,Pessoa:dataPessoa,Outros_Util:dataOutros_Util})
 }
 
-controllers.getTop3Pessoas=async (req,res) => {
+controllers.getTop3Pessoas=async (req,res) => { //get
     var {numerotoppessoas} = req.params
     try{
         var top3outrosUtil = await outros_util.findAll({
@@ -185,7 +186,7 @@ controllers.getTop3Pessoas=async (req,res) => {
 
     }catch(e){
         console.log(e)
-        res.status(500).send({desc:"Erro a fazer a selecao das pessoas"})
+        res.status(500).send({desc:"Erro a fazer a selecao das pessoas",err:e.original})
     }
 
     var arr = new Array()
@@ -205,6 +206,83 @@ controllers.getTop3Pessoas=async (req,res) => {
     
     res.status(200).send(arrayresposta)
 }
+
+controllers.getInfoPessoa=async (req,res) => {//get
+    var {idpessoa}= req.params
+    try{
+        var infopessoa = await outros_util.findOne({
+            where:{
+                PessoaIDPessoa:idpessoa
+            },include:{
+                model:pessoas,
+                attributes:{
+                    exclude:['Password']
+                },required:false
+            }
+        })
+        if(infopessoa === null)
+            infopessoa = await utils_instituicao.findOne({
+                where:{
+                    PessoaIDPessoa:idpessoa
+                },include:{
+                    model:pessoas,
+                    attributes:{
+                        exclude:['Password']
+                    },required:false
+                }
+            })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a pesquisar",err:e.original})
+    }
+    if(infopessoa === null)
+        res.status(500).send({err:"Pessoa não existe"})
+    else res.status(200).send(infopessoa)
+}
+
+controllers.login = async (req,res) => {//post
+    const {Email, Password} = req.body
+    try{
+        var pessoalogin = await pessoas.findOne({
+            where:{
+                Email:Email
+            }
+        })
+        if(pessoalogin === null)
+            throw new Error('Email nao existe')
+        if(pessoalogin.dataValues.Password !== Password)
+            throw new Error('Password Incorreta')
+        var tipoUtil = await utils_instituicao.findOne({
+            where:{
+                PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
+            },
+            include:[pessoas]
+        })
+        if(tipoUtil === null) //ou é admin ou é outro util
+        {
+            tipoUtil = await outros_util.findOne({
+                where:{
+                    PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
+                },
+                include:[pessoas]
+            })
+            if(tipoUtil === null) //é admin
+                tipoUtil = await admin.findOne({
+                    where:{
+                        PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
+                    },
+                    include:[pessoas]
+                })
+        }
+    }catch(e){
+        console.log(e)
+        res.status(500).send({ err:e.message})
+        return;
+    }
+    
+    res.status(200).send({desc:"Login com sucesso", login:true,Pessoa:tipoUtil})
+}
+
 
 function organizarPessoasPorPontos(arraypessoas)
 {

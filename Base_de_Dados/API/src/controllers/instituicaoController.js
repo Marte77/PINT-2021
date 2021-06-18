@@ -27,6 +27,8 @@ controllers.createInstituicao = async (req,res) => { //post
     else res.status(statusCode).send({status:statusCode,instituicao:NovaInstituicao })
 } 
 
+
+
 //todo: listar instituicoes
 
 module.exports = controllers;

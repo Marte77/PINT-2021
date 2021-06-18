@@ -27,6 +27,7 @@ controllers.getLocalbyId = async(req,res)=>{ //get
         res.status(statuscode).send({status: statuscode, mensagem: errMessage});
     else res.status(statuscode).send({status:200, Local: localNome})
 }
+
 //todo:criar locais e locaisindoor
 
 
