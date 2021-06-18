@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "startComFrontend": "node Base_de_Dados/API/src/App.js && cd Web/frontend/ && npm start",
-        "start":"cd Web/frontend/ && npm install && npm start && cd .. && cd .. && node src/App.js"
+        "start": "node Base_de_Dados/API/src/App.js && cd Web/frontend/ && npm start",
+        "startasdasd":"cd Web/frontend/ && npm install && npm start && cd .. && cd .. && node src/App.js"
       }
 }
