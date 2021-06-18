@@ -156,7 +156,12 @@ controllers.getTop3Pessoas=async (req,res) => {
                 Ranking:{ 
                     [Op.ne]:0
                 }
-            },include:[pessoas]
+            },include:{
+                model:pessoas,
+                attributes:{
+                    exclude:['Password']
+                },required:false
+            }
         })
 
         var top3UtilInst = await utils_instituicao.findAll({
@@ -166,7 +171,16 @@ controllers.getTop3Pessoas=async (req,res) => {
                 Ranking:{
                     [Op.ne]:0
                 }
-            },include:[pessoas]
+            },
+                include:{
+                    model:pessoas,
+                    attributes:{
+                        exclude:['Password']
+                    },required:false
+                }
+            
+            
+
         })
 
     }catch(e){

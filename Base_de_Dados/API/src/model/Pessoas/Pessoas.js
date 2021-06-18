@@ -13,7 +13,8 @@ Email: {type:Sequelize.STRING, primaryKey: true},
 UNome: Sequelize.STRING,
 Localização: Sequelize.STRING,
 PNome: Sequelize.STRING,
-Password: Sequelize.TEXT
+Password: Sequelize.TEXT,
+Foto_De_Perfil:Sequelize.TEXT
 },
 {
 timestamps: false,
