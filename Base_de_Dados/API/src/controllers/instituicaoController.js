@@ -1,6 +1,6 @@
 var sequelize = require('../model/database');
 const controllers = {}
-const instituicao = require('../model/instituicao')
+const instituicao = require('../model/Instituicao')
 
 controllers.createInstituicao = async (req,res) => { //post
     let statusCode = 200;
