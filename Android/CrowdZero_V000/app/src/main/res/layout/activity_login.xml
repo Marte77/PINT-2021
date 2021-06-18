@@ -65,7 +65,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-
+        android:id="@+id/textinputEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="274dp"
         android:layout_height="59dp"
@@ -79,6 +79,8 @@
         app:boxStrokeColor="@color/verdeBotao"
         android:textColorHint="@color/cinzento"
         app:hintTextColor="@color/preto"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -88,11 +90,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-
+        android:id="@+id/textinputPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="274dp"
         android:layout_height="59dp"
         android:hint="@string/password_Login"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
         android:textColorHint="@color/cinzento"
         app:boxStrokeColor="@color/verdeBotao"
         app:hintTextColor="@color/preto"
