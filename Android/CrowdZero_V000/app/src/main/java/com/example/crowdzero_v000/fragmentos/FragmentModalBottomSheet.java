@@ -29,6 +29,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 
 public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
     private int widthFragmento;
@@ -37,37 +39,16 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
     private Bitmap bitmapImg;
     private String descricao;
     //private Context context;
-    private String urlImagem;
+    //private String urlImagem;
     protected TextView txtViewNomeInstituicao;
-    protected ImageView imgViewImagemInstituicao;
+    //protected ImageView imgViewImagemInstituicao;
     protected ImageButton imgBtnReport,imgBtnHistorico, imgBtnInfo;
-    public FragmentModalBottomSheet(String nomelocal, int idlocal_, final Context context, Bitmap bitmap){
+    public FragmentModalBottomSheet(String nomelocal, int idlocal_, final Context context/*, Bitmap bitmap*/){
         nomeLocal=nomelocal;
         idlocal = idlocal_;
-        bitmapImg = bitmap;
-        //this.context =context;
-        FuncoesApi.FuncoesLocais.getLocalPorId(context, idlocal, new FuncoesApi.volleycallback() {
-            @Override
-            public void onSuccess(JSONObject jsonObject) throws JSONException {
-                descricao = jsonObject.getString("Descricao");
-                urlImagem = jsonObject.getString("URL_Imagem");
-                //getBitmap(context);
-            }
 
-            @Override
-            public void onError(JSONObject jsonObjectErr) throws JSONException {
-                Log.i("pedido",jsonObjectErr.toString());
-            }
-        });
     }
-    /*void getBitmap(Context context){
-        FuncoesApi.downloadImagem(context, urlImagem, new FuncoesApi.volleyimagecallback() {
-            @Override
-            public void onSuccess(Bitmap bitmap) {
-                bitmapImg = bitmap;
-            }
-        });
-    }*/
+
 
     @Nullable
     @Override
@@ -88,12 +69,11 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
 
     private void inicializarVarsEOnClickListeners(View v) {
         txtViewNomeInstituicao = v.findViewById(R.id.textViewBottomSheetNomeInstituicao);
-        imgViewImagemInstituicao = v.findViewById(R.id.imagemInstituicaoModalBottomSheet);
+        //imgViewImagemInstituicao = v.findViewById(R.id.imagemInstituicaoModalBottomSheet);
         imgBtnReport = v.findViewById(R.id.imgBtnReportsModalBottomSheet);
         imgBtnHistorico = v.findViewById(R.id.imgBtnHistoricoModalBottomSheet);
         imgBtnInfo = v.findViewById(R.id.imgBtnInfoModalBottomSheet);
 
-        imgViewImagemInstituicao.setImageBitmap(bitmapImg);
 
         imgBtnReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,10 +100,11 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 Intent i = new Intent(getActivity().getApplicationContext(), InstituicaoInformacoesActivity.class);
                 i.putExtra("opcaoEscolhida","Home");
                 i.putExtra("opcaoEscolhidaItemID",-1);
-                i.putExtra("nome",nomeLocal);
-                i.putExtra("descricao",descricao);
-                i.putExtra("urlImagem",urlImagem);
+                //i.putExtra("nome",nomeLocal);
+                //i.putExtra("descricao",descricao);
+                //i.putExtra("urlImagem",urlImagem);
                 i.putExtra("idlocal",idlocal);
+                i.putExtra("mapa",true);
                 startActivity(i);
             }
         });
@@ -139,9 +120,9 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
                 ViewGroup.LayoutParams lp = txtViewNomeInstituicao.getLayoutParams();
                 lp.width=(widthFragmento/3)*2;
                 txtViewNomeInstituicao.setLayoutParams(lp);
-                lp = imgViewImagemInstituicao.getLayoutParams();
-                lp.width =(widthFragmento/4);
-                imgViewImagemInstituicao.setLayoutParams(lp);
+                //lp = imgViewImagemInstituicao.getLayoutParams();
+                //lp.width =(widthFragmento/4);
+                //imgViewImagemInstituicao.setLayoutParams(lp);
 
                 LinearLayout llInfo,llHistorico,llReport;
                 llInfo = v.findViewById(R.id.linearLayoutInfoModalBottomSheet);

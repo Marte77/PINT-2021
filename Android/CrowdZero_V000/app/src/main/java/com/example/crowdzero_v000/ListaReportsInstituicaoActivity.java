@@ -49,7 +49,8 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
             }
         });
 
-        adicionarCard("João Soeiro","às 09:47 de 20/05/21",
+        getListaReports();
+        /*adicionarCard("João Soeiro","às 09:47 de 20/05/21",
                 "ola sou gay 1213",
                 1,
                 "Pouco populado");
@@ -64,7 +65,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         adicionarCard("Egas Bartolo","às 09:47 de 20/05/21",
                 "muito 1213",
                 3,
-                "Muito populado");
+                "Muito populado");*/
     }
 
     void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, String populacao){
@@ -84,16 +85,6 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
     };
 
     void criarNovoReport(){
-
-        /*try {
-            FuncoesApi.FuncoesReports.criarNovoReportOutdoorOutrosUtil(
-                    getApplicationContext(),
-                    "muita gente", 3, 3, 1
-                    ,VCB
-            );
-        }catch(JSONException e){
-            Log.i("pedido","ERRO NO LISTAREPORTSINST"+e);
-        }*/
         Intent i = new Intent(getApplicationContext(),CriarReportLocal.class);
         i.putExtra("idlocal",idlocal);
         i.putExtra("nome",nome);
@@ -101,31 +92,8 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         startActivity(i);
     }
 
-
-    FuncoesApi.volleycallback VCB = new FuncoesApi.volleycallback() {
-        @Override
-        public void onSuccess(JSONObject response) throws JSONException {
-            /*int statuscode;
-            try {
-                statuscode = jsonObject.getInt("status");
-                Toast.makeText(getApplicationContext(), statuscode, Toast.LENGTH_LONG).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-            Log.i("pedido",response.toString());
-            if(response.getInt("status") == 500){
-                Toast.makeText(getApplicationContext(),"ERRO A CRIAR",Toast.LENGTH_LONG).show();
-            }
-            else{
-                Toast.makeText(getApplicationContext(),"SUCESSO LETS GOO",Toast.LENGTH_LONG).show();
-
-            }
-        }
-
-        @Override
-        public void onError(JSONObject jsonObjectErr) throws JSONException {
-            Log.i("pedido",jsonObjectErr.toString());
-        }
-    };
+    void getListaReports(){
+        
+    }
 
 }

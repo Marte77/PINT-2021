@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--<ImageView
+                    android:id="@+id/imagemInstituicaoModalBottomSheet"
+                    android:layout_width="88dp"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/imageminstituicao"
+                    android:src="@drawable/ic_launcher_background" />
+            -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,15 +32,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|start"
+                    android:gravity="center_vertical"
                     android:id="@+id/textViewBottomSheetNomeInstituicao"/>
 
-                <ImageView
-                    android:id="@+id/imagemInstituicaoModalBottomSheet"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/imageminstituicao"
-                    android:src="@drawable/ic_launcher_background" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

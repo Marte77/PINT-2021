@@ -3,6 +3,8 @@ package com.example.crowdzero_v000;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -75,16 +77,20 @@ public class CriarReportLocal extends NavDrawerActivity {
                                 textInputEditText.getText().toString(),
                                 niveisDensidadeArray.indexOf(autoCompleteTextView.getText().toString()) + 1,
                                 idlocal,
-                                1,
+                                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0),
                                 new FuncoesApi.volleycallback() {
                                     @Override
                                     public void onSuccess(JSONObject jsonObject) throws JSONException {
                                         Log.i("pedido",jsonObject.toString());
+                                        Toast.makeText(getApplicationContext(),"Report criado com sucesso",Toast.LENGTH_LONG).show();
+                                        finish();
                                     }
 
                                     @Override
                                     public void onError(JSONObject jsonObjectErr) throws JSONException {
                                         Log.i("pedido",jsonObjectErr.toString());
+                                        Toast.makeText(getApplicationContext(),"Erro a criar report!",Toast.LENGTH_LONG).show();
+                                        finish();
                                     }
                                 });
                     } catch (JSONException e) {

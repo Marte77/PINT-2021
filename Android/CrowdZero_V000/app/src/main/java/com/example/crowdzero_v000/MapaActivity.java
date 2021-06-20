@@ -59,7 +59,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     private ArrayList<MarkerOptions> markerOptionsArray = new ArrayList<>();
     private ArrayList<Marker> markerArray = new ArrayList<>();
     private ArrayList<CircleOptions> circleOptionsArray = new ArrayList<>();
-    private ArrayList<Bitmap> bitmapImagensInstsArrayList = new ArrayList<>();
+    //private ArrayList<Bitmap> bitmapImagensInstsArrayList = new ArrayList<>();
     private boolean isLocationEnabled = false, isUserMarkerSet = false;
     private Marker userMarker = null;
     private MarkerOptions userMarkerOptions = null;
@@ -210,13 +210,13 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                     descricao = jsonArray.getJSONObject(i).getString("Descricao");
                     lon = jsonArray.getJSONObject(i).getDouble("Longitude");
                     lat = jsonArray.getJSONObject(i).getDouble("Latitude");
-                    FuncoesApi.downloadImagem(getApplicationContext(), jsonArray.getJSONObject(i).getString("URL_Imagem")
+                    /*FuncoesApi.downloadImagem(getApplicationContext(), jsonArray.getJSONObject(i).getString("URL_Imagem")
                             , new FuncoesApi.volleyimagecallback() {
                                 @Override
                                 public void onSuccess(Bitmap bitmap) {
                                     bitmapImagensInstsArrayList.add(bitmap);
                                 }
-                            });
+                            });*/
 
                     String populacao = null;
                     int x =  ThreadLocalRandom.current().nextInt(1, 4 + 1);
@@ -260,7 +260,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
                             return;
                         }
                         int posMarker = markerArray.indexOf(m);
-                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle(),idLocal, getApplicationContext(), bitmapImagensInstsArrayList.get(posMarker) );
+                        FragmentModalBottomSheet fmBS = new FragmentModalBottomSheet(m.getTitle(),idLocal, getApplicationContext()/*, bitmapImagensInstsArrayList.get(posMarker) */);
 
                         fmBS.show(getSupportFragmentManager(),m.getTitle());
                         Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);

@@ -1,6 +1,7 @@
 package com.example.crowdzero_v000;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,29 +26,28 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
     boolean isUtilizadorEmpresa = false, btnFavEnabled= false;
     private int idlocal = 0;
     LatLng coordsInstituicao = null;
+    ImageView imagem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instituicao_informacoes);
-        nome = getIntent().getExtras().getString("nome");
 
-        descricao = getIntent().getExtras().getString("descricao");
         idlocal = getIntent().getExtras().getInt("idlocal");
 
+        Log.i("testar",getIntent().getExtras().getInt("idlocal")+" " +getIntent().getExtras().getBoolean("mapa"));
+
         int alturatb = this.tb.getLayoutParams().height;
-        LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.linearLayoutInstituicoesInformacoes));
+        LinearLayout linearLayout = (findViewById(R.id.linearLayoutInstituicoesInformacoes));
         linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());
         textViewInformacoesEcontacto = findViewById(R.id.textViewInformacoesEcontacto);
         textViewInformacoesEcontacto.setTypeface(null, Typeface.BOLD);
-        textViewInformacoesEcontacto.setTextSize(25f);
+        textViewInformacoesEcontacto.setTextSize(20f);
         textViewInformacoesEcontacto.setGravity(Gravity.CENTER_VERTICAL );
 
-        textViewDescricao = findViewById(R.id.textViewDescricaoInstituicao);
-        textViewDescricao.setText(descricao);
-        this.mudarNomeToolBar(nome);
+
         pegarCoordsInstituicao();
-        ImageView img = findViewById(R.id.imagemInstituicaoInfo);
-        FuncoesApi.downloadImagem(getApplicationContext(),getIntent().getExtras().getString("urlimagem"),img);
+        imagem = findViewById(R.id.imagemInstituicaoInfo);
+        //FuncoesApi.downloadImagem(getApplicationContext(),getIntent().getExtras().getString("urlimagem"),img);
 
 
         //TODO:verificar se é utilizador e verficar se já é favorito para ligar o botao do fav
@@ -128,9 +128,12 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         FuncoesApi.FuncoesLocais.getLocalPorId(getApplicationContext(), idlocal, new FuncoesApi.volleycallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-
+                descricao = jsonObject.getJSONObject("Local").getString("Descricao");
+                nome = jsonObject.getJSONObject("Local").getString("Nome");
                 coordsInstituicao = new LatLng(jsonObject.getJSONObject("Local").getDouble("Latitude")
                         ,jsonObject.getJSONObject("Local").getDouble("Longitude"));
+                colocarInfosEcra();
+                downloadImagem( jsonObject.getJSONObject("Local").getString("URL_Imagem"));
             }
 
             @Override
@@ -140,7 +143,19 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         });
 
     }
-
+    void colocarInfosEcra(){
+        textViewDescricao = findViewById(R.id.textViewDescricaoInstituicao);
+        textViewDescricao.setText(descricao);
+        this.mudarNomeToolBar(nome);
+    }
+    void downloadImagem(String urlimagem){
+        FuncoesApi.downloadImagem(getApplicationContext(), urlimagem, new FuncoesApi.volleyimagecallback() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                imagem.setImageBitmap(bitmap);
+            }
+        });
+    }
 
     void comecarActivityMapa(boolean isInterior){
         Intent i = new Intent(getApplicationContext(), MapaActivity.class);

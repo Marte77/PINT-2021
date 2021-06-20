@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.experimental.Experimental;
 import androidx.core.content.ContextCompat;
 import androidx.loader.content.AsyncTaskLoader;
 
@@ -214,6 +215,7 @@ public class FuncoesApi {
         }
     }
 
+    @Deprecated
     static public void downloadImagem(Context context, String url, final ImageView imageView){
         RequestQueue request = Volley.newRequestQueue(context);
         ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {

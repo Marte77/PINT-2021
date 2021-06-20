@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                                     @Override
                                     public void onError(JSONObject jsonObjectErr) throws JSONException {
                                         Toast.makeText(getApplicationContext(),"Erro a fazer login automatico",Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                                        startActivity(i);
                                     }
                                 });
                     } catch (JSONException e) {

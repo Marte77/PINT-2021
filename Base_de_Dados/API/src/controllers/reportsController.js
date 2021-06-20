@@ -1,4 +1,5 @@
 var sequelize = require('../model/database');
+const {Op} = require('sequelize')
 const controllers = {}
 const Report = require('../model/Reports/Report')
 const Report_Indoor = require('../model/Reports/Report_Indoor')
@@ -115,6 +116,63 @@ controllers.criarReportIndoor = async (req,res) => { //post
     else res.send({status:statusCode,Report:reportNovo,ReportIn:reportIndoor })
 }    
 
+controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get 
+    const {idlocal} = req.params;
+    const {tempo, tipoTempo} = req.body //tipotempo = hh - horas, mm - minutos, dd - dias
+    let dataAgr = new Date()
+    switch(tipoTempo){
+        case 'hh':{
+            dataAgr.setHours(dataAgr.getHours() - tempo)
+            break;
+        }
+        case 'mm':{
+            dataAgr.setMinutes(dataAgr.getMinutes() - tempo)
+            break;
+        }
+        case 'dd':{
+            dataAgr.setDate(dataAgr.getDate() - tempo)
+            break;
+        }
+        default:{
+            res.status(500).send({desc:"Tipo Invalido",err:"TipoInvalido"})
+            return;
+        }
+    }
+    dataAgr = dataAgr.toISOString()
+    console.log(dataAgr)
+    
+    try{
+        var reportsOutrosUtil = await Report_Outdoor_Outros_Util.findAll({
+            include:{
+                model:Report, 
+                where:{
+                    Data:{
+                        [Op.gte]:dataAgr
+                    }
+                }
+            },
+            where:{
+                //Data:dataAgr,
+                LocalIDLocal:idlocal
+            }
+        })
+        var reportsUtilInst = await Report_Outdoor_Util_Instituicao.findAll({
+            include:[Report],
+            where:{
+                //Data:dataAgr,
+                LocalIDLocal:idlocal
+            }
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a selecionar",err:e.original})
+    }
+    var resposta = {ReportsOutrosUtil:{},ReportsUtilInst:{}};
+    resposta.ReportsOutrosUtil = reportsOutrosUtil
+    resposta.ReportsUtilInst = reportsUtilInst
+    res.status(200).send({Reports:resposta})
+    
+}
 
 
 
