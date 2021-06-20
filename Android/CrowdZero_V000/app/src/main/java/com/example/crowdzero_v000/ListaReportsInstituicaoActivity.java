@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.crowdzero_v000.fragmentos.CardReportFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +50,11 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
             }
         });
 
-        getListaReports();
+        try {
+            getListaReports();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         /*adicionarCard("João Soeiro","às 09:47 de 20/05/21",
                 "ola sou gay 1213",
                 1,
@@ -92,8 +97,23 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         startActivity(i);
     }
 
-    void getListaReports(){
-        
+    void getListaReports() throws JSONException {
+        FuncoesApi.FuncoesReports.getListaReportsOutdoor(getApplicationContext(), idlocal, "hh", 6, new FuncoesApi.volleycallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                JSONArray reportsOutros = jsonObject.getJSONObject("Reports").getJSONArray("ReportsOutrosUtil");
+                JSONArray reportsInst = jsonObject.getJSONObject("Reports").getJSONArray("ReportsUtilInst");
+                for(int i = 0;i< reportsOutros.length(); i++){
+                    JSONObject report = reportsOutros.getJSONObject(i);
+                    adicionarCard(report.getString());
+                }
+            }
+
+            @Override
+            public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+            }
+        });
     }
 
 }

@@ -101,6 +101,42 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
+    /**
+     * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
+     * @param tempo: int da quantidade de tipoTempo
+     */
+    public static void getListaReportsOutdoor( final Context context, int idLocal, String tipoTempo, int tempo,final volleycallback VCB) throws JSONException {
+            String url = urlGeral + "/Report/get_lista_reports_local/"+idLocal;
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("tempo",idLocal);
+            body.put("tipoTempo",tipoTempo);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.PUT, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
+    }
+
+
     }
 
     public static class FuncoesLocais{
@@ -214,6 +250,9 @@ public class FuncoesApi {
             // TODO: 19/06/2021 criar outro util
         }
     }
+
+
+
 
     @Deprecated
     static public void downloadImagem(Context context, String url, final ImageView imageView){

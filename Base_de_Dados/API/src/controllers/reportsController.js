@@ -5,6 +5,8 @@ const Report = require('../model/Reports/Report')
 const Report_Indoor = require('../model/Reports/Report_Indoor')
 const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outros_Util')
 const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao')
+const Outro_Util = require('../model/Pessoas/Outros_Util')
+const Util_Instituicao = require('../model/Pessoas/Utils_Instituicao')
 const Local = require('../model/Local')
 const Local_Indoor = require('../model/Local_Indoor')
 const Instituicao = require('../model/Instituicao')
@@ -143,23 +145,28 @@ controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get
     
     try{
         var reportsOutrosUtil = await Report_Outdoor_Outros_Util.findAll({
-            include:{
+            include:[{
                 model:Report, 
                 where:{
                     Data:{
                         [Op.gte]:dataAgr
                     }
                 }
-            },
+            },{model:Outro_Util}],
             where:{
-                //Data:dataAgr,
                 LocalIDLocal:idlocal
             }
         })
         var reportsUtilInst = await Report_Outdoor_Util_Instituicao.findAll({
-            include:[Report],
+            include:[{
+                model:Report, 
+                where:{
+                    Data:{
+                        [Op.gte]:dataAgr
+                    }
+                }
+            },{model:Util_Instituicao}],
             where:{
-                //Data:dataAgr,
                 LocalIDLocal:idlocal
             }
         })
