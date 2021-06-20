@@ -7,6 +7,7 @@ const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outr
 const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao')
 const Outro_Util = require('../model/Pessoas/Outros_Util')
 const Util_Instituicao = require('../model/Pessoas/Utils_Instituicao')
+const Pessoas = require('../model/Pessoas/Pessoas')
 const Local = require('../model/Local')
 const Local_Indoor = require('../model/Local_Indoor')
 const Instituicao = require('../model/Instituicao')
@@ -152,7 +153,15 @@ controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get
                         [Op.gte]:dataAgr
                     }
                 }
-            },{model:Outro_Util}],
+            },{
+                model:Outro_Util,
+                include:{
+                    model:Pessoas,
+                    attributes:{
+                        exclude:['Password']
+                    },required:false
+                }
+            }],
             where:{
                 LocalIDLocal:idlocal
             }
@@ -165,7 +174,15 @@ controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get
                         [Op.gte]:dataAgr
                     }
                 }
-            },{model:Util_Instituicao}],
+            },{model:
+                Util_Instituicao,
+                include:{
+                    model:Pessoas,
+                    attributes:{
+                        exclude:['Password']
+                    },required:false
+                }
+            }],
             where:{
                 LocalIDLocal:idlocal
             }
