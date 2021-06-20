@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import logo from "./img/logo.png"; // import imagem
 import background from "./img/background.png"; // import imagem
-
+//import './login.css';
 export default class Login extends Component {
+    raiseInvoiceClicked(){
+    const url = '/admin/Dashboard';
+    window.open(url, '_blank');}
     render(){
         return (
             <form>
@@ -25,7 +28,7 @@ export default class Login extends Component {
                     Ainda não tem uma conta? <a href="/registar">Pedir acesso</a>
                     </p>
                 <br/>
-                <button type="submit" className="btn btn-dark btn-lg btn-block"> Iniciar sessão </button>  
+                <button type="submit" className="btn btn-dark btn-lg btn-block" onClick={this.raiseInvoiceClicked}> Iniciar sessão </button>  
                  </div>
             </form>
             
