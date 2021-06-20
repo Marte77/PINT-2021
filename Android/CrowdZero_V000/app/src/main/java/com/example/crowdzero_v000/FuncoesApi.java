@@ -116,6 +116,7 @@ public class FuncoesApi {
                     Request.Method.PUT, url, body, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
                     try {
                         VCB.onSuccess(response);
                     } catch (JSONException e) {

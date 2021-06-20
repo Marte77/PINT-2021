@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
@@ -27,6 +29,9 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
     ArrayList<CardReportFragment> arrayListCardReportFragment = new ArrayList<>();
     ScrollView scrollViewListaReports;
     FloatingActionButton botaoNovoReport;
+
+    int tempo = 7;
+    String tipoTempo ="dd";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,29 +56,23 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         });
 
         try {
-            getListaReports();
+            getListaReports(tempo,tipoTempo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /*adicionarCard("João Soeiro","às 09:47 de 20/05/21",
-                "ola sou gay 1213",
-                1,
-                "Pouco populado");
-        adicionarCard("Martinho","às 09:47 de 20/05/21",
-                "muito 1213",
-                2,
-                "Muito populado");
-        adicionarCard("Altívio","às 09:47 de 20/05/21",
-                "muito 1213",
-                3,
-                "Muito populado");
-        adicionarCard("Egas Bartolo","às 09:47 de 20/05/21",
-                "muito 1213",
-                3,
-                "Muito populado");*/
     }
 
-    void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, String populacao){
+    void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, int INTpopulacao){
+        String populacao ="";
+        // TODO: 20/06/2021 colocar imagem da pessoa e implementar likes
+        switch (INTpopulacao){
+            case 1:populacao = "Pouco Populado"; break;
+            case 2:populacao = "Muito Populado";break;
+            case 3:populacao = "Extremamente Populado";break;
+            case 0:populacao = "Sem População";break;
+            default:populacao = "Erro";break;
+        }
+
 
         CardReportFragment card = CardReportFragment.newInstance(nomePessoa
                 ,data
@@ -83,9 +82,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayoutScrollViewListaReportsInstituicoes,card).commit();
-        //getSupportFragmentManager().beginTransaction()
-        //        .add(scrollViewListaReports.getId(),card, "report " + idReport)
-        //        .commit();
+
         arrayListCardReportFragment.add(card);
     };
 
@@ -97,21 +94,62 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         startActivity(i);
     }
 
-    void getListaReports() throws JSONException {
-        FuncoesApi.FuncoesReports.getListaReportsOutdoor(getApplicationContext(), idlocal, "hh", 6, new FuncoesApi.volleycallback() {
+    @Override
+    protected void onPostResume() { //refresh reports depois de submeter um report
+        super.onPostResume();
+        LinearLayout ll = findViewById(R.id.linearLayoutScrollViewListaReportsInstituicoes);
+        ll.removeAllViews();
+        try {
+            getListaReports(tempo,tipoTempo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
+     * @param tempo: int da quantidade de tipoTempo
+     */
+    void getListaReports(int tempo, String tipoTempo) throws JSONException {
+        FuncoesApi.FuncoesReports.getListaReportsOutdoor(getApplicationContext(), idlocal, tipoTempo,tempo, new FuncoesApi.volleycallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
+                // TODO: 20/06/2021 lista de reportsoutrosutil retorna vazia apesar de existir 
                 JSONArray reportsOutros = jsonObject.getJSONObject("Reports").getJSONArray("ReportsOutrosUtil");
                 JSONArray reportsInst = jsonObject.getJSONObject("Reports").getJSONArray("ReportsUtilInst");
                 for(int i = 0;i< reportsOutros.length(); i++){
-                    JSONObject report = reportsOutros.getJSONObject(i);
-                    adicionarCard(report.getString());
+
+                    JSONObject reportOutro = reportsOutros.getJSONObject(i);
+                    JSONObject report = reportOutro.getJSONObject("Report");
+                    JSONObject pessoa = reportOutro.getJSONObject("Outros_Util").getJSONObject("Pessoa");//ele bloqueia aqui
+                    String dataReport = report.getString("Data");
+                    adicionarCard(pessoa.getString("PNome") +" "+ pessoa.getString("UNome")
+                            ,"Às "+
+                                    dataReport.substring(dataReport.indexOf('T')+1,(dataReport.indexOf('T')+6))
+                                    + " de " +dataReport.substring(0,dataReport.indexOf('T')),
+                            report.getString("Descricao")
+                            ,report.getInt("ID_Report"),report.getInt("Nivel_Densidade"));
+                }
+
+                for(int i = 0;i< reportsInst.length(); i++){
+                    JSONObject reportOutro = reportsInst.getJSONObject(i);
+                    JSONObject report = reportOutro.getJSONObject("Report");
+                    JSONObject pessoa = reportOutro.getJSONObject("Utils_Instituicao").getJSONObject("Pessoa");
+                    String dataReport = report.getString("Data");
+
+                    adicionarCard(pessoa.getString("PNome") +" "+ pessoa.getString("UNome")
+                            ,"Às "+
+                                    dataReport.substring(dataReport.indexOf('T')+1,(dataReport.indexOf('T')+6))
+                                    + " de " +dataReport.substring(0,dataReport.indexOf('T')),
+                            report.getString("Descricao")
+                            ,report.getInt("ID_Report"),report.getInt("Nivel_Densidade"));
                 }
             }
 
             @Override
             public void onError(JSONObject jsonObjectErr) throws JSONException {
-
+                Log.i("pedido",jsonObjectErr.toString());
+                Toast.makeText(getApplicationContext(),"Erro a obter os reports em " + nome, Toast.LENGTH_LONG).show();
             }
         });
     }

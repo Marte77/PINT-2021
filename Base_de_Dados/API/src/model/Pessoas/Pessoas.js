@@ -14,7 +14,7 @@ UNome: Sequelize.STRING,
 Localização: Sequelize.STRING,
 PNome: Sequelize.STRING,
 Password: Sequelize.TEXT,
-//Foto_De_Perfil:Sequelize.TEXT
+//Foto_De_Perfil:Sequelize.TEXT //todo meter foto de perfil tambem
 },
 {
 timestamps: false,
