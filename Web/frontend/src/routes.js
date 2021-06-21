@@ -15,76 +15,77 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.js";
-import UserProfile from "views/UserProfile.js";
-import TableList from "views/TableList.js";
-import Typography from "views/Typography.js";
-import Icons from "views/Icons.js";
-import Maps from "views/Maps.js";
-import Notifications from "views/Notifications.js";
-
-const dashboardRoutes = [ //abrir paginas da aplicacao
+import Home from "views/home.js";
+import Mapa from "views/mapa.js";
+import Lotacao from "views/lotacao.js";
+import Alertas from "views/alertas.js";
+import Report from "views/reports.js";
+import Opinioes from "views/opinioes.js";
+import PartilharInfo from "views/partilharInfo.js";
+import Utilizadores from "views/utilizadores.js";
+import Definicoes from "views/definicoes.js";
+const dashboardRoutes = [ //abrir paginas da aplicacao no menu da nossa dashboard
   {
-    path: "/dashboard",
+    path: "/home",
     name: "Home",
     icon: "nc-icon nc-app",
-    component: Dashboard,
+    component: Home,
     layout: "/admin",
   },
   {
-    path: "/maps",
+    path: "/mapa",
     name: "Mapa",
     icon: "nc-icon nc-map-big",
-    component: Maps,
+    component: Mapa,
     layout: "/admin",
   },
   {
-    path: "/user",
+    path: "/lotacao",
     name: "Lotação",
     icon: "nc-icon nc-circle-09",
-    component: UserProfile,
+    component: Lotacao,
     layout: "/admin",
   },
   {
-    path: "/table",
+    path: "/alertas",
     name: "Alertas",
     icon: "nc-icon nc-bell-55",
-    component: TableList,
+    component: Alertas,
     layout: "/admin",
   },
   {
-    path: "/typography",
+    path: "/reports",
     name: "Reports",
     icon: "nc-icon nc-square-pin",
-    component: Typography,
+    component: Report,
     layout: "/admin",
   },
   {
-    path: "/icons",
+    path: "/opinioes",
     name: "Opiniões",
     icon: "nc-icon nc-paper-2",
-    component: Icons,
+    component: Opinioes,
     layout: "/admin",
   },
   {
-    path: "/notifications",
+    path: "/partilharinfo",
     name: "Partilhar Info",
     icon: "nc-icon nc-send",
-    component: Notifications,
+    component: PartilharInfo,
     layout: "/admin",
   },
   {
-    path: "/notifications",
+    path: "/utilizadores",
     name: "Utilizadores",
     icon: "nc-icon nc-bell-55",
-    component: Notifications,
+    component: Utilizadores,
     layout: "/admin",
   },
   {
-    path: "/notifications",
+    path: "/definicoes",
     name: "Definições",
     icon: "nc-icon nc-preferences-circle-rotate",
-    component: Notifications,
+    component: Definicoes,
     layout: "/admin",
   },
 ];

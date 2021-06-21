@@ -3,7 +3,7 @@ import axios from 'axios';
 //import './login.css';
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-//import './login.css';
+import '../index.css';
 export default class login extends Component {
 constructor(props){
 super(props);
@@ -20,6 +20,9 @@ campoData:""
 
     render() {
         return (
+            <div className="App">
+      <div className="outer">
+        <div className="inner">
             <form>
                 <h3> Criar conta</h3>
                 <div className="form-group">
@@ -77,6 +80,9 @@ campoData:""
     onClick={()=>this.sendSave()}>Submeter pedido</button>
                 <br/>
             </form>
+            </div>
+            </div>
+            </div>
         );
     }
 sendSave(){

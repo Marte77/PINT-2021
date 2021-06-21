@@ -8,16 +8,16 @@ import "./assets/css/animate.min.css";
 import "./assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import AdminLayout from "layouts/Admin.js";
+import AdminLayout from "layouts/Admin";
+
 import "./index.css";
 import App from "./App";
-import Admin from "./layouts/Admin";
+//import Admin from "./layouts/Admin";
 import * as serviceWorker from "./serviceWorker";
-
+//<AdminLayout />
 ReactDOM.render(
     <BrowserRouter>
-        <App />,
-     //<AdminLayout />
+        <App/>
     </BrowserRouter>,
     document.getElementById("root")
 );

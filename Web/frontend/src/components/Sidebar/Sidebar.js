@@ -3,7 +3,7 @@ import { useLocation, NavLink } from "react-router-dom";
 
 import { Nav } from "react-bootstrap";
 
-import logo from "assets/img/reactlogo.png";
+import logo from "views/img/logo.png";
 
 function Sidebar({ color, image, routes }) {
   const location = useLocation();
@@ -21,16 +21,14 @@ function Sidebar({ color, image, routes }) {
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">
           <a
-            href="https://www.creative-tim.com?ref=lbd-sidebar"
-            className="simple-text logo-mini mx-1"
-          >
+            href="/admin/home"
+            className="simple-text logo-mini mx-1">
             <div className="logo-img">
               <img
-                src={require("assets/img/reactlogo.png").default}
-                alt="..."
+                src={require("views/img/logo.png").default}
               />
             </div>
-          </a><a>Crowd Zero</a>
+          </a><a> &nbsp; &nbsp; Crowd Zero</a>
         </div>
         <Nav>
           {routes.map((prop, key) => {

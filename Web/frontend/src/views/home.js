@@ -16,7 +16,7 @@ import {
   Tooltip,
 } from "react-bootstrap";
 
-function Dashboard() {
+function home() {
   return (
     <>
       <Container fluid>
@@ -637,4 +637,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default home;

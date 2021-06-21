@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import logo from "./img/logo.png"; // import imagem
-import background from "./img/background.png"; // import imagem
-//import './login.css';
+//import './App.css';
+import '../index.css';
 export default class Login extends Component {
     raiseInvoiceClicked(){
-    const url = '/admin/Dashboard';
+    const url = '/admin/home';
     window.open(url, '_blank');}
     render(){
         return (
+    <div className="App">
+      <div className="outer">
+        <div className="inner">
             <form>
             <div className="cor_form">
             <img src={logo} alt="logo" border="0" width="100" height="100" class="alinhar_centro"/>
@@ -31,6 +34,9 @@ export default class Login extends Component {
                 <button type="submit" className="btn btn-dark btn-lg btn-block" onClick={this.raiseInvoiceClicked}> Iniciar sessão </button>  
                  </div>
             </form>
+            </div>
+            </div>
+            </div>
             
         );
     }
