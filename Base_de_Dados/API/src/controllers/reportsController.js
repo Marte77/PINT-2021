@@ -119,7 +119,7 @@ controllers.criarReportIndoor = async (req,res) => { //post
     else res.send({status:statusCode,Report:reportNovo,ReportIn:reportIndoor })
 }    
 
-controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get 
+controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //put
     const {idlocal} = req.params;
     const {tempo, tipoTempo} = req.body //tipotempo = hh - horas, mm - minutos, dd - dias
     let dataAgr = new Date()
@@ -142,7 +142,6 @@ controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get
         }
     }
     dataAgr = dataAgr.toISOString()
-    console.log(dataAgr)
     
     try{
         var reportsOutrosUtil = await Report_Outdoor_Outros_Util.findAll({
@@ -197,6 +196,79 @@ controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //get
     res.status(200).send({Reports:resposta})
     
 }
+
+controllers.getDensidadeMediaLocal = async(req,res)=>{ //put
+    const {idlocal} = req.params
+    const {tempo, tipoTempo} = req.body //tipotempo = hh - horas, mm - minutos, dd - dias
+    let dataAgr = new Date()
+    switch(tipoTempo){
+        case 'hh':{
+            dataAgr.setHours(dataAgr.getHours() - tempo)
+            break;
+        }
+        case 'mm':{
+            dataAgr.setMinutes(dataAgr.getMinutes() - tempo)
+            break;
+        }
+        case 'dd':{
+            dataAgr.setDate(dataAgr.getDate() - tempo)
+            break;
+        }
+        default:{
+            res.status(500).send({desc:"Tipo Invalido",err:"TipoInvalido"})
+            return;
+        }
+    }
+    dataAgr = dataAgr.toISOString()
+
+    try{
+        var reportsOutrosUtil = await Report_Outdoor_Outros_Util.findAll({
+            include:[{
+                model:Report, 
+                where:{
+                    Data:{
+                        [Op.gte]:dataAgr
+                    }
+                }
+            }],
+            where:{
+                LocalIDLocal:idlocal
+            }
+        })
+        var reportsUtilInst = await Report_Outdoor_Util_Instituicao.findAll({
+            include:[{
+                model:Report, 
+                where:{
+                    Data:{
+                        [Op.gte]:dataAgr
+                    }
+                }
+            }],
+            where:{
+                LocalIDLocal:idlocal
+            }
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a selecionar",err:e.original})
+        return;
+    }
+
+    var totalReports = reportsOutrosUtil.length + reportsUtilInst.length
+    if(totalReports === 0){
+        res.send({numeroReports:0})
+        return;
+    }
+
+    var somaDensidade = 0;
+    for(let a of reportsOutrosUtil)
+        somaDensidade = somaDensidade + a.dataValues.Report.dataValues.Nivel_Densidade
+    for(let a of reportsUtilInst)
+        somaDensidade = somaDensidade + a.dataValues.Report.dataValues.Nivel_Densidade
+    
+    res.send({numeroReports:totalReports,media:(Math.round(somaDensidade/totalReports))})
+}
+
 
 
 
