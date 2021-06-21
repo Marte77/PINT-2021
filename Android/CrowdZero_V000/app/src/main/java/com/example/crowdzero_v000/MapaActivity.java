@@ -130,7 +130,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode){
-            case 123://requestcode da activity que abre as settings
+            case 123://requestcode da activity que abre as settings da localizacao
                 //fazer refresh da activity
                 finish();
                 startActivity(getIntent());
@@ -194,41 +194,46 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     }
 
     private void listarMarcadores() {
-        //TODO: fazer rota que lista os locais e os seus reportes respetivos
         FuncoesApi.FuncoesLocais.getTodosLocais(getApplicationContext(), new FuncoesApi.volleycallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
                 if(jsonObject.getInt("status") == 500)
                     return;
                 JSONArray jsonArray= jsonObject.getJSONArray("Locais");
-                String nome, descricao;
-                double lat, lon;
-                int idLocal;
                 for(int i = 0; i<jsonArray.length();i++){
-                    idLocal = jsonArray.getJSONObject(i).getInt("ID_Local");
-                    nome = jsonArray.getJSONObject(i).getString("Nome");
-                    descricao = jsonArray.getJSONObject(i).getString("Descricao");
-                    lon = jsonArray.getJSONObject(i).getDouble("Longitude");
-                    lat = jsonArray.getJSONObject(i).getDouble("Latitude");
-                    /*FuncoesApi.downloadImagem(getApplicationContext(), jsonArray.getJSONObject(i).getString("URL_Imagem")
-                            , new FuncoesApi.volleyimagecallback() {
-                                @Override
-                                public void onSuccess(Bitmap bitmap) {
-                                    bitmapImagensInstsArrayList.add(bitmap);
-                                }
-                            });*/
+                    final int idLocal = jsonArray.getJSONObject(i).getInt("ID_Local");
+                    final String nome = jsonArray.getJSONObject(i).getString("Nome");
+                    final String descricao = jsonArray.getJSONObject(i).getString("Descricao");
+                    final double lon = jsonArray.getJSONObject(i).getDouble("Longitude");
+                    final double lat = jsonArray.getJSONObject(i).getDouble("Latitude");
 
-                    String populacao = null;
-                    int x =  ThreadLocalRandom.current().nextInt(1, 4 + 1);
-                    if(x == 4)
-                        populacao = "Muito";
-                    else if(x == 3)
-                        populacao = "Medio";
-                    else if(x == 2)
-                        populacao = "Pouco";
-                    else if(x == 1)
-                        populacao = "Sem populacao";
-                    adicionarMarcador(new LatLng(lat,lon),nome,descricao,(i+1)*50,populacao,idLocal);
+                    FuncoesApi.FuncoesReports.getDensidadeMediaPorLocal(getApplicationContext(), idLocal, "dd", 1, new FuncoesApi.volleycallback() {
+                        @Override
+                        public void onSuccess(JSONObject jsonObject) throws JSONException {
+                            int numeroReports = jsonObject.getInt("numeroReports");
+
+                            if(numeroReports == 0)
+                                adicionarMarcador(new LatLng(lat,lon),nome,descricao,numeroReports,"Sem populacao",idLocal);
+                            else {
+                                int densidadeMedia = jsonObject.getInt("media");
+                                String populacao = null;
+                                if(densidadeMedia == 3)
+                                    populacao = "Muito";
+                                else if(densidadeMedia == 2)
+                                    populacao = "Medio";
+                                else if(densidadeMedia == 1)
+                                    populacao = "Pouco";
+                                adicionarMarcador(new LatLng(lat, lon), nome, descricao, numeroReports, populacao, idLocal);
+                            }
+                        }
+
+                        @Override
+                        public void onError(JSONObject jsonObjectErr) throws JSONException {
+                            Log.i("pedido","Erro Mapa Locais" + jsonObjectErr);
+                            adicionarMarcador(new LatLng(lat, lon), nome, descricao, 0, "Sem populacao",idLocal);
+                        }
+                    });
+
                 }
             }
 
@@ -286,6 +291,8 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
 
 
     void adicionarMarcador(LatLng latLng, String nomeLocal, String descricaoLocal, int numeroReports, String populacao, int idLocal){
+
+
         parIdInst_NomeInst.put(nomeLocal,idLocal);
 
         MarkerOptions marcadorNovo = marcadorComIcone(latLng,nomeLocal,"Número de reports: " + numeroReports);
@@ -297,27 +304,36 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         circuloMarcador.strokeWidth(2.0f);
         String corTransparencia50 ="#7F"; //adicionar os 6 digitos respetivos a cor dependendo do numero de reports
 
+        numeroReports = numeroReports * 30; //amplificar o circulo
+
         if(populacao == null)
             populacao = "Sem populacao";
         circuloMarcador.radius(numeroReports*0.5f);
-        if(populacao.equals("Muito")){
-            marcadorNovo.snippet("Extremamente populado"+marcadorNovo.getSnippet());
-            corTransparencia50 += "e81313"; // vermelho
-            circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
-            mapa.addCircle(circuloMarcador);
-        }else if(populacao.equals("Medio")){
-            marcadorNovo.snippet("Muito populado"+marcadorNovo.getSnippet());
-            corTransparencia50 += "e4e813"; //amarelo
-            circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
-            mapa.addCircle(circuloMarcador);
-        }else if(populacao.equals("Pouco")){
-            marcadorNovo.snippet("Pouco populado"+marcadorNovo.getSnippet());
-            corTransparencia50 += "13e84b"; //verde
-            circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
-            mapa.addCircle(circuloMarcador);
-        }else if(populacao.equals("Sem populacao")){
-            marcadorNovo.snippet("Sem população"+marcadorNovo.getSnippet());
+        switch (populacao) {
+            case "Muito":
+                marcadorNovo.snippet("Extremamente populado" + marcadorNovo.getSnippet());
+                corTransparencia50 += "e81313"; // vermelho
 
+                circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
+                mapa.addCircle(circuloMarcador);
+                break;
+            case "Medio":
+                marcadorNovo.snippet("Muito populado" + marcadorNovo.getSnippet());
+                corTransparencia50 += "e4e813"; //amarelo
+
+                circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
+                mapa.addCircle(circuloMarcador);
+                break;
+            case "Pouco":
+                marcadorNovo.snippet("Pouco populado" + marcadorNovo.getSnippet());
+                corTransparencia50 += "13e84b"; //verde
+
+                circuloMarcador.fillColor(Color.parseColor(corTransparencia50));
+                mapa.addCircle(circuloMarcador);
+                break;
+            case "Sem populacao":
+                marcadorNovo.snippet("Sem população" + marcadorNovo.getSnippet());
+                break;
         }
 
     }

@@ -50,6 +50,10 @@ GET: http://localhost:3000/Locais/getLocalPorId/:id
 PUT: http://localhost:3000/Report/get_lista_reports_local/:idlocal
 { "tempo":2, "tipoTempo":"dd"} //tipotempo = hh - horas, mm - minutos, dd - dias
 
+PUT: http://localhost:3000/Report/get_densidade_media_local/:idlocal
+{ "tempo":2, "tipoTempo":"dd"} //tipotempo = hh - horas, mm - minutos, dd - dias
+
+
 //INSERTS LOCAL E INSTITUICAO POSTGRESQL
 insert into public."Instituicaos" values(default,'Palácio do Gelo',3123123,987654321,'Forum de viseu descricao epica',
 										 'https://i.imgur.com/4Nan6CY.png'

@@ -51,6 +51,8 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         botaoNovoReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                botaoNovoReport.setEnabled(false);
+                botaoNovoReport.cancelPendingInputEvents();//prevenir duplos cliques que duplicam o report
                 criarNovoReport();
             }
         });
@@ -76,7 +78,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
 
         CardReportFragment card = CardReportFragment.newInstance(nomePessoa
                 ,data
-                ,descricaoReport + " idreport "+idReport
+                ,descricaoReport
                 ,idReport
                 ,populacao);
 
