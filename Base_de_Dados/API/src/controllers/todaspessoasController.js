@@ -15,7 +15,7 @@ const Pessoas = require('../model/Pessoas/Pessoas');
 controllers.createAdmin = async (req,res) => { //post
     sequelize.sync()
     var statusCode=200
-    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, InstituicaoIDInstituicao
+    const {URLImagem, Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, InstituicaoIDInstituicao
     } = req.body;
 
     var descricao="Erro a criar Admin";
@@ -28,14 +28,16 @@ controllers.createAdmin = async (req,res) => { //post
             UNome : UNome,
             Localização : Localização,
             PNome : PNome,
-            Password : Password
+            Password : Password,
+            Foto_De_Perfil: URLImagem
         })
 
         var id=dataPessoa.dataValues.IDPessoa;
 
         var dataAdmin = await admin.create({
                 InstituicaoIDInstituicao: InstituicaoIDInstituicao, 
-                PessoaIDPessoa : id 
+                PessoaIDPessoa : id ,
+                Verificado:0
         })
     }catch(e){
         statusCode=500;
@@ -56,7 +58,7 @@ controllers.createAdmin = async (req,res) => { //post
 
 controllers.createUtil_Instituicao = async (req,res) => { //post
     sequelize.sync()
-    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, InstituicaoIDInstituicao,//Pontos,Ranking,
+    const {URLImagem, Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, InstituicaoIDInstituicao,//Pontos,Ranking,
         Codigo_Empresa,//ID_Util,UtilsInstituicaoIDUtil
     } = req.body;
     var statusCode = 200;
@@ -70,7 +72,8 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
             UNome : UNome,
             Localização : Localização,
             PNome : PNome,
-            Password : Password
+            Password : Password,
+            Foto_De_Perfil: URLImagem
         })
         var id=dataPessoa.dataValues.IDPessoa;  
     
@@ -78,7 +81,8 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
             PessoaIDPessoa : id,
             Pontos : 0,
             Ranking : 0,
-            Codigo_Empresa : Codigo_Empresa
+            Codigo_Empresa : Codigo_Empresa,
+            Verificado:0
         })
 
         var id_util=dataUtil.dataValues.ID_Util; 
@@ -110,7 +114,7 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
 controllers.createOutros_Util = async (req,res) => { //post
     // data
     sequelize.sync()
-    const { Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, //Pontos_Outro_Util , Ranking
+    const { URLImagem,Data_Nascimento, Cidade, Codigo_Postal, Email, UNome, Localização, PNome, Password, //Pontos_Outro_Util , Ranking
     } = req.body;
     var statusCode = 200;
     try{
@@ -122,7 +126,8 @@ controllers.createOutros_Util = async (req,res) => { //post
             UNome : UNome,
             Localização : Localização,
             PNome : PNome,
-            Password : Password
+            Password : Password,
+            Foto_De_Perfil: URLImagem
         })
 
         var id=dataPessoa.dataValues.IDPessoa;

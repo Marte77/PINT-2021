@@ -19,7 +19,7 @@ var Utils_Instituicao = sequelize.define('Utils_Instituicao', {
     Pontos: Sequelize.INTEGER,
     Ranking: Sequelize.INTEGER,
     Codigo_Empresa: Sequelize.INTEGER,
-    /*Verificado: Sequelize.BOOLEAN*///todo fazer isto
+    Verificado: Sequelize.BOOLEAN//todo fazer isto
 },
 {
 timestamps: false,
