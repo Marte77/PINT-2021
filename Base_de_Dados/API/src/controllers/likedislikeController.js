@@ -305,7 +305,8 @@ controllers.verificarSeInteragiu = async (req,res) =>{//post
     if(existeInteracao === null){
         res.send({existe:false});
     }else{
-        res.send({existe:true})
+        let islike = existeInteracao.dataValues.Like
+        res.send({existe:true, isLike:islike})
     }
 }
 
