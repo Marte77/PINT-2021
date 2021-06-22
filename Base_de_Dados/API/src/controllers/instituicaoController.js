@@ -1,4 +1,5 @@
 var sequelize = require('../model/database');
+const Instituicao = require('../model/Instituicao');
 const controllers = {}
 const instituicao = require('../model/Instituicao')
 
@@ -27,8 +28,18 @@ controllers.createInstituicao = async (req,res) => { //post
     else res.status(statusCode).send({status:statusCode,instituicao:NovaInstituicao })
 } 
 
+controllers.getInstituicao = async (req,res) => {//get
+    try {
+        var instituicoes =await Instituicao.findAll({
+            attributes:['ID_Instituicao','Nome']
+        })
+        
+    } catch (e) {
+        res.status(500).send({desc:"Erro a selecionar", err:e.toString()})
+    }
+    res.send({Instituicoes:instituicoes})
 
+}
 
-//todo: listar instituicoes
 
 module.exports = controllers;
