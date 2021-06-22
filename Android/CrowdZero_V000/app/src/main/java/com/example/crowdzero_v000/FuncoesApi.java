@@ -93,7 +93,7 @@ public class FuncoesApi {
 
                             try {
                                 VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
-                            } catch (JSONException e) {
+                            } catch (JSONException | NullPointerException e ) {
                                 e.printStackTrace();
                             }
                         }
@@ -128,7 +128,7 @@ public class FuncoesApi {
                 public void onErrorResponse(VolleyError error) {
                     try {
                         VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
-                    } catch (JSONException e) {
+                    } catch (JSONException | NullPointerException e ) {
                         e.printStackTrace();
                     }
                 }
@@ -191,7 +191,7 @@ public class FuncoesApi {
                         public void onErrorResponse(VolleyError error) {
                             try {
                                 VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
-                            } catch (JSONException e) {
+                            } catch (JSONException | NullPointerException e ) {
                                 e.printStackTrace();
                             }
                             Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
@@ -222,7 +222,7 @@ public class FuncoesApi {
                         public void onErrorResponse(VolleyError error) {
                             try {
                                 VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
-                            } catch (JSONException e) {
+                            } catch (JSONException | NullPointerException e ) {
                                 e.printStackTrace();
                             }
                             Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
@@ -259,7 +259,7 @@ public class FuncoesApi {
                         public void onErrorResponse(VolleyError error) {
                             try {
                                 VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
-                            } catch (JSONException e) {
+                            } catch (JSONException | NullPointerException e ) {
                                 e.printStackTrace();
                             }
                             Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
@@ -279,6 +279,105 @@ public class FuncoesApi {
                                           String pNome, String uNome, Date dataNasc,
                                           String cidade, final volleycallback VCB){
             // TODO: 19/06/2021 criar outro util
+        }
+
+        public static void avaliarReport(Context context,
+                                         int like,int dislike,
+                                         int idreport,int idPessoa ,final volleycallback VCB) throws JSONException {
+            String url = urlGeral + "/LikeDislike/novo_likedislike";
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("Like", like);
+            body.put("Dislike", dislike);
+            body.put("IDPessoa",idPessoa);
+            body.put("IDReport",idreport);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("pedido","Erro like dislike: "+error);
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                    } catch (JSONException | NullPointerException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
+        }
+        public static void removerInteracaoReport(Context context, int idreport,int idPessoa ,final volleycallback VCB) throws JSONException {
+            String url = urlGeral + "/LikeDislike/remover_likedislike";
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("IDPessoa",idPessoa);
+            body.put("IDReport",idreport);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("pedido","Erro remover like dislike: "+error);
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                    } catch (JSONException | NullPointerException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void verificarSeExisteInteracao(Context context, int idreport,int idPessoa ,final volleycallback VCB) throws JSONException{
+            String url = urlGeral + "/LikeDislike/verificar_se_existe_interacao";
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("IDPessoa",idPessoa);
+            body.put("IDReport",idreport);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("pedido","Erro verificar interacao: "+error);
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                    } catch (JSONException | NullPointerException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
         }
     }
 

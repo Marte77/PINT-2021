@@ -1,13 +1,10 @@
 package com.example.crowdzero_v000;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -19,8 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
-import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
@@ -30,8 +25,8 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
     ScrollView scrollViewListaReports;
     FloatingActionButton botaoNovoReport;
 
-    int tempo = 7;
-    String tipoTempo ="dd";
+    int tempo = 12;
+    String tipoTempo ="hh";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +75,8 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
                 ,data
                 ,descricaoReport
                 ,idReport
-                ,populacao);
+                ,populacao,
+                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0));
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayoutScrollViewListaReportsInstituicoes,card).commit();

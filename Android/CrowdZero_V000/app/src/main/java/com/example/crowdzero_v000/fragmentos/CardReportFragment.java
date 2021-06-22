@@ -1,5 +1,6 @@
 package com.example.crowdzero_v000.fragmentos;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -18,7 +19,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.crowdzero_v000.FuncoesApi;
 import com.example.crowdzero_v000.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,12 +37,13 @@ public class CardReportFragment extends Fragment {
     boolean botaoLike = false;
     boolean botaoCoracao = false;
     int idReport= -1;
+    int idpessoa = 0;
 
     /**
      * O NOME TEM DE TER SEMPRE UM '\n' DO GENERO
      *  "nome pessoa\ndata e hora
      * */
-    public static CardReportFragment newInstance(String nomePessoa,String dataReport, String descricaoReport, int idReport, String populacao) {
+    public static CardReportFragment newInstance(String nomePessoa,String dataReport, String descricaoReport, int idReport, String populacao, int idpessoa_) {
 
         CardReportFragment f = new CardReportFragment();
 
@@ -45,6 +53,7 @@ public class CardReportFragment extends Fragment {
         b.putString("descricao", descricaoReport);
         b.putInt("idReport", idReport);
         b.putString("populacao", populacao);
+        b.putInt("idpessoa",idpessoa_);
 
         f.setArguments(b);
         return f;
@@ -55,18 +64,45 @@ public class CardReportFragment extends Fragment {
 
         View v =  inflater.inflate(R.layout.fragment_card_report, container, false);
 
+        assert getArguments() != null;
+        this.idReport = getArguments().getInt("idReport");
+        this.idpessoa = getArguments().getInt("idpessoa");
+
+
+        //region listeners
         final ImageButton IBDislike = v.findViewById(R.id.botaoDislikeReport);
         IBDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!botaoLike) {
                     if (botaoDislike) {
-                        IBDislike.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                        removerInteracao(new FuncoesApi.volleycallback() {
+                            @Override
+                            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                IBDislike.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                            }
+
+                            @Override
+                            public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                Log.i("pedido","Erro removerinteracao dislike: "+jsonObjectErr);
+                            }
+                        });
                     } else {
-                        IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                        darDislike(new FuncoesApi.volleycallback() {
+                            @Override
+                            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                            }
+
+                            @Override
+                            public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+                            }
+                        });
                     }
                     botaoDislike = !botaoDislike;
                 }
+
             }
         });
         final ImageButton IBLike = v.findViewById(R.id.botaoLikeReport);
@@ -75,9 +111,30 @@ public class CardReportFragment extends Fragment {
             public void onClick(View v) {
                 if(!botaoDislike) {
                     if (botaoLike) {
-                        IBLike.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+
+                        removerInteracao(new FuncoesApi.volleycallback() {
+                            @Override
+                            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                IBLike.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+                            }
+
+                            @Override
+                            public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+                            }
+                        });
                     } else {
-                        IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                        darLike(new FuncoesApi.volleycallback() {
+                            @Override
+                            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                            }
+                            @Override
+                            public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+                                Log.i("pedido","Erro removerinteracao like: "+jsonObjectErr);
+                            }
+                        });
                     }
                     botaoLike = !botaoLike;
                 }
@@ -95,10 +152,12 @@ public class CardReportFragment extends Fragment {
                 botaoCoracao =!botaoCoracao;
             }
         });
-        assert getArguments() != null;
-        this.idReport = getArguments().getInt("idReport");
+        //endregion
+
+        //region colocar texto
         //cortar as strings para depois se meter a negrito certas partes
         String populacao, descricao;
+
         populacao = getArguments().getString("populacao");
         descricao = getArguments().getString("descricao");
         populacao = "<b>"+populacao+"</b><br>"+descricao;
@@ -114,11 +173,64 @@ public class CardReportFragment extends Fragment {
         ssbNome.append(ssbData);
         ssbNome.setSpan(new RelativeSizeSpan(1.1f),0,ssbNome.length(),0);
         ((TextView) v.findViewById(R.id.NomeDataHoraTxtReport)).setText(ssbNome);
+        //endregion
+
+        try {
+            verificarSeJaInteragiu(new FuncoesApi.volleycallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) throws JSONException {
+                    boolean existeInteracao = jsonObject.getBoolean("existe");
+                    if(existeInteracao){
+                        boolean isLike = jsonObject.getBoolean("isLike");
+                        if(isLike){
+                            IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                        }else{
+                            IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         return v;
     }
 
-    public int getIdReport() {
-        return idReport;
+
+    void darLike(FuncoesApi.volleycallback VCB){
+        try {
+            FuncoesApi.FuncoesPessoas.avaliarReport(getActivity().getApplicationContext(), 1, 0, idReport, requireActivity().getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0),
+                    VCB);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    void darDislike(FuncoesApi.volleycallback VCB){
+        try {
+            FuncoesApi.FuncoesPessoas.avaliarReport(getActivity().getApplicationContext(), 0, 1, idReport
+                    , idpessoa,VCB);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void removerInteracao(FuncoesApi.volleycallback VCB){
+        try {
+            FuncoesApi.FuncoesPessoas.removerInteracaoReport(getActivity().getApplicationContext(), idReport, idpessoa,
+                    VCB);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    void verificarSeJaInteragiu(FuncoesApi.volleycallback VCB) throws JSONException {
+        FuncoesApi.FuncoesPessoas.verificarSeExisteInteracao(getActivity().getApplicationContext(),idReport,idpessoa,VCB);
     }
 }

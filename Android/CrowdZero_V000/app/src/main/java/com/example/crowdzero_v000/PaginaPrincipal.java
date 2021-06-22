@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class PaginaPrincipal extends NavDrawerActivity {
         setContentView(R.layout.activity_pagina_principal);
 
         CardReportFragment cardInicial = CardReportFragment.newInstance("Martinho","às 09:47 de 20/05/21","Muitas pessoas na fila da cantina assustei-me"
-                ,1,"Muito populado");
+                ,1,"Muito populado",getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0));
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayout,cardInicial).commit();
         TextView textView = findViewById(R.id.textViewPaginaPrincipalReport);
