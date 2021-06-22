@@ -287,4 +287,26 @@ controllers.removerLikeDislike = async (req,res) =>{//post
     res.status(200).send({Interacao: interacaoRemovida})
 
 }
+
+controllers.verificarSeInteragiu = async (req,res) =>{//post
+    const {IDPessoa, IDReport} = req.body
+    try {
+        var existeInteracao = await Tabela_LikesDislikes.findOne({
+            where:{
+                PessoaIDPessoa:IDPessoa,
+                ReportIDReport:IDReport
+            }})
+        
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({desc:"Ocorreu um erro",err:e.original, errString:e.toString()})
+        return;
+    }
+    if(existeInteracao === null){
+        res.send({existe:false});
+    }else{
+        res.send({existe:true})
+    }
+}
+
 module.exports = controllers;
