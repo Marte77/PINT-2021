@@ -186,6 +186,7 @@ public class NavDrawerActivity extends AppCompatActivity {
 
         TextView tvPontos = LL.findViewById(R.id.PontuacaoUtilizadorHeaderNavBar);
         TextView tvNome = LL.findViewById(R.id.NomeUtilizadorHeaderNavBar);
+        // TODO: 22/06/2021 ver pontuacao e colocar aqui
         tvPontos.setText("150 Pontos");
         tvNome.setText("Martinho Tavares Malhão");
 

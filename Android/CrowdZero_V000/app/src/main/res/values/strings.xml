@@ -60,5 +60,13 @@
     <string name="descricao">Descrição</string>
     <string name="nivel_de_densidade">Nível de densidade</string>
     <string name="submeter_novo_report">Submeter novo report</string>
+    <string name="logout">Fazer logout</string>
+    <string name="primeiro_nome">Primeiro Nome</string>
+    <string name="ultimo_nome">Último Nome</string>
+    <string name="utilizador_da_empresa">É utilizador da empresa?</string>
+    <string name="instituicaoRegisto">Instituição\n<small>(Apenas insira se trabalhar para uma das empresas)</small> </string>
+    <string name="instituicao">Instituição</string>
+    <string name="confirmar_pertencer_inst">Confirmo que pertenço a uma instituição</string>
+    <string name="codigo_postal">Código Postal</string>
 
 </resources>

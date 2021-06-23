@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 }
                 else {
                     Intent EntrarIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    EntrarIntent.putExtra("activity","main");
                     startActivity(EntrarIntent);
                 }
                 break;

@@ -70,7 +70,8 @@ public class CriarReportLocal extends NavDrawerActivity {
                     Toast.makeText(getApplicationContext(),"Tem de preencher os campos!",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(false == false)// TODO: 18/06/2021 verificar se é util instituicao
+                String tipoPessoa = getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getString("TipoPessoa","Outros_Util");
+                if(tipoPessoa.equals("Outros_Util"))
                 {
                     try {
                         FuncoesApi.FuncoesReports.criarNovoReportOutdoorOutrosUtil(getApplicationContext(),
@@ -88,7 +89,33 @@ public class CriarReportLocal extends NavDrawerActivity {
 
                                     @Override
                                     public void onError(JSONObject jsonObjectErr) throws JSONException {
-                                        Log.i("pedido",jsonObjectErr.toString());
+                                        Log.i("pedido","Erro a criar report out oturo util: "+jsonObjectErr.toString());
+                                        Toast.makeText(getApplicationContext(),"Erro a criar report!",Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{ //report outdoor util instituicao
+                    try {
+                        FuncoesApi.FuncoesReports.criarNovoReportOutdoorUtilInst(getApplicationContext(),
+                                textInputEditText.getText().toString(),
+                                niveisDensidadeArray.indexOf(autoCompleteTextView.getText().toString()) + 1,
+                                idlocal,
+                                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil", 0),
+                                new FuncoesApi.volleycallback() {
+                                    @Override
+                                    public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                        Log.i("pedido",jsonObject.toString());
+                                        Toast.makeText(getApplicationContext(),"Report criado com sucesso",Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                        Log.i("pedido","Erro a criar report out utilinst: "+jsonObjectErr.toString());
                                         Toast.makeText(getApplicationContext(),"Erro a criar report!",Toast.LENGTH_LONG).show();
                                         finish();
                                     }

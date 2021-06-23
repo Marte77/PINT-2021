@@ -32,6 +32,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 //<!--Note: The layout_width and layout_height attributes should be set to wrap_content, match_parent, or a custom dimension depending on the navigation drawer type and parent ViewGroup.-->
 
@@ -48,6 +49,7 @@ public class PaginaPrincipal extends NavDrawerActivity {
                 .add(R.id.linearLayout,cardInicial).commit();
         TextView textView = findViewById(R.id.textViewPaginaPrincipalReport);
         textView.setText(textView.getText()+"\n Camâra de Viseu");
+
 
 
         /*

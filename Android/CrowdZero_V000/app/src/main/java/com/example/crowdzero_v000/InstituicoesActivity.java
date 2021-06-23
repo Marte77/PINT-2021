@@ -2,6 +2,7 @@ package com.example.crowdzero_v000;
 
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -14,6 +15,8 @@ import com.example.crowdzero_v000.fragmentos.CardInstituicoesFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 public class InstituicoesActivity extends NavDrawerActivity {
 
@@ -52,6 +55,9 @@ public class InstituicoesActivity extends NavDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instituicoes);
 
+        Map<String,? > map = getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getAll();
+        for(Map.Entry<String,?> a : map.entrySet())
+            Log.i("testar",a.getKey() + " "+a.getValue());
 
         /*
         * adicionar padding em cima da SV, caso contrário ficaria a sobrepor a topbar
