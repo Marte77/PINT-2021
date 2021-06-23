@@ -1,4 +1,4 @@
-package com.example.crowdzero_v000;
+package com.example.crowdzero_v000.classesDeAjuda;
 
 import android.content.Context;
 import android.graphics.Bitmap;

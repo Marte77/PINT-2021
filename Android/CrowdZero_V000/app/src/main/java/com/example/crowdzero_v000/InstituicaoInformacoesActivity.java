@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -35,7 +37,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
 
         idlocal = getIntent().getExtras().getInt("idlocal");
 
-        Log.i("testar",getIntent().getExtras().getInt("idlocal")+" " +getIntent().getExtras().getBoolean("mapa"));
+        //Log.i("testar",getIntent().getExtras().getInt("idlocal")+" " +getIntent().getExtras().getBoolean("mapa"));
 
         int alturatb = this.tb.getLayoutParams().height;
         LinearLayout linearLayout = (findViewById(R.id.linearLayoutInstituicoesInformacoes));

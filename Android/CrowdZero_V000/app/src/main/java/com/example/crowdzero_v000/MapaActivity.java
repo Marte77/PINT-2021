@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
-import android.util.Pair;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -26,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.example.crowdzero_v000.fragmentos.FragmentModalBottomSheet;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,9 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.TreeMap;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -129,12 +127,10 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode){
-            case 123://requestcode da activity que abre as settings da localizacao
-                //fazer refresh da activity
-                finish();
-                startActivity(getIntent());
-                break;
+        if (requestCode == 123) {//requestcode da activity que abre as settings da localizacao
+            //fazer refresh da activity
+            finish();
+            startActivity(getIntent());
         }
     }
 
@@ -143,22 +139,22 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
             return;
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 2f, new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                LatLng locUtil = new LatLng(location.getLatitude(), location.getLongitude());
-                String locUtilS = String.valueOf(locUtil.latitude).substring(0, 5) + ", " + String.valueOf(locUtil.longitude).substring(0, 5);
-                userMarkerOptions = marcadorComIcone(locUtil, "Localização Utilizador", locUtilS, true);
+                LatLng coordsUtil = new LatLng(location.getLatitude(), location.getLongitude());
+                String locUtilS = String.valueOf(coordsUtil.latitude).substring(0, 5) + ", " + String.valueOf(coordsUtil.longitude).substring(0, 5);
+                userMarkerOptions = marcadorComIcone(coordsUtil, "Localização Utilizador", locUtilS, true);
                 if (mapa != null && !isUserMarkerSet) {
                     userMarker = mapa.addMarker(userMarkerOptions);
                     if(!veioDoInfoInstituicao)
-                        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(locUtil,zoom));
+                        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(coordsUtil,zoom));
                     else{
                         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngInfoInstituicao,zoom));
                     }
                     isUserMarkerSet = true;
                 } else if (mapa != null) {
-                    userMarker.setPosition(locUtil);
+                    userMarker.setPosition(coordsUtil);
                 }
             }
         });
@@ -279,7 +275,7 @@ public class MapaActivity extends NavDrawerActivity implements OnMapReadyCallbac
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.6574533,-7.9131884),zoom));
 
         try {
-            boolean success = googleMap.setMapStyle( //adicionar estilo ao mapa para tirar os marcadores
+            googleMap.setMapStyle( //adicionar estilo ao mapa para tirar os marcadores
                     MapStyleOptions.loadRawResourceStyle(
                             getApplicationContext(), R.raw.map_style));
 

@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -23,8 +24,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
 
 public class RegistoActivity extends NavDrawerActivity{
     TextInputEditText emailIn, passwordIn,pNomeIn,uNomeIn, codPostalIn;

@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
 import com.example.crowdzero_v000.fragmentos.CardReportFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

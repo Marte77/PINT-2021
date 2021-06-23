@@ -1,22 +1,16 @@
 package com.example.crowdzero_v000;
 
-import androidx.fragment.app.Fragment;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.example.crowdzero_v000.fragmentos.CardInstituicoesFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Map;
 
 public class InstituicoesActivity extends NavDrawerActivity {
 

@@ -5,15 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
 import com.google.android.material.appbar.MaterialToolbar;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{

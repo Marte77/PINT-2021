@@ -5,31 +5,22 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.crowdzero_v000.FuncoesApi;
 import com.example.crowdzero_v000.InstituicaoInformacoesActivity;
 import com.example.crowdzero_v000.ListaReportsInstituicaoActivity;
 import com.example.crowdzero_v000.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Objects;
 
 
 public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
