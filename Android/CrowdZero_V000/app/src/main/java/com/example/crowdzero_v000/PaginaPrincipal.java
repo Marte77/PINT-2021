@@ -31,6 +31,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -50,6 +53,22 @@ public class PaginaPrincipal extends NavDrawerActivity {
         TextView textView = findViewById(R.id.textViewPaginaPrincipalReport);
         textView.setText(textView.getText()+"\n Camâra de Viseu");
 
+        final FuncoesSharedPreferences f =(new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE)));
+        FuncoesApi.FuncoesPessoas.verificarSeJaFoiVerificado(getApplicationContext(),
+                f.getIDUtilizador(),
+                new FuncoesApi.volleycallback() {
+                    @Override
+                    public void onSuccess(JSONObject jsonObject) throws JSONException {
+                        Log.i("pedido",jsonObject.toString());
+                        if(jsonObject.getJSONObject("Estado").getBoolean("Verificado"))
+                            f.setVerificacao(true);
+                    }
+
+                    @Override
+                    public void onError(JSONObject jsonObjectErr) throws JSONException {
+                        Log.i("pedido","Erro ver se ja foi verificaod: " + jsonObjectErr);
+                    }
+                });
 
 
         /*

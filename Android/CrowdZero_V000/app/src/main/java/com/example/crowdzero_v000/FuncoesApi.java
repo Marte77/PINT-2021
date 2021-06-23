@@ -2,55 +2,25 @@ package com.example.crowdzero_v000;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.experimental.Experimental;
-import androidx.core.content.ContextCompat;
-import androidx.loader.content.AsyncTaskLoader;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.crypto.tink.proto.AesGcm;
-import com.google.crypto.tink.subtle.AesGcmJce;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Date;
-import java.util.concurrent.AbstractExecutorService;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-
-
 public class FuncoesApi {
 
     public interface volleycallback{
@@ -395,13 +365,43 @@ public class FuncoesApi {
             request.add(jsonObjectRequest);
         }
 
+        public static void verificarSeJaFoiVerificado(final Context context, int idUtilEmpresa,final volleycallback VCB){
+            String url = urlGeral+"/Pessoas/ver_se_util_esta_verificado/"+idUtilEmpresa;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
 
-
-
-        public static void criarUtilInstituicao(final Context context,
-                                                String email, String password, String codPostal,
-                                                String pNome, String uNome, String dataNasc,
-                                                int idInst, String cidade, final volleycallback VCB) throws JSONException {
+        //region criar utilizador (ler comentario aqui dentro)
+        /**  estas funcoes sao exatamente iguais as duas de cima, apenas muda que as outras ja veem com o body feito
+         * so nao removi para o caso de voltar a precisar ou se quiser ver alguma cena
+            */
+        public static void criarUtilInstituicao(final Context context, String email, String password, String codPostal, String pNome, String uNome, String dataNasc, int idInst, String cidade, final volleycallback VCB) throws JSONException {
             String url = urlGeral + "/Pessoas/createUtil_Instituicao";
             RequestQueue request = Volley.newRequestQueue(context);
             JSONObject body = new JSONObject();
@@ -488,7 +488,9 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+        //endregion
 
+        //region estas funcoes deviam estar na FuncoesReports mas so dei conta disso demasiado tarde lol
         public static void avaliarReport(Context context,
                                          int like,int dislike,
                                          int idreport,int idPessoa ,final volleycallback VCB) throws JSONException {
@@ -515,11 +517,17 @@ public class FuncoesApi {
                 public void onErrorResponse(VolleyError error) {
                     try {
                         VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
-                        Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
-                    } catch (Exception e ) {
+                        Log.i("pedido", "ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        Log.i("pedido","Catch ERRO: "+ e);
+                        Log.i("pedido", "Catch ERRO: " + e);
+                        try {
+                            VCB.onError(new JSONObject(new String("Erro catch")));
+                        } catch (JSONException jsonException) {
+                            jsonException.printStackTrace();
+                        }
                     }
+
                 }
             }
             );
@@ -590,6 +598,7 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+        //endregion
     }
 
     public static class FuncoesInstituicoes{
@@ -666,10 +675,23 @@ public class FuncoesApi {
     }
 
     public static String encriptarString(String input) throws Exception {
-        String key="ThisIsThe32ByteKeyForEncryption!"; // 256 bit
-        AesGcmJce aesGcmJce = new AesGcmJce(key.getBytes());
-        byte[] encrypted = aesGcmJce.encrypt(input.getBytes(),null);
-        return new String(encrypted);
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(input.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+
     }
 
 }

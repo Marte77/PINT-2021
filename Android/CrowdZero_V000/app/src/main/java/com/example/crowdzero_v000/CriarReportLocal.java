@@ -50,7 +50,12 @@ public class CriarReportLocal extends NavDrawerActivity {
         niveisDensidadeArray.add("Muito Populado");
         niveisDensidadeArray.add("Extremamente Populado");
 
-        // TODO: 18/06/2021 verificar se o utilizador é da instituicao
+
+        final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+        if(f.getVerificacao()){
+            // TODO: 23/06/2021 fazer cenas relativas ao report indoor
+        }
+
 
         autoCompleteTextView = findViewById(R.id.autoCompleteNivelReport);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.lista_niveis_densidade,niveisDensidadeArray);
@@ -59,26 +64,26 @@ public class CriarReportLocal extends NavDrawerActivity {
 
         textInputEditText = findViewById(R.id.inputDescricaoNovoReport);
 
-
+        f.logarSharedPrefs();
+        Log.i("testar",""+f.getIDUtilizador());
 
         MaterialButton button = findViewById(R.id.submeterNovoReport);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 18/06/2021 submeter report
+                // TODO: 23/06/2021 fazer report indoor
                 if(autoCompleteTextView.getText().toString().isEmpty() || textInputEditText.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(),"Tem de preencher os campos!",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String tipoPessoa = getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getString("TipoPessoa","Outros_Util");
-                if(tipoPessoa.equals("Outros_Util"))
-                {
+                String tipoPessoa = f.getTipoPessoa();
+                if(tipoPessoa.equals("Outros_Util")){
                     try {
                         FuncoesApi.FuncoesReports.criarNovoReportOutdoorOutrosUtil(getApplicationContext(),
                                 textInputEditText.getText().toString(),
                                 niveisDensidadeArray.indexOf(autoCompleteTextView.getText().toString()) + 1,
                                 idlocal,
-                                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0),
+                                f.getIDUtilizador(),
                                 new FuncoesApi.volleycallback() {
                                     @Override
                                     public void onSuccess(JSONObject jsonObject) throws JSONException {
@@ -104,7 +109,7 @@ public class CriarReportLocal extends NavDrawerActivity {
                                 textInputEditText.getText().toString(),
                                 niveisDensidadeArray.indexOf(autoCompleteTextView.getText().toString()) + 1,
                                 idlocal,
-                                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil", 0),
+                                f.getIDUtilizador(),
                                 new FuncoesApi.volleycallback() {
                                     @Override
                                     public void onSuccess(JSONObject jsonObject) throws JSONException {
@@ -126,20 +131,6 @@ public class CriarReportLocal extends NavDrawerActivity {
                 }
             }
         });
-        /*
-        try {
-            criarNovoReportOutdoorOutrosUtil(getApplicationContext(), descricaoReport, nivelDensidade, idlocal, 1,
-                    new FuncoesApi.volleycallback() {
-                        @Override
-                        public void onSuccess(JSONObject jsonObject) throws JSONException {
-                            Log.i("testar",jsonObject.toString());
-                        }
-                    });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        */
-
     }
 
 

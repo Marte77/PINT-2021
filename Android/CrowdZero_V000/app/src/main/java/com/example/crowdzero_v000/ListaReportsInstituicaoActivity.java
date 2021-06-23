@@ -46,7 +46,6 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         botaoNovoReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                botaoNovoReport.setEnabled(false);
                 botaoNovoReport.cancelPendingInputEvents();//prevenir duplos cliques que duplicam o report
                 criarNovoReport();
             }
@@ -61,7 +60,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
 
     void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, int INTpopulacao){
         String populacao ="";
-        // TODO: 20/06/2021 colocar imagem da pessoa e implementar likes
+        // TODO: 20/06/2021 colocar imagem da pessoa
         switch (INTpopulacao){
             case 1:populacao = "Pouco Populado"; break;
             case 2:populacao = "Muito Populado";break;
@@ -76,7 +75,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
                 ,descricaoReport
                 ,idReport
                 ,populacao,
-                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0));
+                (new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getIDPessoa());
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayoutScrollViewListaReportsInstituicoes,card).commit();
@@ -112,7 +111,6 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         FuncoesApi.FuncoesReports.getListaReportsOutdoor(getApplicationContext(), idlocal, tipoTempo,tempo, new FuncoesApi.volleycallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                // TODO: 20/06/2021 lista de reportsoutrosutil retorna vazia apesar de existir 
                 JSONArray reportsOutros = jsonObject.getJSONObject("Reports").getJSONArray("ReportsOutrosUtil");
                 JSONArray reportsInst = jsonObject.getJSONObject("Reports").getJSONArray("ReportsUtilInst");
                 for(int i = 0;i< reportsOutros.length(); i++){

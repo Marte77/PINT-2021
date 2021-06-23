@@ -1,5 +1,6 @@
 package com.example.crowdzero_v000;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -50,7 +51,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         //FuncoesApi.downloadImagem(getApplicationContext(),getIntent().getExtras().getString("urlimagem"),img);
 
 
-        //TODO:verificar se é utilizador e verficar se já é favorito para ligar o botao do fav
+        //TODO:verficar se já é favorito para ligar o botao do fav
         verificarSeUtilizadorEmpresa();
         if(!isUtilizadorEmpresa){
             LinearLayout ll = findViewById(R.id.linearLayoutBotaoInteriorInstiuicaoInfo);
@@ -118,8 +119,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         }
     }
     void verificarSeUtilizadorEmpresa(){
-        boolean eUtiliziador = true;
-        if(eUtiliziador)
+        if((new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getTipoPessoa().equals("Util_Instituicao"))
             isUtilizadorEmpresa =true;
 
     }

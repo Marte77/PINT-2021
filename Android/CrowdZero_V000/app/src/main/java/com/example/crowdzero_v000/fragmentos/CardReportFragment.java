@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.crowdzero_v000.FuncoesApi;
+import com.example.crowdzero_v000.FuncoesSharedPreferences;
 import com.example.crowdzero_v000.R;
 
 import org.json.JSONException;
@@ -80,6 +81,7 @@ public class CardReportFragment extends Fragment {
                             @Override
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBDislike.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                                Log.i("pedido","Sucesso remover interacao dislike: "+jsonObject);
                             }
 
                             @Override
@@ -92,11 +94,12 @@ public class CardReportFragment extends Fragment {
                             @Override
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                                Log.i("pedido","Sucesso Dislike: "+jsonObject);
                             }
 
                             @Override
                             public void onError(JSONObject jsonObjectErr) throws JSONException {
-
+                                Log.i("pedido","Erro remover dar dislike: "+jsonObjectErr);
                             }
                         });
                     }
@@ -116,11 +119,12 @@ public class CardReportFragment extends Fragment {
                             @Override
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBLike.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+                                Log.i("pedido","Sucesso remover interacao like: "+jsonObject);
                             }
 
                             @Override
                             public void onError(JSONObject jsonObjectErr) throws JSONException {
-
+                                Log.i("pedido","Erro remover interacao like: "+jsonObjectErr);
                             }
                         });
                     } else {
@@ -128,11 +132,12 @@ public class CardReportFragment extends Fragment {
                             @Override
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                                Log.i("pedido","Sucesso Like: "+jsonObject);
                             }
                             @Override
                             public void onError(JSONObject jsonObjectErr) throws JSONException {
 
-                                Log.i("pedido","Erro removerinteracao like: "+jsonObjectErr);
+                                Log.i("pedido","Erro dar like: "+jsonObjectErr);
                             }
                         });
                     }
@@ -184,8 +189,10 @@ public class CardReportFragment extends Fragment {
                         boolean isLike = jsonObject.getBoolean("isLike");
                         if(isLike){
                             IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
+                            botaoLike = true;
                         }else{
                             IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
+                            botaoDislike = true;
                         }
                     }
                 }
@@ -206,7 +213,8 @@ public class CardReportFragment extends Fragment {
 
     void darLike(FuncoesApi.volleycallback VCB){
         try {
-            FuncoesApi.FuncoesPessoas.avaliarReport(getActivity().getApplicationContext(), 1, 0, idReport, requireActivity().getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0),
+            FuncoesApi.FuncoesPessoas.avaliarReport(getActivity().getApplicationContext(), 1, 0, idReport,
+                    (new FuncoesSharedPreferences(getActivity().getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getIDPessoa(),
                     VCB);
         } catch (JSONException e) {
             e.printStackTrace();

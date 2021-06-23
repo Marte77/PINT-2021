@@ -25,8 +25,7 @@ public class InstituicoesActivity extends NavDrawerActivity {
         @Override
         public void onSuccess(JSONObject jsonObject) throws JSONException {
             //Log.i("pedido", jsonObject.toString());
-            if(jsonObject.getInt("status") == 500)
-            {
+            if(jsonObject.getInt("status") == 500){
                 Toast.makeText(getApplicationContext(),"Erro a obter os locais",Toast.LENGTH_LONG).show();
                 return;
             }
@@ -55,10 +54,6 @@ public class InstituicoesActivity extends NavDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instituicoes);
 
-        Map<String,? > map = getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getAll();
-        for(Map.Entry<String,?> a : map.entrySet())
-            Log.i("testar",a.getKey() + " "+a.getValue());
-
         /*
         * adicionar padding em cima da SV, caso contrário ficaria a sobrepor a topbar
         * */
@@ -68,12 +63,6 @@ public class InstituicoesActivity extends NavDrawerActivity {
 
 
         FuncoesApi.FuncoesLocais.getTodosLocais(getApplicationContext(),VCB);
-
-        /*
-        adicionarCard();
-        adicionarCard();
-        adicionarCard();
-        adicionarCard();*/
 
     }
 
@@ -85,13 +74,6 @@ public class InstituicoesActivity extends NavDrawerActivity {
                 descricao,
                 idLocal,
                 urlImagem);
-        //cardInicial.getView().findViewById(R.id.DetalhesFragmentoBotao).setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        adicionarCard();
-        //    }
-        //});
-
         getSupportFragmentManager().beginTransaction()
                 .add(findViewById(R.id.linearLayoutFragmentsInstituicoes).getId(),cardInicial,"instituicao"+nCards).
                 commit();

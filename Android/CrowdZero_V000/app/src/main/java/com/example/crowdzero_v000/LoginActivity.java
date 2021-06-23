@@ -134,31 +134,33 @@ public class LoginActivity extends AppCompatActivity {
                     return;
 
                 try{
+
                     FuncoesApi.FuncoesPessoas.fazerLogin(getApplicationContext(),
-                            emailTxt.getText().toString(), passwordTxt.getText().toString(),
+                            emailTxt.getText().toString(), FuncoesApi.encriptarString(passwordTxt.getText().toString()),
                             new FuncoesApi.volleycallback() {
                                 @Override
                                 public void onSuccess(JSONObject jsonObject) throws JSONException {
                                     if(!jsonObject.getBoolean("login")){
                                         return;
                                     }
-                                    if (colocarNasSharedPreferences(jsonObject)) return;
+                                    colocarNasSharedPreferences(jsonObject);
                                     irParaPaginalPrincipal();
                                 }
 
                                 @Override
                                 public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                    Log.i("pedido",jsonObjectErr.toString());
+                                    Log.i("testar",jsonObjectErr.toString());
                                     if(jsonObjectErr.getString("err").equals("Email nao existe")){
                                         Toast.makeText(getApplicationContext(),"O Email inserido nao existe!",Toast.LENGTH_LONG).show();
                                     }else if(jsonObjectErr.getString("err").equals("Password Incorreta")){
                                         Toast.makeText(getApplicationContext(),"A password inserida está incorreta!",Toast.LENGTH_LONG).show();
-
                                     }
                                 }
                             });
-                }catch (JSONException e){
+                }catch (Exception e){
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Ocorreu um erro",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Ocorreu um erro, é possível que a conta não exista",Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -180,28 +182,30 @@ public class LoginActivity extends AppCompatActivity {
      * */
 
     private boolean colocarNasSharedPreferences(final JSONObject jsonObject) throws JSONException {
-        SharedPreferences sharedPreferences = getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+
 
         JSONObject infoutil= jsonObject.getJSONObject("PessoaLogin");
         JSONObject infopessoa= infoutil.getJSONObject("Pessoa");
+
+        FuncoesSharedPreferences sharedPreferences = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+
         if(jsonObject.getString("TipoPessoa").equals("Outros_Util")){
-            editor.putInt("IDUtil",infoutil.getInt("ID_Outro_Util"));
+
+            sharedPreferences.setIDUtilizador(infoutil.getInt("ID_Outro_Util"));
         }else if(jsonObject.getString("TipoPessoa").equals("Util_Instituicao")){
-            editor.putInt("IDUtil",infoutil.getInt("ID_Util"));
-            editor.putBoolean("Verificado",infoutil.getBoolean("Verificado"));
+            sharedPreferences.setIDUtilizador(infoutil.getInt("ID_Util"));
+            sharedPreferences.setVerificacao(infoutil.getBoolean("Verificado"));
+
         }else{
             Toast.makeText(getApplicationContext(),"Contas admin não podem usar a app", Toast.LENGTH_SHORT).show();
             return true;
         }
-        editor.putString("TipoPessoa", jsonObject.getString("TipoPessoa"));
-        editor.putInt("IDPessoa",infopessoa.getInt("IDPessoa"));
-        editor.putString("Email",emailTxt.getText().toString());
-        // TODO: 18/06/2021 encriptar password
-        editor.putString("Password",passwordTxt.getText().toString());
-        editor.putBoolean("SessaoIniciada",true);
-        editor.apply();
-        editor.commit();
+        sharedPreferences.setTipoPessoa(jsonObject.getString("TipoPessoa"));
+        sharedPreferences.setIDPessoa(infopessoa.getInt("IDPessoa"));
+        sharedPreferences.setEmail(emailTxt.getText().toString());
+        sharedPreferences.setPassword(passwordTxt.getText().toString());
+        sharedPreferences.setSessaoIniciada(true);
+
         return false;
     }
 }

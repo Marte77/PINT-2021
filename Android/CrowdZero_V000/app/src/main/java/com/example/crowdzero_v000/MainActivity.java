@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,39 +40,44 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 startActivity(RegistoIntent);
             break;
             case R.id.botaoEntrar://verifica se ja fez login anteriormente
-                if(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getBoolean("SessaoIniciada",false)){
+                FuncoesSharedPreferences sharedPreferences = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+
+                if(sharedPreferences.getSessaoIniciada()){
                     //sessao esta iniciada
                     try {
                         FuncoesApi.FuncoesPessoas.fazerLogin(getApplicationContext(),
-                                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getString("Email", "null"),
-                                getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getString("Password", "null"),
+                                sharedPreferences.getEmail(),
+                                FuncoesApi.encriptarString(sharedPreferences.getPassword()),
                                 new FuncoesApi.volleycallback() {
                                     @Override
-                                    public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                    public void onSuccess(JSONObject jsonObject) {
                                         Intent i = new Intent(getApplicationContext(),PaginaPrincipal.class);
                                         startActivity(i);
                                     }
 
                                     @Override
-                                    public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                    public void onError(JSONObject jsonObjectErr) {
                                         Toast.makeText(getApplicationContext(),"Erro a fazer login automatico",Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(getApplicationContext(),LoginActivity.class);
-                                        startActivity(i);
+                                        abrirActivityEntrar();
                                     }
                                 });
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
+                        abrirActivityEntrar();
                     }
                 }
                 else {
-                    Intent EntrarIntent = new Intent(MainActivity.this, LoginActivity.class);
-                    EntrarIntent.putExtra("activity","main");
-                    startActivity(EntrarIntent);
+                    abrirActivityEntrar();
                 }
                 break;
             case R.id.hiperlink_Sem_registo:
                 Toast.makeText(getApplicationContext(),"a tua mae",Toast.LENGTH_LONG).show();
                 break;
         }
+    }
+    void abrirActivityEntrar(){
+        Intent EntrarIntent = new Intent(MainActivity.this, LoginActivity.class);
+        EntrarIntent.putExtra("activity","main");
+        startActivity(EntrarIntent);
     }
 }
