@@ -81,7 +81,7 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
             PessoaIDPessoa : id,
             Pontos : 0,
             Ranking : 0,
-            Codigo_Empresa : Codigo_Empresa,
+            Codigo_Empresa : -1, // nao precisamos, mas nao retiramos pq e demaisado tarde
             Verificado:0
         })
 
