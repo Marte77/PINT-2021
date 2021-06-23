@@ -8,6 +8,7 @@ var sequelize = require('../model/database');
 const controllers = {}
 const { Op } = require('sequelize');
 const Pessoas = require('../model/Pessoas/Pessoas');
+const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
 
 //nas criacoes de pessoas, se algum der erro, ele apaga os anteriores da BD
 //, garantindo que nao existam pessoas repetidas
@@ -296,6 +297,25 @@ controllers.login = async (req,res) => {//post
 }
 
 
+controllers.isUtilizadorInstVerificado = async(req,res)=>{//get
+    const {id} = req.params
+    try {
+        //retorna null se nao existir
+        var isVerificado = await Utils_Instituicao.findOne({
+            where:{
+                ID_Util:id
+            },
+            attributes:['Verificado']
+        })
+    } catch (e) {
+        console.log(e)
+    }
+    if(isVerificado === null)
+        res.send({Estado:"Utilizador nao e util instituicao ou nao existe"})
+    else res.send({Estado:isVerificado})
+}
+
+
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){
@@ -321,7 +341,6 @@ function organizarPessoasPorPontos(arraypessoas)
 
     return arraypessoas
 }
-
 
 
 module.exports= controllers;

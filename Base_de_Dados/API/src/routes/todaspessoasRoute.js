@@ -10,5 +10,6 @@ router.post('/createOutros_Util',todaspessoasController.createOutros_Util);
 router.get('/getTop3Pessoas/:numerotoppessoas',todaspessoasController.getTop3Pessoas)
 router.get('/getInfoPessoa/:idpessoa',todaspessoasController.getInfoPessoa);
 router.post('/login',todaspessoasController.login)
+router.get('/ver_se_util_esta_verificado/:id',todaspessoasController.isUtilizadorInstVerificado);
 
 module.exports = router;
