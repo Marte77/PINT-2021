@@ -205,7 +205,6 @@ controllers.getTop3Pessoas=async (req,res) => { //get
         arr.push(pessoa3)
     for(let pessoa3 of top3outrosUtil)
         arr.push(pessoa3)
-    console.log(arr)
     arr = organizarPessoasPorPontos(arr)
     
     var arrayresposta = new Array(), j = 0
