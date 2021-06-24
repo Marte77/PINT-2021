@@ -39,7 +39,7 @@ POST: http://localhost:3000/Instituicao/createInstituicao
 POST: http://localhost:3000/Pessoas/login
 {"Email" : "email123","Password":"asdasd"}
 
-GET : http://localhost:3000/Pessoas/getTop3Pessoas/3 o numero 3 pode ser alterado para qualquer outro que funciona na mesma
+GET : http://localhost:3000/Pessoas/getTopXPessoas/3 o numero 3 pode ser alterado para qualquer outro que funciona na mesma
 
 GET: http://localhost:3000/Pessoas/getInfoPessoa/:id
 

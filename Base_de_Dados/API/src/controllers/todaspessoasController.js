@@ -158,12 +158,15 @@ controllers.getTop3Pessoas=async (req,res) => { //get
     try{
         var top3outrosUtil = await outros_util.findAll({
             limit:numerotoppessoas,
-            order:['Ranking','Pontos_Outro_Util'],
-            where:{
-                Ranking:{ 
-                    [Op.ne]:0
-                }
-            },include:{
+            order:[/*'Ranking',*/
+                ['Pontos_Outro_Util','DESC']
+            ],
+            //where:{
+            //    Ranking:{ 
+            //        [Op.ne]:0
+            //    }
+            //},
+            include:{
                 model:pessoas,
                 attributes:{
                     exclude:['Password']
@@ -173,18 +176,20 @@ controllers.getTop3Pessoas=async (req,res) => { //get
 
         var top3UtilInst = await utils_instituicao.findAll({
             limit:numerotoppessoas,
-            order:['Ranking','Pontos'],
-            where:{
-                Ranking:{
-                    [Op.ne]:0
-                }
-            },
-                include:{
-                    model:pessoas,
-                    attributes:{
-                        exclude:['Password']
-                    },required:false
-                }
+            order:[/*'Ranking',*/
+                ['Pontos','DESC']
+            ],
+            //where:{
+            //    Ranking:{
+            //        [Op.ne]:0
+            //    }
+            //},
+            include:{
+                model:pessoas,
+                attributes:{
+                    exclude:['Password']
+                },required:false
+            }
             
             
 
@@ -200,6 +205,7 @@ controllers.getTop3Pessoas=async (req,res) => { //get
         arr.push(pessoa3)
     for(let pessoa3 of top3outrosUtil)
         arr.push(pessoa3)
+    console.log(arr)
     arr = organizarPessoasPorPontos(arr)
     
     var arrayresposta = new Array(), j = 0

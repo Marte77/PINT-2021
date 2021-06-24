@@ -17,9 +17,9 @@ var Utils_Instituicao = sequelize.define('Utils_Instituicao', {
     //Password: Sequelize.TEXT,
     //ID_Util: Sequelize.INTEGER,  //falta autoincremento
     Pontos: Sequelize.INTEGER,
-    Ranking: Sequelize.INTEGER,
+    Ranking: Sequelize.INTEGER,//deve se tornar desnecessário
     Codigo_Empresa: Sequelize.INTEGER,
-    Verificado: Sequelize.BOOLEAN//todo fazer isto
+    Verificado: Sequelize.BOOLEAN
 },
 {
 timestamps: false,

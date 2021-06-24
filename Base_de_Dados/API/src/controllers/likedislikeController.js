@@ -11,12 +11,17 @@ const Tabela_LikesDislikes = require('../model/Reports/Tabela_LikesDislikes');
 
 const controllers = {}
 
-const nLikesAdicionaOuSubtrai = 2; //a cada 2 likes ou dislikes subtrai ou adiciona 1 ponto
+//aqui so serve para indicar que esta variavel existe, mas o valor dela esta a ser obtido sempre que se chama a funcao que a usa
+//pois se alguem alterar o valor no ficheiro já nao tem de reiniciar o servidor
+//var {nLikesAdicionaOuSubtrai} = require('./numero_Like.json'); //a cada 2 likes ou dislikes subtrai ou adiciona 1 ponto
+
 
 controllers.criarLikeDislike = async (req,res) => { //post
     let statusCode = 200;
     let isUtilInst = true;
     const { Like,Dislike,IDPessoa,IDReport}= req.body
+    var {nLikesAdicionaOuSubtrai} = require('./numero_Like.json'); //a cada 2 likes ou dislikes subtrai ou adiciona 1 ponto
+
     if(Like == Dislike)
     {
         res.status(500).send({err:"Nao pode dar like e dislike ao mesmo tempo"})
@@ -156,6 +161,7 @@ controllers.criarLikeDislike = async (req,res) => { //post
 
 controllers.removerLikeDislike = async (req,res) =>{//post
     const {IDPessoa, IDReport} = req.body
+    var {nLikesAdicionaOuSubtrai} = require('./numero_Like.json'); //a cada 2 likes ou dislikes subtrai ou adiciona 1 ponto
     try {
         let existeInteracao = await Tabela_LikesDislikes.findOne({
             where:{
