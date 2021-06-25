@@ -318,7 +318,9 @@ controllers.getNumeroReportsFeitos = async(req,res)=>{//get
             err: e.toString()
         })
     }
+    var {nLikesAdicionaOuSubtrai} = require('./numero_Like.json')
     res.send({
+        NLikesParaSubir:nLikesAdicionaOuSubtrai,
         Numero_Reports: ntotalreports,
         Pessoa:pessoa
     })
