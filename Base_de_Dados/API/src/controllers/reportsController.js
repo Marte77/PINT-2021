@@ -10,7 +10,8 @@ const Util_Instituicao = require('../model/Pessoas/Utils_Instituicao')
 const Pessoas = require('../model/Pessoas/Pessoas')
 const Local = require('../model/Local')
 const Local_Indoor = require('../model/Local_Indoor')
-const Instituicao = require('../model/Instituicao')
+const Instituicao = require('../model/Instituicao');
+const Tabela_LikesDislikes = require('../model/Reports/Tabela_LikesDislikes');
 
 controllers.criarReportOutdoorOutrosUtil = async (req,res) => { //post
     const { DescricaoReport,NivelDensidade,IDLocal,idOutroUtil}= req.body
@@ -311,6 +312,11 @@ controllers.getNumeroReportsFeitos = async(req,res)=>{//get
             })
             ntotalreports =ntotalreports + nreports.length
         }        
+        var {count,rows} = await Tabela_LikesDislikes.findAndCountAll({
+            where:{
+                PessoaIDPessoa:id
+            }
+        })
     } catch (e) {
         console.log(e)
         res.status(500).send({
@@ -320,8 +326,9 @@ controllers.getNumeroReportsFeitos = async(req,res)=>{//get
     }
     var {nLikesAdicionaOuSubtrai} = require('./numero_Like.json')
     res.send({
-        NLikesParaSubir:nLikesAdicionaOuSubtrai,
+        NLikes:count,
         Numero_Reports: ntotalreports,
+
         Pessoa:pessoa
     })
 
