@@ -7,4 +7,5 @@ router.post('/novo_report_outdoor_utilsInstituicao',reportesController.criarRepo
 router.post('/novo_report_indoor',reportesController.criarReportIndoor);
 router.put('/get_lista_reports_local/:idlocal',reportesController.getListaReportsOutdoorLocal);
 router.put('/get_densidade_media_local/:idlocal',reportesController.getDensidadeMediaLocal)
+router.get('/get_numero_reports_pessoa/:id',reportesController.getNumeroReportsFeitos)
 module.exports=router

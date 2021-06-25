@@ -269,7 +269,61 @@ controllers.getDensidadeMediaLocal = async(req,res)=>{ //put
     res.send({numeroReports:totalReports,media:(Math.round(somaDensidade/totalReports))})
 }
 
+controllers.getNumeroReportsFeitos = async(req,res)=>{//get
+    const {id} = req.params
+    try {
+        var tipoPessoa = "Outro_Util"
+        var pessoa = await Outro_Util.findOne({
+            where:{
+                PessoaIDPessoa:id
+            }
+        })
+        if(pessoa === null)
+        {
+            pessoa = await Util_Instituicao.findOne({
+                where:{
+                    PessoaIDPessoa:id
+                }
+            })
+            tipoPessoa = "Util_Instituicao"
+            if(pessoa === null)
+                throw new Error('A pessoa não existe')
+        }
+        var nreports, ntotalreports
+        if(tipoPessoa === "Outro_Util"){
+            nreports = await Report_Outdoor_Outros_Util.findAll({
+                where:{
+                    OutrosUtilIDOutroUtil: pessoa.dataValues.ID_Outro_Util
+                }
+            })
+            ntotalreports = nreports.length
+        }else{
+            nreports = await Report_Indoor.findAll({
+                where:{
+                    UtilsInstituicaoIDUtil:pessoa.dataValues.ID_Util
+                }
+            })
+            ntotalreports = nreports.length
+            nreports = await Report_Outdoor_Util_Instituicao.findAll({
+                where:{
+                    UtilsInstituicaoIDUtil:pessoa.dataValues.ID_Util
+                }
+            })
+            ntotalreports =ntotalreports + nreports.length
+        }        
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({
+            desc:"erro a pesquisar",
+            err: e.toString()
+        })
+    }
+    res.send({
+        Numero_Reports: ntotalreports,
+        Pessoa:pessoa
+    })
 
+}
 
 
 module.exports = controllers;

@@ -247,7 +247,7 @@ controllers.getInfoPessoa=async (req,res) => {//get
         res.status(500).send({desc:"Erro a pesquisar",err:e.original})
     }
     if(infopessoa === null)
-        res.status(500).send({err:"Pessoa não existe"})
+        res.status(500).send({err:"Pessoa não existe ou é admin"})
     else res.status(200).send(infopessoa)
 }
 
