@@ -1,9 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ClassificacaoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayoutExteriorClassificacao"
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/fotoPerfilUtilizadorClassificacao"
+                        android:layout_width="118dp"
+                        android:layout_height="118dp"
+                        app:srcCompat="@drawable/ic_launcher_background"
+                        android:contentDescription="@string/foto_de_perfil" />
+
+                    <ImageView
+                        android:id="@+id/trofeuUtilClassificao"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:contentDescription="@string/trofeu"
+                        app:srcCompat="@drawable/ic_trofeu_24px" />
+
+                    <TextView
+                        android:id="@+id/PontuacaoUtilizadorClassificao"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:text="" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ranking"
+                        android:layout_weight="1"
+                        android:textSize="22sp"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:gravity="center_horizontal"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:textSize="22sp"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:text="@string/reports"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:textSize="22sp"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textAlignment="center"
+                        android:text="@string/likes"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/textViewRankingClassificao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ranking"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:textSize="22sp"
+                        android:gravity="center_horizontal"/>
+                    <TextView
+                        android:id="@+id/textViewReportsClassificao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:textSize="22sp"
+                        android:textAlignment="center"
+                        android:text="@string/reports"/>
+                    <TextView
+                        android:id="@+id/textViewLikesClassificao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:textSize="22sp"
+                        android:textAlignment="center"
+                        android:text="@string/likes"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <View android:layout_height="100dp"
+            android:layout_width="match_parent"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/top_3_utilizadores"
+                    android:layout_gravity="center"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingTop="40dp"
+
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:contentDescription="@string/medalha"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_medalha_de_prata"
+                            android:textAlignment="center" />
+                        <ImageView
+                            android:id="@+id/fotoPerfilPessoaSegundoLugar"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:srcCompat="@drawable/ic_launcher_background"
+                            android:contentDescription="@string/foto_de_perfil" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:id="@+id/textViewNomePessoaSegundoLugar" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:id="@+id/textViewPontuacaoPessoaSegundoLugar"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:contentDescription="@string/medalha"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_medalha_de_ouro"
+                            android:textAlignment="center" />
+                        <ImageView
+                            android:id="@+id/fotoPerfilPessoaPrimeiroLugar"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            app:srcCompat="@drawable/ic_launcher_background"
+                            android:contentDescription="@string/foto_de_perfil" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:id="@+id/textViewNomePessoaPrimeiroLugar"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:id="@+id/textViewPontuacaoPessoaPrimeiroLugar"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:paddingTop="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_medalha_de_bronze"
+                            android:textAlignment="center"
+                            android:contentDescription="@string/medalha" />
+                        <ImageView
+                            android:id="@+id/fotoPerfilPessoaTerceiroLugar"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            app:srcCompat="@drawable/ic_launcher_background"
+                            android:contentDescription="@string/foto_de_perfil" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:id="@+id/textViewNomePessoaTerceiroLugar"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:id="@+id/textViewPontuacaoPessoaTerceiroLugar"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

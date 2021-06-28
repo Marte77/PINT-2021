@@ -68,5 +68,11 @@
     <string name="instituicao">Instituição</string>
     <string name="confirmar_pertencer_inst">Confirmo que pertenço a uma instituição</string>
     <string name="codigo_postal">Código Postal</string>
+    <string name="foto_de_perfil">foto de perfil</string>
+    <string name="trofeu">trofeu</string>
+    <string name="ranking">Ranking</string>
+    <string name="likes">Likes</string>
+    <string name="top_3_utilizadores">Top 3 utilizadores</string>
+    <string name="medalha">medalha</string>
 
 </resources>

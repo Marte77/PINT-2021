@@ -121,7 +121,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         }
     }
     void verificarSeUtilizadorEmpresa(){
-        if((new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getTipoPessoa().equals("Util_Instituicao"))
+        if((new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getTipoPessoa().equals(FuncoesSharedPreferences.utilInst))
             isUtilizadorEmpresa =true;
 
     }

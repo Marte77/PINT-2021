@@ -93,7 +93,7 @@ public class CriarReportLocal extends NavDrawerActivity {
                     return;
                 }
                 String tipoPessoa = f.getTipoPessoa();
-                if (tipoPessoa.equals("Outros_Util")) {
+                if (tipoPessoa.equals(FuncoesSharedPreferences.outrosUtil)) {
                     try {
                         FuncoesApi.FuncoesReports.criarNovoReportOutdoorOutrosUtil(getApplicationContext(),
                                 textInputEditText.getText().toString(),
@@ -105,14 +105,14 @@ public class CriarReportLocal extends NavDrawerActivity {
                                     public void onSuccess(JSONObject jsonObject) throws JSONException {
                                         Log.i("pedido", jsonObject.toString());
                                         Toast.makeText(getApplicationContext(), "Report criado com sucesso", Toast.LENGTH_LONG).show();
-                                        finish();
+                                        fecharActivity();
                                     }
 
                                     @Override
                                     public void onError(JSONObject jsonObjectErr) throws JSONException {
                                         Log.i("pedido", "Erro a criar report out oturo util: " + jsonObjectErr.toString());
                                         Toast.makeText(getApplicationContext(), "Erro a criar report!", Toast.LENGTH_LONG).show();
-                                        finish();
+                                        fecharActivity();
                                     }
                                 });
                     } catch (JSONException e) {
@@ -130,14 +130,14 @@ public class CriarReportLocal extends NavDrawerActivity {
                                     public void onSuccess(JSONObject jsonObject) throws JSONException {
                                         Log.i("pedido", jsonObject.toString());
                                         Toast.makeText(getApplicationContext(), "Report criado com sucesso", Toast.LENGTH_LONG).show();
-                                        finish();
+                                        fecharActivity();
                                     }
 
                                     @Override
                                     public void onError(JSONObject jsonObjectErr) throws JSONException {
                                         Log.i("pedido", "Erro a criar report out utilinst: " + jsonObjectErr.toString());
                                         Toast.makeText(getApplicationContext(), "Erro a criar report!", Toast.LENGTH_LONG).show();
-                                        finish();
+                                        fecharActivity();
                                     }
                                 });
                     } catch (JSONException e) {
@@ -146,6 +146,11 @@ public class CriarReportLocal extends NavDrawerActivity {
                 }
             }
         });
+    }
+
+    private void fecharActivity() {
+        getIntent().putExtra("dondeveio","criarreport");
+        finish();
     }
 
     @Override

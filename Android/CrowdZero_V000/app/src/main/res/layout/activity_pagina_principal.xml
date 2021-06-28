@@ -15,14 +15,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/report_com_mais_likes"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.127" />
+        app:layout_constraintVertical_bias="0.105" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -56,6 +55,7 @@
                 android:id="@+id/textViewCardReportPaginaPrincipal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:text="Concentração em Viseu" />
 
             <com.github.mikephil.charting.charts.PieChart

@@ -4,7 +4,8 @@
     android:id="@+id/headerNavBarMenuTableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TableRow android:id="@+id/tableRowExteriorHeaderNavBar"
+    <TableRow
+        android:id="@+id/tableRowExteriorHeaderNavBar"
         android:layout_width="fill_parent" android:layout_height="wrap_content">
 
         <TableRow
@@ -14,7 +15,7 @@
             <ImageView
                 android:id="@+id/fotoPerfilUtilizadorHeaderNavBar"
                 android:layout_width="118dp"
-                android:layout_height="wrap_content"
+                android:layout_height="118dp"
                 app:srcCompat="@drawable/ic_launcher_background" />
         </TableRow>
 
@@ -24,6 +25,7 @@
             android:layout_height="match_parent">
 
             <TableLayout
+                android:paddingStart="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/tableLayoutInteriorHeaderNavBar">
@@ -59,7 +61,7 @@
                         <ImageView
                             android:id="@+id/trofeuHeaderNavBar"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_weight="0.5"
                             app:srcCompat="@drawable/ic_trofeu_24px" />
                     </LinearLayout>

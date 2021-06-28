@@ -1,5 +1,6 @@
 package com.example.crowdzero_v000;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
@@ -58,11 +64,13 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
     }
 
-    void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, int INTpopulacao){
+
+    void adicionarCard(String nomePessoa,String data, String descricaoReport, int idReport, int INTpopulacao, int nLikes, int nDislikes){
         String populacao ="";
-        // TODO: 20/06/2021 colocar imagem da pessoa
         switch (INTpopulacao){
             case 1:populacao = "Pouco Populado"; break;
             case 2:populacao = "Muito Populado";break;
@@ -77,12 +85,14 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
                 ,descricaoReport
                 ,idReport
                 ,populacao,
-                (new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getIDPessoa());
+                (new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getIDPessoa(),
+                nLikes, nDislikes);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.linearLayoutScrollViewListaReportsInstituicoes,card).commit();
 
         arrayListCardReportFragment.add(card);
+
     };
 
     void criarNovoReport(){
@@ -93,15 +103,27 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
         startActivity(i);
     }
 
+
+    boolean estevenoonpause = false;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        estevenoonpause = true; //apenas para identificar que veio de outra activity,
+                                // caso contrario iriam existir cardsduplicados
+    }
+
     @Override
     protected void onPostResume() { //refresh reports depois de submeter um report
         super.onPostResume();
-        LinearLayout ll = findViewById(R.id.linearLayoutScrollViewListaReportsInstituicoes);
-        ll.removeAllViews();
-        try {
-            getListaReports(tempo,tipoTempo);
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        if(estevenoonpause){
+            LinearLayout ll = findViewById(R.id.linearLayoutScrollViewListaReportsInstituicoes);
+            ll.removeAllViews();
+            try {
+                getListaReports(tempo,tipoTempo);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -126,7 +148,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
                                     dataReport.substring(dataReport.indexOf('T')+1,(dataReport.indexOf('T')+6))
                                     + " de " +dataReport.substring(0,dataReport.indexOf('T')),
                             report.getString("Descricao")
-                            ,report.getInt("ID_Report"),report.getInt("Nivel_Densidade"));
+                            ,report.getInt("ID_Report"),report.getInt("Nivel_Densidade"), report.getInt("N_Likes"),report.getInt("N_Dislikes"));
                 }
 
                 for(int i = 0;i< reportsInst.length(); i++){
@@ -140,7 +162,7 @@ public class ListaReportsInstituicaoActivity extends NavDrawerActivity {
                                     dataReport.substring(dataReport.indexOf('T')+1,(dataReport.indexOf('T')+6))
                                     + " de " +dataReport.substring(0,dataReport.indexOf('T')),
                             report.getString("Descricao")
-                            ,report.getInt("ID_Report"),report.getInt("Nivel_Densidade"));
+                            ,report.getInt("ID_Report"),report.getInt("Nivel_Densidade"), report.getInt("N_Likes"),report.getInt("N_Dislikes"));
                 }
             }
 

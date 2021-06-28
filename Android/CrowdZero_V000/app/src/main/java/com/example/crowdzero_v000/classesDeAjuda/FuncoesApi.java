@@ -12,9 +12,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -173,6 +175,38 @@ public class FuncoesApi {
                             }
                         }
                     }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+
+        public static void getNumeroReportsUtilizador(final Context context, int idPessoa, final volleycallback VCB){
+            String url = urlGeral + "/Report/get_numero_reports_pessoa/"+idPessoa;
+            RequestQueue request = Volley.newRequestQueue(context);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                        Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                    } catch (Exception e ) {
+                        e.printStackTrace();
+                        Log.i("pedido","Catch ERRO: "+ e);
+                    }
+                }
+            }
             );
             request.add(jsonObjectRequest);
         }
@@ -599,6 +633,77 @@ public class FuncoesApi {
             request.add(jsonObjectRequest);
         }
         //endregion
+
+        public static void getTopXPessoasComMaisPontos(final Context context,int nPessoas, final volleycallback VCB){
+            String url = urlGeral+"/Pessoas/getTopXPessoas/"+nPessoas;
+            RequestQueue request = Volley.newRequestQueue(context);
+            //este pedido tem de usar um jsonarrayrequest porque o API devolve um array
+            final JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response_) {
+
+                            try {
+                                //"converter" o jsonarray para json object
+                                // é feita esta conversao pq o volleycallback aceita um jsonobject nao array
+                                JSONObject response = new JSONObject();
+                                response.put("Top3",response_);
+                                VCB.onSuccess(response);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void getInformacoesPessoa(final Context context, int idPessoa ,final volleycallback VCB){
+            String url = urlGeral +"/Pessoas/getInfoPessoa/" + idPessoa;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesInstituicoes{

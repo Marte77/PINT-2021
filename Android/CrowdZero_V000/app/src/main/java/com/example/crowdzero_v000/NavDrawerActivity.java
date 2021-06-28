@@ -2,7 +2,9 @@ package com.example.crowdzero_v000;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +18,9 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -26,9 +30,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
+import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 //https://stackoverflow.com/a/49500446/10676498
 //agora, todas as atividades vao fazer "extend" desta classe e nao da AppCompatActivity
@@ -121,12 +130,27 @@ public class NavDrawerActivity extends AppCompatActivity {
         this.dl.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerOpened(@NonNull  View drawerView) {
-                LinearLayout ll = findViewById(R.id.linearLayoutPontuacaoHeaderNav);
-                if(!ll.hasOnClickListeners()){ //aplicar o listener apenas se ainda nao tiver um
+
+                //region listeners de botoes
+                //LinearLayout ll = findViewById(R.id.linearLayoutPontuacaoHeaderNav);
+                //if(!ll.hasOnClickListeners()){ //aplicar o listener apenas se ainda nao tiver um
+                //    //fiz desta maneira pq se tentasse fazer o findview() o layout ia sempre ficar nulo
+                //    //entao isto so mete o listener quando se abre a drawer
+                //    // , pois eu acho que aparecia nulo devido ao layout ainda nao ter sido instanciado
+                //    ll.setOnClickListener(new View.OnClickListener() {
+                //        @Override
+                //        public void onClick(View v) {
+                //            Intent i = new Intent(getApplicationContext(),ClassificacaoActivity.class);
+                //            i.putExtra("opcaoEscolhida","Classificacao");
+                //            comecarNovaActivity(i);
+                //        }
+                //    });
+                //}
+                TableRow tableRow = findViewById(R.id.tableRowExteriorHeaderNavBar);
+                if(!tableRow.hasOnClickListeners()){//aplicar o listener apenas se ainda nao tiver um
                     //fiz desta maneira pq se tentasse fazer o findview() o layout ia sempre ficar nulo
                     //entao isto so mete o listener quando se abre a drawer
-                    // , pois eu acho que aparecia nulo devido ao layout ainda nao ter sido instanciado
-                    ll.setOnClickListener(new View.OnClickListener() {
+                    tableRow.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(getApplicationContext(),ClassificacaoActivity.class);
@@ -135,6 +159,53 @@ public class NavDrawerActivity extends AppCompatActivity {
                         }
                     });
                 }
+                //endregion
+
+                //region atualizar pontuacao do header
+                final FuncoesSharedPreferences funcoesSharedPreferences = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+                try{
+                    FuncoesApi.FuncoesPessoas.getInformacoesPessoa(getApplicationContext(), funcoesSharedPreferences.getIDPessoa(), new FuncoesApi.volleycallback() {
+                        @Override
+                        public void onSuccess(JSONObject jsonObject) throws JSONException {
+                            final View LL = nv.getHeaderView(0);
+                            TextView tvPontos = LL.findViewById(R.id.PontuacaoUtilizadorHeaderNavBar);
+                            TextView tvNome = LL.findViewById(R.id.NomeUtilizadorHeaderNavBar);
+                            String nome = jsonObject.getJSONObject("Pessoa").getString("PNome") + " " + jsonObject.getJSONObject("Pessoa").getString("UNome");
+                            tvNome.setText(nome);
+                            if (funcoesSharedPreferences.getTipoPessoa().equals(FuncoesSharedPreferences.outrosUtil)) {
+                                int pts = jsonObject.getInt("Pontos_Outro_Util");
+                                String pontos;
+                                if(pts > 1)
+                                    pontos = pts + " Pontos";
+                                else pontos = pts + " Ponto";
+                                tvPontos.setText(pontos);
+                            } else {
+                                int pts = jsonObject.getInt("Pontos");
+                                String pontos;
+                                if(pts > 1)
+                                    pontos = pts + " Pontos";
+                                else pontos = pts + " Ponto";
+                                tvPontos.setText(pontos);
+                            }
+                            if (!jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil").toString().equals("null")) {
+                                FuncoesApi.downloadImagem(getApplicationContext(), jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil"), new FuncoesApi.volleyimagecallback() {
+                                    @Override
+                                    public void onSuccess(Bitmap bitmap) {
+                                        ((ImageView) (LL.findViewById(R.id.fotoPerfilUtilizadorHeaderNavBar))).setImageBitmap(bitmap);
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(JSONObject jsonObjectErr) throws JSONException {
+                            Log.i("pedido","erro navbar: "+jsonObjectErr);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                //endregion
             }
 
             //estes eventos ainda nao tem nada pq nao os usei, mas era preciso declará-los
@@ -184,11 +255,7 @@ public class NavDrawerActivity extends AppCompatActivity {
         LLP.width = (int) (widthEcra * 0.73);
         LL.setLayoutParams(LLP);
 
-        TextView tvPontos = LL.findViewById(R.id.PontuacaoUtilizadorHeaderNavBar);
-        TextView tvNome = LL.findViewById(R.id.NomeUtilizadorHeaderNavBar);
-        // TODO: 22/06/2021 ver pontuacao e colocar aqui
-        tvPontos.setText("150 Pontos");
-        tvNome.setText("Martinho Tavares Malhão");
+
 
         //colocar os listeners dos botoes
         tb.setNavigationOnClickListener(new View.OnClickListener() {

@@ -2,14 +2,19 @@ package com.example.crowdzero_v000.classesDeAjuda;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
 public class FuncoesSharedPreferences {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-
+    public static String outrosUtil = "Outros_Util";
+    public static String utilInst = "Util_Instituicao";
     /**
      * @param getSharedPrefs = getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE);
      *
@@ -24,6 +29,26 @@ public class FuncoesSharedPreferences {
         for(Map.Entry<String,?> a : map.entrySet())
             Log.i("testar",a.getKey() + " -> "+a.getValue());
     }
+
+    //region funcoes de foto de perfil
+    public Bitmap getFotoPerfil(){
+        String s = sharedPreferences.getString("Foto_de_Perfil",null);
+        if(s == null)
+            return null;
+        byte[] imagemEmBytes = Base64.decode(s,Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imagemEmBytes,0,imagemEmBytes.length);
+    }
+
+    public void setFotoDePerfil(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+        byte[] bytes = baos.toByteArray();
+        String s = Base64.encodeToString(bytes,Base64.DEFAULT);
+        editor.putString("Foto_de_Perfil",s);
+        editor.apply();
+        editor.commit();
+    }
+    //endregion
 
     /**
     * @return false se nao existir ou se nao estiver verificado

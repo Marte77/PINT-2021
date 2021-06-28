@@ -320,7 +320,6 @@ controllers.isUtilizadorInstVerificado = async(req,res)=>{//get
     else res.send({Estado:isVerificado})
 }
 
-
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){
@@ -346,6 +345,7 @@ function organizarPessoasPorPontos(arraypessoas)
 
     return arraypessoas
 }
+
 
 
 module.exports= controllers;

@@ -1,6 +1,7 @@
 package com.example.crowdzero_v000.fragmentos;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
@@ -24,6 +26,7 @@ import com.example.crowdzero_v000.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,12 +39,16 @@ public class CardReportFragment extends Fragment {
     boolean botaoCoracao = false;
     int idReport= -1;
     int idpessoa = 0;
-
+    int nLikes = 0;
+    int nDislikes = 0;
+    TextView txtLikesDislikes;
     /**
      * O NOME TEM DE TER SEMPRE UM '\n' DO GENERO
      *  "nome pessoa\ndata e hora
      * */
-    public static CardReportFragment newInstance(String nomePessoa,String dataReport, String descricaoReport, int idReport, String populacao, int idpessoa_) {
+    public static CardReportFragment newInstance(String nomePessoa,String dataReport, String descricaoReport,
+                                                 int idReport, String populacao, int idpessoa_,
+                                                 int nLikes_, int nDislikes_) {
 
         CardReportFragment f = new CardReportFragment();
 
@@ -52,20 +59,27 @@ public class CardReportFragment extends Fragment {
         b.putInt("idReport", idReport);
         b.putString("populacao", populacao);
         b.putInt("idpessoa",idpessoa_);
+        b.putInt("nLikes",nLikes_);
+        b.putInt("nDislikes",nDislikes_);
 
         f.setArguments(b);
         return f;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v =  inflater.inflate(R.layout.fragment_card_report, container, false);
+        final View v =  inflater.inflate(R.layout.fragment_card_report, container, false);
 
         assert getArguments() != null;
         this.idReport = getArguments().getInt("idReport");
         this.idpessoa = getArguments().getInt("idpessoa");
+        this.nLikes = getArguments().getInt("nLikes");
+        this.nDislikes = getArguments().getInt("nDislikes");
 
+        txtLikesDislikes = v.findViewById(R.id.textViewLikesReport);
+        atualizarTextViewLikes();
 
         //region listeners
         final ImageButton IBDislike = v.findViewById(R.id.botaoDislikeReport);
@@ -79,6 +93,8 @@ public class CardReportFragment extends Fragment {
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBDislike.setImageResource(R.drawable.ic_thumb_down_black_24dp);
                                 Log.i("pedido","Sucesso remover interacao dislike: "+jsonObject);
+                                nDislikes = nDislikes -1;
+                                atualizarTextViewLikes();
                             }
 
                             @Override
@@ -92,6 +108,9 @@ public class CardReportFragment extends Fragment {
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBDislike.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp);
                                 Log.i("pedido","Sucesso Dislike: "+jsonObject);
+                                nDislikes = nDislikes +1;
+                                atualizarTextViewLikes();
+
                             }
 
                             @Override
@@ -117,6 +136,8 @@ public class CardReportFragment extends Fragment {
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBLike.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                                 Log.i("pedido","Sucesso remover interacao like: "+jsonObject);
+                                nLikes = nLikes -1;
+                                atualizarTextViewLikes();
                             }
 
                             @Override
@@ -130,6 +151,9 @@ public class CardReportFragment extends Fragment {
                             public void onSuccess(JSONObject jsonObject) throws JSONException {
                                 IBLike.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp);
                                 Log.i("pedido","Sucesso Like: "+jsonObject);
+                                nLikes = nLikes +1;
+                                atualizarTextViewLikes();
+
                             }
                             @Override
                             public void onError(JSONObject jsonObjectErr) throws JSONException {
@@ -203,10 +227,37 @@ public class CardReportFragment extends Fragment {
             e.printStackTrace();
         }
 
-
+        try{
+            FuncoesApi.FuncoesPessoas.getInformacoesPessoa(getActivity().getApplicationContext(), idpessoa, new FuncoesApi.volleycallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) throws JSONException {
+                    String urlPessoa = jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil");
+                    if(!urlPessoa.equals("null"))
+                        obterImagem(urlPessoa,v);
+                }
+                @Override
+                public void onError(JSONObject jsonObjectErr) throws JSONException {
+                    Log.i("pedido","Erro obter info pessoa: " +jsonObjectErr.toString());
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return v;
     }
 
+    private void atualizarTextViewLikes() {
+        txtLikesDislikes.setText(Html.fromHtml("&nbsp;&nbsp;&nbsp;<b>Likes:</b>" + nLikes + "<br>&nbsp;&nbsp;&nbsp;<b>Dislikes:</b>" + nDislikes));
+    }
+
+    void obterImagem(String urlImagem, final View v){
+        FuncoesApi.downloadImagem(getActivity().getApplicationContext(), urlImagem, new FuncoesApi.volleyimagecallback() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageBitmap(bitmap);
+            }
+        });
+    }
 
     void darLike(FuncoesApi.volleycallback VCB){
         try {
