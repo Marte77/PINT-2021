@@ -3,8 +3,9 @@ const controllers = {}
 const List_LocalFavorito = require('../model/List_LocalFavorito')
 const Lista_Favoritos = require('../model/Lista_Favoritos')
 
-const Local = require('../model/Local')
-const Instituicao = require('../model/Instituicao')
+
+const Instituicao = require('../model/Instituicao');
+const Local = require('../model/Local');
 
 controllers.adicionarListaFavoritos = async (req,res) => { //post
     const { Descricao, IDPessoa, LocalIDLocal}= req.body
@@ -58,6 +59,87 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     
 } 
 
-//todo: remover local da lista favoritos
+
+controllers.removerLocalDaListaFavoritos = async(req,res) =>{
+    const IDLocal = req.params.IDLocal
+    const IDPessoa = req.params.IDPessoa
+
+    try {//so considera que existe 1 lista para cada utilizador apesar de dar para terem mais do que uma
+        var listapessoa = await Lista_Favoritos.findOne({
+            where:{
+                PessoaIDPessoa:IDPessoa
+            }
+        })
+        var localnalista = await List_LocalFavorito.findOne({
+            where:{
+                LocalIDLocal: IDLocal,
+                ListaFavoritoIDLista: listapessoa.dataValues.ID_Lista
+            }
+        })
+        if(localnalista === null)
+            throw new Error('Local nao esta na lista')
+        var localdestruido = await localnalista.destroy()
+    } catch (e) {
+        console.log(e.toString())
+        if(e.toString() === 'Error: Local nao esta na lista')
+            {res.send({sucesso:false,desc:'local nao esta na lista'})}
+        else res.status(500).send({desc:'Erro a apagar', err:e.original})
+    }
+    res.send({sucesso:true,desc:'local removido da lista com sucesso'})
+    // nao e necessario fazer nenhum return atras 
+    //pq se ele fizer algum res.send os resstantes ja nao serao executados
+}
+
+controllers.verificarSeLocalEstaNaLista= async(req,res) =>{
+    const IDLocal = req.params.IDLocal
+    const IDPessoa = req.params.IDPessoa
+    var existeLocal = false
+    try {//so considera que existe 1 lista para cada utilizador apesar de dar para terem mais do que uma
+        var listafavoritos = await Lista_Favoritos.findOne({
+            where:{
+                PessoaIDPessoa:IDPessoa
+            }
+        })
+        if(listafavoritos !== null){
+            var localnalista = await List_LocalFavorito.findOne({
+                where:{
+                    LocalIDLocal:IDLocal,
+                    ListaFavoritoIDLista: listafavoritos.dataValues.ID_Lista
+                }
+            })
+            if(localnalista !== null)
+                existeLocal = true
+        }
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a pesquisar", err:e.original})
+    }
+    res.send({existe:existeLocal})
+}
+
+controllers.getListaComLocaisFavoritados = async(req,res)=>{
+    const {IDPessoa} = req.params
+    try{
+        var listaPessoa = await Lista_Favoritos.findOne({
+            where:{
+                PessoaIDPessoa:IDPessoa
+            }
+        })
+        if(listaPessoa === null)
+            throw new Error('Lista nao existe')
+        var listaLocais = await List_LocalFavorito.findAll({
+            where:{
+                ListaFavoritoIDLista: listaPessoa.dataValues.ID_Lista
+            }            
+        })        
+        console.log(Object)
+    }catch(e){
+        console.log(e)
+        if(e.toString() === 'Error: Lista nao existe')
+            res.send({desc:"Lista nao existe", sucesso: false})
+        else res.status(500).send({desc:"erro a pesquisar", err:e.original})
+    }
+    res.send({sucesso:true, lista:listaLocais})
+}
 
 module.exports = controllers;
