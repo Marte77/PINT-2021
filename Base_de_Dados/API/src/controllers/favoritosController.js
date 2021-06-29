@@ -44,10 +44,8 @@ controllers.adicionarListaFavoritos = async (req,res) => { //post
     
     try{
         var criarFavorito = await List_LocalFavorito.create({
-            //LocalIDLocal : LocalIDLocal,
-            //ListaFavoritoIDLista: idlista
-            ID_Local:LocalIDLocal,
-            ID_Lista:idlista
+            LocalIDLocal : LocalIDLocal,
+            ListaFavoritoIDLista: idlista
         })
     }catch(e){
         console.log(e);
@@ -74,10 +72,8 @@ controllers.removerLocalDaListaFavoritos = async(req,res) =>{
         })
         var localnalista = await List_LocalFavorito.findOne({
             where:{
-                //LocalIDLocal: IDLocal,
-                //ListaFavoritoIDLista: listapessoa.dataValues.ID_Lista
-                ID_Local:IDLocal,
-                ID_Lista:listapessoa.dataValues.ID_Lista
+                LocalIDLocal: IDLocal,
+                ListaFavoritoIDLista: listapessoa.dataValues.ID_Lista
             }
         })
         if(localnalista === null)
@@ -107,10 +103,8 @@ controllers.verificarSeLocalEstaNaLista= async(req,res) =>{
         if(listafavoritos !== null){
             var localnalista = await List_LocalFavorito.findOne({
                 where:{
-                    //LocalIDLocal:IDLocal,
-                    //ListaFavoritoIDLista: listafavoritos.dataValues.ID_Lista
-                    ID_Local:IDLocal,
-                    ID_Lista:listapessoa.dataValues.ID_Lista    
+                    LocalIDLocal:IDLocal,
+                    ListaFavoritoIDLista: listafavoritos.dataValues.ID_Lista
                 }
             })
             if(localnalista !== null)
@@ -138,11 +132,7 @@ controllers.getListaComLocaisFavoritados = async(req,res)=>{
                 ListaFavoritoIDLista: listaPessoa.dataValues.ID_Lista
             }            
         })        
-        console.log(Object.getOwnPropertyNames(List_LocalFavorito))
-        console.log(List_LocalFavorito.associations)
-        console.log(Local.associations)
-        console.log(Local.primaryKeys)
-        console.log(Lista_Favoritos.primaryKeys)
+        //console.log(Object(listaLocais))
     }catch(e){
         console.log(e)
         if(e.toString() === 'Error: Lista nao existe')
