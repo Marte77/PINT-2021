@@ -130,7 +130,9 @@ controllers.getListaComLocaisFavoritados = async(req,res)=>{
         var listaLocais = await List_LocalFavorito.findAll({
             where:{
                 ListaFavoritoIDLista: listaPessoa.dataValues.ID_Lista
-            }            
+            }
+            //devia estar aqui um include com o Local mas 
+            //por alguma razao o sequelize nao esta a ligar a tabela Local com a List_LocalFav...         
         })        
         //console.log(Object(listaLocais))
     }catch(e){
@@ -140,6 +142,7 @@ controllers.getListaComLocaisFavoritados = async(req,res)=>{
         else res.status(500).send({desc:"erro a pesquisar", err:e.original})
     }
     res.send({sucesso:true, lista:listaLocais})
+    
 }
 
 module.exports = controllers;

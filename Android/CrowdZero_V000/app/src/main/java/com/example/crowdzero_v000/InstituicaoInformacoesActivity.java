@@ -50,8 +50,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
 
         pegarCoordsInstituicao();
         imagem = findViewById(R.id.imagemInstituicaoInfo);
-        //FuncoesApi.downloadImagem(getApplicationContext(),getIntent().getExtras().getString("urlimagem"),img);
-
+        verficarSeLocalEstaFavoritado();
 
         //TODO:verficar se já é favorito para ligar o botao do fav
         verificarSeUtilizadorEmpresa();
@@ -63,25 +62,76 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
             llDeFora.removeView(ll);
         }
         colocarListenersNosBotoes();
-
-
     }
+
+    void verficarSeLocalEstaFavoritado(){
+        final ImageButton btnFav = findViewById(R.id.imgBtnAdicionarInstituicaoFavoritos);
+        final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+        FuncoesApi.FuncoesLocais.verificarSeLocalEstaNaLista(getApplicationContext(), f.getIDPessoa(), idlocal, new FuncoesApi.volleycallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                if(jsonObject.getBoolean("existe")) {
+                    btnFavEnabled = true;
+                    btnFav.setImageResource(R.drawable.ic_favorite_filled_black_24dp);
+                }
+            }
+
+            @Override
+            public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+            }
+        });
+    }
+
+
+
     void colocarListenersNosBotoes(){
         final ImageButton btnMapa, btnReport, btnOpiniao, btnFav;
         btnFav = findViewById(R.id.imgBtnAdicionarInstituicaoFavoritos);
         btnMapa = findViewById(R.id.botaoMapaInfoInstituicao);
         btnReport = findViewById(R.id.botaoReportsInfoInstituicao);
         btnOpiniao = findViewById(R.id.botaoOpinioesInfoInstituicao);
+        final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"adicionar inst aos favs",Toast.LENGTH_SHORT).show();
                 if(btnFavEnabled){
-                    btnFav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    FuncoesApi.FuncoesLocais.removerLocalLista(getApplicationContext(), f.getIDPessoa(), idlocal, new FuncoesApi.volleycallback() {
+                        @Override
+                        public void onSuccess(JSONObject jsonObject) throws JSONException {
+                            if(jsonObject.getBoolean("sucesso")) {
+                                btnFav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                                btnFavEnabled = !btnFavEnabled;
+                            }
+                            else Toast.makeText(getApplicationContext(),"Local nao se encontra na lista de favoritos", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        @Override
+                        public void onError(JSONObject jsonObjectErr) throws JSONException {
+                            Toast.makeText(getApplicationContext(),"Erro a remover local da lista de favoritos", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }else{
-                    btnFav.setImageResource(R.drawable.ic_favorite_filled_black_24dp);
+                    try{
+                        FuncoesApi.FuncoesLocais.favoritarLocal(getApplicationContext(), f.getIDPessoa(), idlocal, new FuncoesApi.volleycallback() {
+                            @Override
+                            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                btnFav.setImageResource(R.drawable.ic_favorite_filled_black_24dp);
+                                btnFavEnabled=!btnFavEnabled;
+                            }
+                            @Override
+                            public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                Toast.makeText(getApplicationContext(),"Erro a adicionar local a lista de favoritos",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
-                btnFavEnabled=!btnFavEnabled;
+
             }
         });
         btnMapa.setOnClickListener(new View.OnClickListener() {

@@ -277,6 +277,136 @@ public class FuncoesApi {
             request.add(jsonObjectRequest);
         }
 
+        public static void favoritarLocal(Context context,int idPessoa, int idLocal, final volleycallback VCB) throws JSONException {
+            String url = urlGeral + "/Favoritos/novo_localfavorito";
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject bodyReq = new JSONObject();
+            bodyReq.put("IDPessoa", idPessoa);
+            bodyReq.put("LocalIDLocal", idLocal);
+            bodyReq.put("Descricao", "ListaFavoritosPessoa"+idPessoa);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, bodyReq,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void removerLocalLista(Context context, int idPessoa, int idLocal, final volleycallback VCB){
+            String url = urlGeral + "/Favoritos/remover_local_da_lista/"+idPessoa+"/"+idLocal;
+            RequestQueue request = Volley.newRequestQueue(context);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void verificarSeLocalEstaNaLista(Context context, int idPessoa, int idLocal, final volleycallback VCB){
+            String url = urlGeral + "/Favoritos/verificar_se_local_esta_favoritado/"+idPessoa+"/"+idLocal;
+            RequestQueue request = Volley.newRequestQueue(context);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void getListaLocaisFavotitados(Context context, int idPessoam, final volleycallback VCB){
+            RequestQueue request = Volley.newRequestQueue(context);
+            String url =urlGeral+"/Favoritos/get_lista_locais_favoritos/"+idPessoam;
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesPessoas{
