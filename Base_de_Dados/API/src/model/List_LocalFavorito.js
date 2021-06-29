@@ -9,14 +9,14 @@ timestamps: false,
 Local.belongsToMany(lista_favoritos, 
     {
         through: List_LocalFavorito,
-        //foreignKey:lista_favoritos.primaryKeys.ID_Lista.fieldName
+        foreignKey:lista_favoritos.primaryKeys.ID_Lista.fieldName
     }
     );
 lista_favoritos.belongsToMany(Local, 
     {
         through: List_LocalFavorito,
         //Local.
-        //foreignKey:Local.primaryKeys.ID_Local.fieldName
+        foreignKey:Local.primaryKeys.ID_Local.fieldName
     }
     );
 
