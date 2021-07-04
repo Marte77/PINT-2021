@@ -1,19 +1,19 @@
 package com.example.crowdzero_v000;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,10 +26,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -38,12 +40,13 @@ public class CriarReportLocal extends NavDrawerActivity {
     int idlocal;
 
 
-    AutoCompleteTextView autoCompleteTextView;
-    TextInputLayout textInputLayout;
-    TextInputEditText textInputEditText;
-
+    AutoCompleteTextView inputNivelDensidade, inputLocalIndoor;
+    TextInputLayout menuLayoutNivelDensidade,menuLayoutLocalIndoor;
+    TextInputEditText inputDescricaoReport;
+    CheckBox isReportIndoor;
     ArrayList<String> niveisDensidadeArray = new ArrayList<>();
-
+    ArrayList<String> locaisIndoorArray = new ArrayList<>();
+    ArrayList<Pair<Integer, String>> listaParesIDNomeLocalIndoor = new ArrayList<>();
     LatLng coordsLocal;
     boolean isLocationEnabled = false;
     final double raio = 200; // raio da circunferencia dentro da qual se pode dar report
@@ -56,18 +59,36 @@ public class CriarReportLocal extends NavDrawerActivity {
         idlocal = getIntent().getExtras().getInt("idlocal");
         tb.setTitle(nome);
 
-        autoCompleteTextView = findViewById(R.id.autoCompleteNivelReport);
+        final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+        inputNivelDensidade = findViewById(R.id.autoCompleteNivelReport);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.lista_niveis_densidade, niveisDensidadeArray);
-        autoCompleteTextView.setAdapter(arrayAdapter);
-        textInputLayout = findViewById(R.id.menuNivelDensidade);
-        textInputEditText = findViewById(R.id.inputDescricaoNovoReport);
+        inputNivelDensidade.setAdapter(arrayAdapter);
+        menuLayoutNivelDensidade = findViewById(R.id.menuNivelDensidade);
+        inputDescricaoReport = findViewById(R.id.inputDescricaoNovoReport);
+        isReportIndoor = findViewById(R.id.checkBoxIsReportIndoor);
+        menuLayoutLocalIndoor = findViewById(R.id.menuLocaisIndoor);
+        inputLocalIndoor = findViewById(R.id.autoCompleteLocaisIndoor);
+
+        isReportIndoor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                inputLocalIndoor.setEnabled(isChecked);
+                if(isChecked){
+                    menuLayoutLocalIndoor.setAlpha(1f);
+                }else menuLayoutLocalIndoor.setAlpha(0.4f);
+
+            }
+        });
 
         //os inputs comecam desativados pois demora um bocado a obter a localizacao da pessoa relativamente ao local
         desativarOuAtivarInputs(false);
 
-        //region verificar coordenadas para fazer report
+        //region verificar coordenadas para fazer report e obter locais indoor
         verificarCoordsParaFazerReport();
-
+        if(f.getVerificacao()){
+            //obter lista de locais
+            obterLocaisIndoor();
+        }
 
         //endregion
 
@@ -77,18 +98,15 @@ public class CriarReportLocal extends NavDrawerActivity {
         niveisDensidadeArray.add("Extremamente Populado");
 
 
-        final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
-        if (f.getVerificacao()) {
-            // TODO: 23/06/2021 fazer cenas relativas ao report indoor
-        }
 
 
+        //region botao report listener
         MaterialButton button = findViewById(R.id.submeterNovoReport);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 23/06/2021 fazer report indoor
-                if (autoCompleteTextView.getText().toString().isEmpty() || textInputEditText.getText().toString().isEmpty()) {
+
+                if (inputNivelDensidade.getText().toString().isEmpty() || inputDescricaoReport.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Tem de preencher os campos!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -96,8 +114,8 @@ public class CriarReportLocal extends NavDrawerActivity {
                 if (tipoPessoa.equals(FuncoesSharedPreferences.outrosUtil)) {
                     try {
                         FuncoesApi.FuncoesReports.criarNovoReportOutdoorOutrosUtil(getApplicationContext(),
-                                textInputEditText.getText().toString(),
-                                niveisDensidadeArray.indexOf(autoCompleteTextView.getText().toString()) + 1,
+                                inputDescricaoReport.getText().toString(),
+                                niveisDensidadeArray.indexOf(inputNivelDensidade.getText().toString()) + 1,
                                 idlocal,
                                 f.getIDUtilizador(),
                                 new FuncoesApi.volleycallback() {
@@ -119,33 +137,70 @@ public class CriarReportLocal extends NavDrawerActivity {
                         e.printStackTrace();
                     }
                 } else { //report outdoor util instituicao
-                    try {
-                        FuncoesApi.FuncoesReports.criarNovoReportOutdoorUtilInst(getApplicationContext(),
-                                textInputEditText.getText().toString(),
-                                niveisDensidadeArray.indexOf(autoCompleteTextView.getText().toString()) + 1,
-                                idlocal,
-                                f.getIDUtilizador(),
-                                new FuncoesApi.volleycallback() {
-                                    @Override
-                                    public void onSuccess(JSONObject jsonObject) throws JSONException {
-                                        Log.i("pedido", jsonObject.toString());
-                                        Toast.makeText(getApplicationContext(), "Report criado com sucesso", Toast.LENGTH_LONG).show();
-                                        fecharActivity();
-                                    }
+                    if(isReportIndoor.isChecked() && f.getVerificacao()){
+                        try {
+                            int localIndoorID = -1;
+                            for(int i = 0; i< listaParesIDNomeLocalIndoor.size();i++ ){
+                                Pair<Integer,String> p = listaParesIDNomeLocalIndoor.get(i);
+                                if(p.second.equals(inputLocalIndoor.getText().toString())){
+                                    localIndoorID = p.first;
+                                }
+                            }
+                            if(localIndoorID == -1){
+                                Toast.makeText(getApplicationContext(),"Erro a criar report", Toast.LENGTH_LONG).show();
+                                finish();
+                                return;
+                            }
+                            FuncoesApi.FuncoesReports.criarNovoReportIndoor(getApplicationContext()
+                                    , inputDescricaoReport.getText().toString(), niveisDensidadeArray.indexOf(inputNivelDensidade.getText().toString()) + 1
+                                    , localIndoorID, f.getIDUtilizador(), new FuncoesApi.volleycallback() {
+                                        @Override
+                                        public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                            Log.i("pedido",jsonObject.toString());
+                                            Toast.makeText(getApplicationContext(),"Report submetido com sucesso",Toast.LENGTH_LONG).show();
+                                            finish();
+                                        }
 
-                                    @Override
-                                    public void onError(JSONObject jsonObjectErr) throws JSONException {
-                                        Log.i("pedido", "Erro a criar report out utilinst: " + jsonObjectErr.toString());
-                                        Toast.makeText(getApplicationContext(), "Erro a criar report!", Toast.LENGTH_LONG).show();
-                                        fecharActivity();
-                                    }
-                                });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                                        @Override
+                                        public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                            Log.i("pedido",jsonObjectErr.toString());
+                                            Toast.makeText(getApplicationContext(),"Erro a submeter report",Toast.LENGTH_LONG).show();
+                                            finish();
+                                        }
+                                    });
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }else{
+                        try {
+                            FuncoesApi.FuncoesReports.criarNovoReportOutdoorUtilInst(getApplicationContext(),
+                                    inputDescricaoReport.getText().toString(),
+                                    niveisDensidadeArray.indexOf(inputNivelDensidade.getText().toString()) + 1,
+                                    idlocal,
+                                    f.getIDUtilizador(),
+                                    new FuncoesApi.volleycallback() {
+                                        @Override
+                                        public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                            Log.i("pedido", jsonObject.toString());
+                                            Toast.makeText(getApplicationContext(), "Report criado com sucesso", Toast.LENGTH_LONG).show();
+                                            fecharActivity();
+                                        }
+
+                                        @Override
+                                        public void onError(JSONObject jsonObjectErr) throws JSONException {
+                                            Log.i("pedido", "Erro a criar report out utilinst: " + jsonObjectErr.toString());
+                                            Toast.makeText(getApplicationContext(), "Erro a criar report!", Toast.LENGTH_LONG).show();
+                                            fecharActivity();
+                                        }
+                                    });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         });
+        //endregion
     }
 
     private void fecharActivity() {
@@ -190,7 +245,7 @@ public class CriarReportLocal extends NavDrawerActivity {
         FuncoesApi.volleycallback VCB = new FuncoesApi.volleycallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                Log.i("testar",jsonObject.toString());
+                //Log.i("testar",jsonObject.toString());
                 coordsLocal = new LatLng(jsonObject.getJSONObject("Local").getDouble("Latitude"), jsonObject.getJSONObject("Local").getDouble("Longitude"));
 
                 if (ActivityCompat.checkSelfPermission(CriarReportLocal.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -208,7 +263,7 @@ public class CriarReportLocal extends NavDrawerActivity {
 
             @Override
             public void onError(JSONObject jsonObjectErr) throws JSONException {
-                Log.i("testar",jsonObjectErr.toString());
+                Log.i("pedido",jsonObjectErr.toString());
             }
         };
         FuncoesApi.FuncoesLocais.getLocalPorId(getApplicationContext(),idlocal,VCB);
@@ -221,7 +276,7 @@ public class CriarReportLocal extends NavDrawerActivity {
         float[] resultado = new float[1];
         Location.distanceBetween(coordsLocal.latitude,coordsLocal.longitude,coordsUtil.latitude,coordsUtil.longitude,resultado);
         float distancia = resultado[0];
-        Log.i("testar",distancia+"");
+
         if(distancia<=raio){
             //utilizador está dentro do círculo
             //Toast.makeText(getApplicationContext(),"Está dentro do raio para fazer report neste local",Toast.LENGTH_LONG).show();
@@ -235,14 +290,49 @@ public class CriarReportLocal extends NavDrawerActivity {
     }
 
     private void desativarOuAtivarInputs(boolean ativa) {
-        textInputEditText.setEnabled(ativa);
-        autoCompleteTextView.setEnabled(ativa);
+        inputDescricaoReport.setEnabled(ativa);
+        inputNivelDensidade.setEnabled(ativa);
+        inputLocalIndoor.setEnabled(ativa);
         if(!ativa) {
-            textInputLayout.setAlpha(0.4f);
+            menuLayoutNivelDensidade.setAlpha(0.4f);
+            menuLayoutLocalIndoor.setAlpha(0.4f);
             findViewById(R.id.descricaoNovoReport).setAlpha(0.4f);
         }else{
-            textInputLayout.setAlpha(1.0f);
+            menuLayoutNivelDensidade.setAlpha(1.0f);
+            menuLayoutLocalIndoor.setAlpha(1.0f);
             findViewById(R.id.descricaoNovoReport).setAlpha(1.0f);
         }
+        if(!isReportIndoor.isChecked()){
+            inputLocalIndoor.setEnabled(false);
+            menuLayoutLocalIndoor.setAlpha(0.4f);
+        }
+    }
+
+    private void obterLocaisIndoor(){
+
+        FuncoesApi.FuncoesLocais.getListaLocaisIndoor(getApplicationContext(), idlocal, new FuncoesApi.volleycallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                Log.i("pedido", "aaa "+jsonObject.toString());
+                Log.i("testar", "aaa "+jsonObject.toString());
+                JSONArray locais = jsonObject.getJSONArray("LocaisIndoor");
+                for(int i = 0;i < locais.length();i++){
+                    String nomelocalindoor = locais.getJSONObject(i).getString("Nome");
+                    int idlocalindoor = locais.getJSONObject(i).getInt("ID_Local_Indoor");
+                    Log.i("testar",nomelocalindoor +" " + idlocalindoor);
+                    listaParesIDNomeLocalIndoor.add(new Pair<>(idlocalindoor, nomelocalindoor));
+                    locaisIndoorArray.add(nomelocalindoor);
+                }
+                ArrayAdapter<String> arrayAdapterLocaisIndoor = new ArrayAdapter<>(getApplicationContext(),
+                        R.layout.lista_niveis_densidade,locaisIndoorArray);
+                inputLocalIndoor.setAdapter(arrayAdapterLocaisIndoor);
+            }
+
+            @Override
+            public void onError(JSONObject jsonObjectErr) throws JSONException {
+                Log.i("pedido",jsonObjectErr.toString());
+            }
+        });
+
     }
 }

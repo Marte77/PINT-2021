@@ -74,5 +74,7 @@
     <string name="likes">Likes</string>
     <string name="top_3_utilizadores">Top 3 utilizadores</string>
     <string name="medalha">medalha</string>
+    <string name="fazer_report_indoor">Fazer Report Indoor</string>
+    <string name="local_indoor">Local Indoor</string>
 
 </resources>

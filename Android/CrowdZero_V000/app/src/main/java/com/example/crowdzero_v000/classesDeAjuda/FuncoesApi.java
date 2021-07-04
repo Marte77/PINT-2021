@@ -179,7 +179,6 @@ public class FuncoesApi {
             request.add(jsonObjectRequest);
         }
 
-
         public static void getNumeroReportsUtilizador(final Context context, int idPessoa, final volleycallback VCB){
             String url = urlGeral + "/Report/get_numero_reports_pessoa/"+idPessoa;
             RequestQueue request = Volley.newRequestQueue(context);
@@ -210,6 +209,43 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
+        public static void criarNovoReportIndoor(final Context context, String descricao, int nivelDensidade, int idlocalindoor, int idUtilInst, final volleycallback VCB) throws JSONException{
+            String url = urlGeral + "/Report/novo_report_indoor";
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject bodyReq = new JSONObject();
+            bodyReq.put("DescricaoReport", descricao);
+            bodyReq.put("NivelDensidade", nivelDensidade);
+            bodyReq.put("IDLocalIndoor", idlocalindoor);
+            bodyReq.put("idUtilInst", idUtilInst);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, bodyReq,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
     }
 
     public static class FuncoesLocais{
@@ -379,6 +415,38 @@ public class FuncoesApi {
         public static void getListaLocaisFavotitados(Context context, int idPessoam, final volleycallback VCB){
             RequestQueue request = Volley.newRequestQueue(context);
             String url =urlGeral+"/Favoritos/get_lista_locais_favoritos/"+idPessoam;
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void getListaLocaisIndoor(Context context, int idLocal, final volleycallback VCB){
+            RequestQueue request = Volley.newRequestQueue(context);
+            String url =urlGeral+"/Locais/get_lista_locais_indoor_local/"+idLocal;
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
