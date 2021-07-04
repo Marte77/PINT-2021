@@ -13,7 +13,8 @@ autoIncrement: true,
 //ID_Admin: Sequelize.INTEGER, //fk
 //ID_Local: Sequelize.INTEGER, //fk
 //ID_TipoAlerta: Sequelize.INTEGER, //fk
-Descricao: Sequelize.STRING
+Descricao: Sequelize.STRING,
+Data: Sequelize.DATE
 },
 {
 timestamps: false,
