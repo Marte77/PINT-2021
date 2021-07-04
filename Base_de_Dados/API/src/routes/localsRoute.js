@@ -4,8 +4,10 @@ const router = express.Router();
 
 router.get('/listar',localController.listarLocais);
 router.get('/getLocalPorId/:id',localController.getLocalbyId)
-//TODO: fazer rota que lista os locais e os seus reportes respetivos, reports outdoor outros util e util empresa
+router.post('/criar_novo_local_indoor',localController.criarLocalIndoor)
+router.get('/apagar_local_indoor/:idLocal/:idLocalIndoor',localController.apagarLocalIndoor)
+router.post('/criar_novo_local',localController.criarLocal)
+router.get('/get_lista_locais_indoor_local/:idLocal',localController.getListaLocaisIndoor)
 
-//todo: meter o status como aqui em baixo nas outras 
-//router.get('/boas',(req,res)=>{res.status(201).send({status:301})})
+
 module.exports = router;

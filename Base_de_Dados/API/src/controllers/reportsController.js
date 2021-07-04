@@ -83,42 +83,6 @@ controllers.criarReportOutdoorUtilInstituicao = async (req,res) => { //post
         res.send({status:statusCode, desc:descricao,err:msgErr})
     else res.send({status:statusCode,Report:reportNovo,ReportOut:reportOutdoorUtilInstituicaoNovo })
 }  
-controllers.criarReportIndoor = async (req,res) => { //post
-    const { DescricaoReport,NivelDensidade,IDLocalIndoor,idUtilInst}= req.body
-    let n_LikesDislikes = 0
-    let statusCode = 200;
-    let dataAgr = new Date()
-    dataAgr = dataAgr.toISOString()
-    try{
-        var reportNovo = await Report.create({
-            Descricao: DescricaoReport,
-            Nivel_Densidade:NivelDensidade,
-            N_Likes: n_LikesDislikes,
-            N_Dislikes: n_LikesDislikes,
-            Data:dataAgr
-        })
-        var reportIndoor = await Report_Indoor.create({
-            ReportIDReport: reportNovo.dataValues.ID_Report,
-            LocalIndoorIDLocalIndoor: IDLocalIndoor,
-            UtilsInstituicaoIDUtil: idUtilInst
-        })
-    
-    }catch(e){
-        console.log(e);
-        statusCode = 500
-        var msgErr = e.original;
-        var descricao = "Erro a criar report"
-        if(reportNovo!=undefined){
-            //deu erro no outro
-            descricao = descricao + " Dados ReportGeral Corretos"
-            reportNovo.destroy();
-        }
-    }
-
-    if(statusCode === 500)
-        res.send({status:statusCode, desc:descricao,msgErr})
-    else res.send({status:statusCode,Report:reportNovo,ReportIn:reportIndoor })
-}    
 
 controllers.getListaReportsOutdoorLocal = async (req,res)=>{ //put
     const {idlocal} = req.params;
@@ -333,6 +297,44 @@ controllers.getNumeroReportsFeitos = async(req,res)=>{//get
     })
 
 }
+
+controllers.criarReportIndoor = async (req,res) => { //post
+    const { DescricaoReport,NivelDensidade,IDLocalIndoor,idUtilInst}= req.body
+    let n_LikesDislikes = 0
+    let statusCode = 200;
+    let dataAgr = new Date()
+    dataAgr = dataAgr.toISOString()
+    try{
+        var reportNovo = await Report.create({
+            Descricao: DescricaoReport,
+            Nivel_Densidade:NivelDensidade,
+            N_Likes: n_LikesDislikes,
+            N_Dislikes: n_LikesDislikes,
+            Data:dataAgr
+        })
+        var reportIndoor = await Report_Indoor.create({
+            ReportIDReport: reportNovo.dataValues.ID_Report,
+            LocalIndoorIDLocalIndoor: IDLocalIndoor,
+            UtilsInstituicaoIDUtil: idUtilInst
+        })
+    
+    }catch(e){
+        console.log(e);
+        statusCode = 500
+        var msgErr = e.original;
+        var descricao = "Erro a criar report"
+        if(reportNovo!=undefined){
+            //deu erro no outro
+            descricao = descricao + " Dados ReportGeral Corretos"
+            reportNovo.destroy();
+        }
+    }
+
+    if(statusCode === 500)
+        res.send({status:statusCode, desc:descricao,msgErr})
+    else res.send({status:statusCode,Report:reportNovo,ReportIn:reportIndoor })
+}    
+
 
 
 module.exports = controllers;

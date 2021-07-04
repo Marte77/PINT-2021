@@ -2,7 +2,8 @@
 //todo: depois ir ao mobile, apanhar esses locais e tentar fazer reports
 var sequelize = require('../model/database');
 const controllers = {}
-const locais = require('../model/Local')
+const locais = require('../model/Local');
+const Local_Indoor = require('../model/Local_Indoor');
 const localindoor = require('../model/Local_Indoor')
 controllers.listarLocais = async(req,res)=>{
     var statuscode = 200;
@@ -29,6 +30,74 @@ controllers.getLocalbyId = async(req,res)=>{ //get
 }
 
 //todo:criar locais e locaisindoor
+controllers.criarLocal = async(req,res)=>{//post
+    const{nome, codigopostal,descricao,urlimagem,localizacao, longitude, latitude, idinstituicao} = req.body
+    try{
+        var novoLocal = await locais.create({
+            Nome:nome,
+            Codigo_Postal: codigopostal,
+            Descricao:descricao,
+            URL_Imagem: urlimagem,
+            Localizacao:localizacao,
+            Longitude:longitude,
+            Latitude:latitude,
+            InstituicaoIDInstituicao:idinstituicao
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"erro a criar novo local", err:e.original})
+    }
+    res.send({Local:novoLocal})
+}
 
+controllers.criarLocalIndoor = async(req,res)=>{//post
+    const{nome, codigopostal,descricao,piso,localizacao, coordenadas, idlocal} = req.body
+    try{
+        var novoLocal = await localindoor.create({
+            Nome:nome,
+            Codigo_Postal: codigopostal,
+            Descricao:descricao,
+            Piso: piso,
+            Localizacao:localizacao,
+            Coordenadas: coordenadas,
+            LocalIDLocal:idlocal
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"erro a criar novo local indoor", err:e.original})
+    }
+    res.send({LocalIndoor:novoLocal})
+}
+
+controllers.apagarLocalIndoor = async(req,res)=>{
+    const {idLocalIndoor, idLocal} = req.params
+    try {
+        var localApagado = await localindoor.destroy({
+            where:{
+                LocalIDLocal:idLocal,
+                ID_Local_Indoor:idLocalIndoor
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({sucesso:false,desc:"erro a apagar local indoor", err:e.original})
+    }
+    res.send({sucesso:true})
+}
+
+controllers.getListaLocaisIndoor = async(req,res)=>{
+    const {idLocal} = req.params
+    try {
+        var listaLocaisIndoor = await Local_Indoor.findAll({
+            where:{
+                LocalIDLocal: idLocal
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({desc:"erro a pesquisar",err:e.original})
+    }
+    res.send({LocaisIndoor:listaLocaisIndoor})
+}
 
 module.exports = controllers;
