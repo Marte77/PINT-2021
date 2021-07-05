@@ -6,9 +6,13 @@ var outros_util = require('../model/Pessoas/Outros_Util');
 var admin = require('../model/Pessoas/Admin');
 var sequelize = require('../model/database');
 const controllers = {}
-const { Op } = require('sequelize');
+const { Op, json } = require('sequelize');
 const Pessoas = require('../model/Pessoas/Pessoas');
 const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const config = require('../config');
+const conf = require('../conf');
 
 //nas criacoes de pessoas, se algum der erro, ele apaga os anteriores da BD
 //, garantindo que nao existam pessoas repetidas
@@ -252,14 +256,35 @@ controllers.getInfoPessoa=async (req,res) => {//get
 }
 
 controllers.login = async (req,res) => {//post
-    const {Email, Password} = req.body
+    if (req.body.email && req.body.password) {
+        var Email = req.body.email;
+        var Password = req.body.password;
+     }
     var tipo="";
     try{
         var pessoalogin = await pessoas.findOne({
             where:{
                 Email:Email
             }
+        }).then (function(data){ 
+            return data;
+        }).catch (error=>{
+            console.log("Erro: "+error);
+            return error;
         })
+        if (Password == null){
+            res.status(403),json({
+                success: false,
+                message: 'Campos em Branco'
+            })
+        } else {
+            if(Email && Password && pessoalogin ){
+                const isMatch = bcrypt.compareSync(Password, pessoalogin.Password);
+                if (req.body.email == pessoalogin.email && isMatch){
+                    res.json({success: true, message: 'Autenticação realizada com sucesso!’, token: token'});
+                }
+            }
+        }
         if(pessoalogin === null)
             throw new Error('Email nao existe')
         if(pessoalogin.dataValues.Password !== Password)

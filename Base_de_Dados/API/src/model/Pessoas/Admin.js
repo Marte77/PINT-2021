@@ -1,8 +1,7 @@
 var Instituicao = require('../Instituicao');
 var Pessoa = require('./Pessoas');
-const Sequelize = require('sequelize');
-const sequelize = require('../database');
-
+var Sequelize = require('sequelize');
+var sequelize = require('../database');
 var Admin = sequelize.define('Admin', {
     ID_Admin: {
         type: Sequelize.INTEGER,
