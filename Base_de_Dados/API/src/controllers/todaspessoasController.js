@@ -11,6 +11,7 @@ const Pessoas = require('../model/Pessoas/Pessoas');
 const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const Admin = require('../model/Pessoas/Admin');
 //const config = require('../config');
 //const conf = require('../conf');
 
@@ -346,27 +347,36 @@ controllers.isUtilizadorInstVerificado = async(req,res)=>{//get
 }
 
 controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
-const data = await Admin.findAll({
- where:{
-            Verificado:false
+    try{
+        var adminSemVerificao = await Admin.findAll({
+            where:{
+                Verificado:false
+            },
+            include:{
+                model:pessoas,
+                attributes:{
+                    exclude:['Password']
+                },required:false
+            }
+        })
+        var utilinstSemvERIF  = await Utils_Instituicao.findAll({
+            where:{
+                Verificado:false
             },include:{
                 model:pessoas,
                 attributes:{
                     exclude:['Password']
                 },required:false
             }
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"erro a selecionar", err:e.original})
+    }
+    res.send({Admins:adminSemVerificao, UtilsInst:utilinstSemvERIF})
 
-})
-.then(function(data){
-return data;
-})
-.catch(error => {
-return error;
-}); 
-res.json({success : true, data : data});
+
 }
-
-
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){
