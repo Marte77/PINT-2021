@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'); //módulo NPM
-const config = require('./config.js'); //ficheiro de configuração
+const config = require('./conf'); //ficheiro de configuração
 
 let checkToken = (req, res, next) => {
 let token = req.headers['x-access-token'] || req.headers['authorization'];

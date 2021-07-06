@@ -20,7 +20,7 @@ var Pessoas = sequelize.define('Pessoas', {
     Localização: Sequelize.STRING,
     PNome: Sequelize.STRING,
     Password:{
-        tyoe: Sequelize.STRING,
+        type: Sequelize.STRING,
         allowNull: false
     }, 
     Foto_De_Perfil:Sequelize.TEXT

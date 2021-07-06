@@ -11,8 +11,8 @@ const Pessoas = require('../model/Pessoas/Pessoas');
 const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const config = require('../config');
-const conf = require('../conf');
+//const config = require('../config');
+//const conf = require('../conf');
 
 //nas criacoes de pessoas, se algum der erro, ele apaga os anteriores da BD
 //, garantindo que nao existam pessoas repetidas
