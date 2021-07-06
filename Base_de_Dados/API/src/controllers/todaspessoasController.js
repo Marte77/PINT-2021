@@ -345,6 +345,28 @@ controllers.isUtilizadorInstVerificado = async(req,res)=>{//get
     else res.send({Estado:isVerificado})
 }
 
+controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
+const data = await Admin.findAll({
+ where:{
+            Verificado:false
+            },include:{
+                model:pessoas,
+                attributes:{
+                    exclude:['Password']
+                },required:false
+            }
+
+})
+.then(function(data){
+return data;
+})
+.catch(error => {
+return error;
+}); 
+res.json({success : true, data : data});
+}
+
+
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){
@@ -370,7 +392,6 @@ function organizarPessoasPorPontos(arraypessoas)
 
     return arraypessoas
 }
-
 
 
 module.exports= controllers;

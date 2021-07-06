@@ -12,5 +12,5 @@ router.get('/getTopXPessoas/:numerotoppessoas',todaspessoasController.getTop3Pes
 router.get('/getInfoPessoa/:idpessoa',todaspessoasController.getInfoPessoa);
 router.post('/login',middleware.checkToken,todaspessoasController.login)
 router.get('/ver_se_util_esta_verificado/:id',todaspessoasController.isUtilizadorInstVerificado);
-
+router.get('/getUtilsEspera',todaspessoasController.List_Utils_Espera); // para o home frontend
 module.exports = router;
