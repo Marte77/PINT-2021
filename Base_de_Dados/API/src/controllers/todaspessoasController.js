@@ -348,6 +348,7 @@ controllers.isUtilizadorInstVerificado = async(req,res)=>{//get
 
 controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
     try{
+        var arrayNovo = new Array()
         var adminSemVerificao = await Admin.findAll({
             where:{
                 Verificado:false
@@ -359,6 +360,8 @@ controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
                 },required:false
             }
         })
+        for(let pessoa of adminSemVerificao)
+            arrayNovo.push(pessoa)
         var utilinstSemvERIF  = await Utils_Instituicao.findAll({
             where:{
                 Verificado:false
@@ -369,11 +372,13 @@ controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
                 },required:false
             }
         })
+        for(let pessoa of utilinstSemvERIF)
+            arrayNovo.push(pessoa)
     }catch(e){
         console.log(e)
         res.status(500).send({desc:"erro a selecionar", err:e.original})
     }
-    res.send({Admins:adminSemVerificao, UtilsInst:utilinstSemvERIF})
+    res.send({Utils:arrayNovo})
 
 
 }
