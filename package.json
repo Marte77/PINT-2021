@@ -6,8 +6,5 @@
         "start": "node Base_de_Dados/API/src/App.js",
         "heroku-postbuilddasdas": "cd .. && cd .. && node Base_de_Dados/API/src/App.js",
         "heroku-postbuildfdsafdsafdsa": "cd client && node Base_de_Dados/API/src/App.js"
-    },
-    "dependencies": {
-        "jsonwebtoken": "^8.5.1"
     }
 }
