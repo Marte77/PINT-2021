@@ -335,6 +335,73 @@ controllers.criarReportIndoor = async (req,res) => { //post
     else res.send({status:statusCode,Report:reportNovo,ReportIn:reportIndoor })
 }    
 
-
+controllers.getListaReportsIndoor = async (req,res)=>{//put
+    const {idlocal} = req.params;
+    const {tempo, tipoTempo} = req.body //tipotempo = hh - horas, mm - minutos, dd - dias
+    let dataAgr = new Date()
+    switch(tipoTempo){
+        case 'hh':{
+            dataAgr.setHours(dataAgr.getHours() - tempo)
+            break;
+        }
+        case 'mm':{
+            dataAgr.setMinutes(dataAgr.getMinutes() - tempo)
+            break;
+        }
+        case 'dd':{
+            dataAgr.setDate(dataAgr.getDate() - tempo)
+            break;
+        }
+        default:{
+            res.status(500).send({desc:"Tipo Invalido",err:"TipoInvalido"})
+            return;
+        }
+    }
+    dataAgr = dataAgr.toISOString()
+    var reportsIndoor = new Array();
+    try{
+        var listaLocaisIndoor = await Local_Indoor.findAll({
+            where:{
+                LocalIDLocal:idlocal
+            }
+        })
+        if(listaLocaisIndoor.length === 0)
+            throw new Error('Este local nao tem locais indoor')
+        for(let local of listaLocaisIndoor){
+            let reportsdolocalindoor = await Report_Indoor.findAll({
+                where:{
+                    LocalIndoorIDLocalIndoor: local.dataValues.ID_Local_Indoor
+                },include:[{
+                    model:Report, 
+                    where:{
+                        Data:{
+                            [Op.gte]:dataAgr
+                        }
+                    }
+                },{
+                    model:Util_Instituicao,
+                    include:{
+                        model:Pessoas,
+                        attributes:{
+                            exclude:['Password']
+                        },required:false
+                    }
+                }]
+            })
+            if(reportsdolocalindoor.length !== 0){
+                for(let reportdolocal of reportsdolocalindoor)
+                    reportsIndoor.push(reportdolocal)
+            }
+        }
+    }catch(e){
+        console.log(e)
+        if(e.toString() === 'Error: Este local nao tem locais indoor' )
+            res.status(200).send({desc:'local nao tem locais indoor'})
+        else res.status(500).send({desc:"Erro a selecionar",err:e.original})
+    }
+    //let resposta = await JSON.stringify(reportsIndoor)
+    
+    res.status(200).send({ReportsIndoor:reportsIndoor})
+}
 
 module.exports = controllers;
