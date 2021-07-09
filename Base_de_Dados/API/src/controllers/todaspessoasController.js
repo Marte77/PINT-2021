@@ -35,7 +35,9 @@ controllers.createAdmin = async (req,res) => { //post
             Localização : Localização,
             PNome : PNome,
             Password : Password,
-            Foto_De_Perfil: URLImagem
+            Foto_De_Perfil: URLImagem,
+            createdAt:new Date(),
+            updatedAt:new Date() 
         })
 
         var id=dataPessoa.dataValues.IDPessoa;
@@ -79,7 +81,9 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
             Localização : Localização,
             PNome : PNome,
             Password : Password,
-            Foto_De_Perfil: URLImagem
+            Foto_De_Perfil: URLImagem,
+            createdAt:new Date(),
+            updatedAt:new Date() 
         })
         var id=dataPessoa.dataValues.IDPessoa;  
     
@@ -133,7 +137,9 @@ controllers.createOutros_Util = async (req,res) => { //post
             Localização : Localização,
             PNome : PNome,
             Password : Password,
-            Foto_De_Perfil: URLImagem
+            Foto_De_Perfil: URLImagem,
+            createdAt:new Date(),
+            updatedAt:new Date() 
         })
 
         var id=dataPessoa.dataValues.IDPessoa;
@@ -379,9 +385,9 @@ controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
         res.status(500).send({desc:"erro a selecionar", err:e.original})
     }
     res.send({Utils:arrayNovo})
-
-
 }
+
+
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){

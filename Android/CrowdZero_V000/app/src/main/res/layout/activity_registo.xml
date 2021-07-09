@@ -196,6 +196,39 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/morada"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputlayoutLocalizacao"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="274dp"
+                        android:layout_height="59dp"
+                        android:layout_marginTop="9dp"
+                        android:hint="@string/morada"
+                        android:textColorHint="@color/cinzento"
+                        app:boxStrokeColor="@color/verdeBotao"
+                        app:hintTextColor="@color/preto">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/LocalizacaoInputRegisto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:paddingTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
