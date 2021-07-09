@@ -5,10 +5,12 @@ const instituicao = require('../model/Instituicao')
 
 controllers.createInstituicao = async (req,res) => { //post
     let statusCode = 200;
-    const { Nome, Codigo_Postal, Telefone, Descricao, URL_Imagem, Longitude, Latitude, Localizacao, Codigo_Empresa}= req.body
+    const { Nome, Codigo_Postal,Email, Telefone, Descricao, URL_Imagem, Longitude, Latitude, Localizacao, Codigo_Empresa
+    ,LotacaoPouca, LotacaoMedia, LotacaoAlta}= req.body
     try{
         var NovaInstituicao = await instituicao.create({
             Nome: Nome,
+            Email:Email,
             Codigo_Postal : Codigo_Postal,
             Telefone: Telefone,
             Descricao: Descricao,
@@ -16,7 +18,10 @@ controllers.createInstituicao = async (req,res) => { //post
             Longitude : Longitude,
             Latitude : Latitude,
             Localizacao : Localizacao,
-            Codigo_Empresa : Codigo_Empresa
+            Codigo_Empresa : Codigo_Empresa,
+            LotacaoPouca:LotacaoPouca,
+            LotacaoMedia:LotacaoMedia, 
+            LotacaoAlta:LotacaoAlta
         })
     }catch(e){
         console.log(e);
