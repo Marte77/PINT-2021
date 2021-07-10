@@ -386,6 +386,8 @@ controllers.getListaReportsIndoor = async (req,res)=>{//put
                             exclude:['Password']
                         },required:false
                     }
+                },{
+                    model:Local_Indoor,
                 }]
             })
             if(reportsdolocalindoor.length !== 0){
