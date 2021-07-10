@@ -55,7 +55,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.178"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@drawable/logotipo_aplicacao" />
 
 
             <Button
@@ -92,17 +92,17 @@
                 android:id="@+id/hiperlink_Sem_registo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="onClick"
                 android:text="@string/sem_registo_ou_login"
                 android:textColor="@color/hyperlink"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/botaoRegisto"
-                app:layout_constraintVertical_bias="0.4"
-                android:clickable="true"
-                android:onClick="onClick"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/botaoRegistoMain"
+                app:layout_constraintVertical_bias="0.9" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -110,43 +110,43 @@
 
     <ImageView
         android:id="@+id/imagem_logotipo_camara"
-        android:layout_width="87dp"
-        android:layout_height="83dp"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
         android:contentDescription="imagem_logotipo_camara"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
-        app:srcCompat="@drawable/ic_launcher_background"
+        app:srcCompat="@drawable/ic_viseu_marca_cor_positivo_assinatura_horizontal_134183424760a7842eb6875"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/imagem_logotipo_ipv"
-        android:layout_width="87dp"
-        android:layout_height="83dp"
-        android:contentDescription="logo_app_ipv"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:contentDescription="@string/logo_app_ipv"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintHorizontal_bias="0.083"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
-        app:srcCompat="@drawable/ic_launcher_background"
+        app:srcCompat="@drawable/pv_logotipo_medio_transparente"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/imagem_logotipo_biz"
-        android:layout_width="87dp"
-        android:layout_height="83dp"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
         android:contentDescription="imagem_logotipo_biz"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.864"
+        app:layout_constraintHorizontal_bias="0.916"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
-        app:srcCompat="@drawable/ic_launcher_background"
+        app:srcCompat="@drawable/bizdirect_logo"
         tools:srcCompat="@tools:sample/avatars" />
 
 
