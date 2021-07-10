@@ -26,7 +26,7 @@ var Pessoas = sequelize.define('Pessoas', {
     Foto_De_Perfil:Sequelize.TEXT
     },
     {
-    timestamps: false,
+    timestamps: true,
 });
 
 Pessoas.beforeCreate((user, options) => {

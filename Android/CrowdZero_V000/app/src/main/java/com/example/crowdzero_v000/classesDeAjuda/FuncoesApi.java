@@ -23,6 +23,9 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class FuncoesApi {
 
     public interface volleycallback{
@@ -484,7 +487,7 @@ public class FuncoesApi {
             JSONObject body = new JSONObject();
             body.put("Email", email);
             body.put("Password", password);
-            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST, url,body,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -509,7 +512,16 @@ public class FuncoesApi {
                             }
                         }
                     }
-            );
+            ){
+                @Override
+                public Map<String,String> getHeaders(){
+                    Map<String,String> params = new HashMap<>();
+                    params.put("authorization","chavesecreta");
+                    return params;
+                }
+            };
+
+
             request.add(jsonObjectRequest);
         }
 

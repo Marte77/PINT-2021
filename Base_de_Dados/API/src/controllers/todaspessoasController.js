@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Admin = require('../model/Pessoas/Admin');
 //const config = require('../config');
-//const conf = require('../conf');
+const conf = require('../conf');
 
 //nas criacoes de pessoas, se algum der erro, ele apaga os anteriores da BD
 //, garantindo que nao existam pessoas repetidas
@@ -35,7 +35,9 @@ controllers.createAdmin = async (req,res) => { //post
             Localização : Localização,
             PNome : PNome,
             Password : Password,
-            Foto_De_Perfil: URLImagem
+            Foto_De_Perfil: URLImagem,
+            createdAt:new Date(),
+            updatedAt:new Date() 
         })
 
         var id=dataPessoa.dataValues.IDPessoa;
@@ -79,7 +81,9 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
             Localização : Localização,
             PNome : PNome,
             Password : Password,
-            Foto_De_Perfil: URLImagem
+            Foto_De_Perfil: URLImagem,
+            createdAt:new Date(),
+            updatedAt:new Date() 
         })
         var id=dataPessoa.dataValues.IDPessoa;  
     
@@ -133,7 +137,9 @@ controllers.createOutros_Util = async (req,res) => { //post
             Localização : Localização,
             PNome : PNome,
             Password : Password,
-            Foto_De_Perfil: URLImagem
+            Foto_De_Perfil: URLImagem,
+            createdAt:new Date(),
+            updatedAt:new Date() 
         })
 
         var id=dataPessoa.dataValues.IDPessoa;
@@ -257,39 +263,37 @@ controllers.getInfoPessoa=async (req,res) => {//get
 }
 
 controllers.login = async (req,res) => {//post
-    if (req.body.email && req.body.password) {
-        var Email = req.body.email;
-        var Password = req.body.password;
-     }
+    if (req.body.Email && req.body.Password) {
+        var emailutil = req.body.Email;
+        var passwordutil = req.body.Password;
+    }
     var tipo="";
     try{
         var pessoalogin = await pessoas.findOne({
             where:{
-                Email:Email
+                Email:emailutil
             }
-        }).then (function(data){ 
-            return data;
-        }).catch (error=>{
-            console.log("Erro: "+error);
-            return error;
         })
-        if (Password == null){
-            res.status(403),json({
+
+        if (passwordutil == null){
+            res.status(403).json({
                 success: false,
                 message: 'Campos em Branco'
             })
         } else {
-            if(Email && Password && pessoalogin ){
-                const isMatch = bcrypt.compareSync(Password, pessoalogin.Password);
-                if (req.body.email == pessoalogin.email && isMatch){
-                    res.json({success: true, message: 'Autenticação realizada com sucesso!’, token: token'});
+            if(emailutil && passwordutil && pessoalogin ){
+                const isMatch = await bcrypt.compare(passwordutil, pessoalogin.dataValues.Password);
+                if (!isMatch){
+                    throw new Error('Password Incorreta')
+                }else{
+                    var token = jwt.sign({Email:emailutil},conf.jwtSecret,{expiresIn:'1h'})
                 }
             }
         }
         if(pessoalogin === null)
             throw new Error('Email nao existe')
-        if(pessoalogin.dataValues.Password !== Password)
-            throw new Error('Password Incorreta')
+        /*if(pessoalogin.dataValues.Password !== Password)
+            throw new Error('Password Incorreta')*/
         var tipoUtil = await utils_instituicao.findOne({
             where:{
                 PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
@@ -323,7 +327,8 @@ controllers.login = async (req,res) => {//post
         return;
     }
     
-    res.status(200).send({desc:"Login com sucesso",TipoPessoa:tipo, login:true,PessoaLogin:tipoUtil})
+        res.status(200).send({desc:"Login com sucesso",TipoPessoa:tipo, login:true,PessoaLogin:tipoUtil,token:token})
+    
     //TipoPessoa retorna Util_Instituicao ou Outros_Util ou Admin
 }
 
@@ -379,9 +384,9 @@ controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
         res.status(500).send({desc:"erro a selecionar", err:e.original})
     }
     res.send({Utils:arrayNovo})
-
-
 }
+
+
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){
