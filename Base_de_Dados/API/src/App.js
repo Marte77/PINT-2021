@@ -12,11 +12,16 @@ const likedislikeRoute = require('./routes/likedislikeRoute')
 const comentariosRoute = require('./routes/comentariosRoute')
 const favoritosRoute = require('./routes/favoritosRoute')
 const instituicaoRoute = require('./routes/instituicaoRoute')
+
+const middleware = require('./middleware');
+
+
 //Configurações
 app.set('port', process.env.PORT|| 3000);
 //app.set('port', 3001);
 //Middlewares
 app.use(express.json());
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');

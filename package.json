@@ -1,6 +1,10 @@
 {
     "scripts": {
         "starta": "node Base_de_Dados/API/src/App.js",
-        "start" : "cd Base_de_Dados/API/ && npm install --save bcrypt && node src/App.js"
+        "start": "cd Base_de_Dados/API/ && npm install --save bcrypt && node src/App.js"
+    },
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "jsonwebtoken": "^8.5.1"
     }
 }

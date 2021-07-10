@@ -29,10 +29,10 @@ var Pessoas = sequelize.define('Pessoas', {
     timestamps: true,
 });
 
-Pessoas.beforeCreate((user, options) => {
-    return bcrypt.hash(user.Password, 10)
+Pessoas.beforeCreate((pessoa, options) => {
+    return bcrypt.hash(pessoa.Password, 10)
     .then(hash => {
-        user.Password = hash;
+        pessoa.Password = hash;
     })
     .catch(err => {
         throw new Error();

@@ -9,14 +9,61 @@ const controllers = {}
 const { Op, json } = require('sequelize');
 const Pessoas = require('../model/Pessoas/Pessoas');
 const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const Admin = require('../model/Pessoas/Admin');
+
+const jwt=require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 //const config = require('../config');
+
+
 const conf = require('../conf');
 
 //nas criacoes de pessoas, se algum der erro, ele apaga os anteriores da BD
 //, garantindo que nao existam pessoas repetidas
+
+sequelize.sync()
+
+//
+
+
+
+controllers.login=async(req, res) =>{
+    if (req.body.email && req.body.password) {
+        var email = req.body.email;
+        var password = req.body.password;
+}
+var pessoa = await Pessoas.findOne({where: { Email: email}})
+.then(function(data){
+return data;
+})
+.catch(error =>{
+    console.log("Erro: "+error);
+    return error;
+     })
+    if (password === null || typeof password === "undefined") {
+    res.status(403).json({success: false,message: 'Campos em Branco'});
+} else {
+    if (req.body.email && req.body.password && pessoa) {
+    const isMatch = bcrypt.compareSync(Password, pessoa.password);
+    if (req.body.email === pesssoa.email && isMatch) {
+    let token = jwt.sign({Email: req.body.email}, config.secret,
+    {expiresIn: '1h' //expira em 1 hora
+    });
+    res.json({success: true, message: 'Autenticação realizada com sucesso!', token: token});
+    } else {
+    res.status(403).json({success: false, message: 'Dados de autenticação inválidos.'});
+    }
+    } else {
+    res.status(400).json({success: false, message: 'Erro no processo de autenticação. Tente de novo mais tarde.'});
+    }
+    }}
+
+
+
+
+
+
+//
 
 controllers.createAdmin = async (req,res) => { //post
     sequelize.sync()
@@ -164,6 +211,7 @@ controllers.createOutros_Util = async (req,res) => { //post
     else res.status(statusCode).send({status:statusCode,Pessoa:dataPessoa,Outros_Util:dataOutros_Util})
 }
 
+
 controllers.getTop3Pessoas=async (req,res) => { //get
     var {numerotoppessoas} = req.params
     try{
@@ -262,75 +310,7 @@ controllers.getInfoPessoa=async (req,res) => {//get
     else res.status(200).send(infopessoa)
 }
 
-controllers.login = async (req,res) => {//post
-    if (req.body.Email && req.body.Password) {
-        var emailutil = req.body.Email;
-        var passwordutil = req.body.Password;
-    }
-    var tipo="";
-    try{
-        var pessoalogin = await pessoas.findOne({
-            where:{
-                Email:emailutil
-            }
-        })
 
-        if (passwordutil == null){
-            res.status(403).json({
-                success: false,
-                message: 'Campos em Branco'
-            })
-        } else {
-            if(emailutil && passwordutil && pessoalogin ){
-                const isMatch = await bcrypt.compare(passwordutil, pessoalogin.dataValues.Password);
-                if (!isMatch){
-                    throw new Error('Password Incorreta')
-                }else{
-                    var token = jwt.sign({Email:emailutil},conf.jwtSecret,{expiresIn:'1h'})
-                }
-            }
-        }
-        if(pessoalogin === null)
-            throw new Error('Email nao existe')
-        /*if(pessoalogin.dataValues.Password !== Password)
-            throw new Error('Password Incorreta')*/
-        var tipoUtil = await utils_instituicao.findOne({
-            where:{
-                PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
-            },
-            include:[pessoas]
-        })
-        if(tipoUtil === null) //ou é admin ou é outro util
-        {
-            tipoUtil = await outros_util.findOne({
-                where:{
-                    PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
-                },
-                include:[pessoas]
-            })
-            if(tipoUtil === null) //é admin
-            {
-                    tipoUtil = await admin.findOne({
-                    where:{
-                        PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
-                    },
-                    include:[pessoas]
-                })
-                tipo="Admin"
-            }else tipo="Outros_Util"
-        }else{
-            tipo="Util_Instituicao"
-        }
-    }catch(e){
-        console.log(e)
-        res.status(500).send({ err:e.message})
-        return;
-    }
-    
-        res.status(200).send({desc:"Login com sucesso",TipoPessoa:tipo, login:true,PessoaLogin:tipoUtil,token:token})
-    
-    //TipoPessoa retorna Util_Instituicao ou Outros_Util ou Admin
-}
 
 
 controllers.isUtilizadorInstVerificado = async(req,res)=>{//get
