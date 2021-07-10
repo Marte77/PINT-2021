@@ -51,11 +51,10 @@ controllers.criarLocal = async(req,res)=>{//post
 }
 
 controllers.criarLocalIndoor = async(req,res)=>{//post
-    const{nome, codigopostal,descricao,piso, idlocal} = req.body
+    const{nome, descricao, piso, idlocal} = req.body
     try{
         var novoLocal = await localindoor.create({
             Nome:nome,
-            Codigo_Postal: codigopostal,
             Descricao:descricao,
             Piso: piso,
             LocalIDLocal:idlocal

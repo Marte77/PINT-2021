@@ -26,6 +26,11 @@ controllers.createAdmin = async (req,res) => { //post
 
     var descricao="Erro a criar Admin";
     try{
+        var email = await Pessoas.findOne({
+            where:{Email:Email}
+        })
+        if(email !== null)
+            throw new Error('O email inserido ja existe')
         var dataPessoa = await pessoas.create({
             Data_Nascimento : Data_Nascimento, 
             Cidade : Cidade, 
@@ -51,7 +56,9 @@ controllers.createAdmin = async (req,res) => { //post
         statusCode=500;
         console.log(e); 
         var msg=e.original
-        
+        if(e.toString() === 'Error: O email inserido ja existe')
+            res.status(statusCode).send({status:statusCode,desc:"erro a criar", err:e.toString()})
+
         if(dataPessoa!= undefined)
         {
             dataPessoa.destroy(); //apagar pessoa que foi criada pois o admin nao foi criado
@@ -72,6 +79,11 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
     var statusCode = 200;
     var descricao = "Erro a criar UtilInst"
     try{
+        var email = await Pessoas.findOne({
+            where:{Email:Email}
+        })
+        if(email !== null)
+            throw new Error('O email inserido ja existe')
         var dataPessoa = await pessoas.create({
             Data_Nascimento : Data_Nascimento, 
             Cidade : Cidade, 
@@ -104,6 +116,8 @@ controllers.createUtil_Instituicao = async (req,res) => { //post
         console.log(e);
         var msgErr = e.original
         statusCode =500;
+        if(e.toString() === 'Error: O email inserido ja existe')
+            res.status(statusCode).send({status:statusCode,desc:"erro a criar", err:e.toString()})
         if(dataPessoa != undefined){
             descricao =descricao + " Dados Pessoa Corretos"
             if(dataUtil != undefined)
@@ -128,6 +142,11 @@ controllers.createOutros_Util = async (req,res) => { //post
     } = req.body;
     var statusCode = 200;
     try{
+        var email = await Pessoas.findOne({
+            where:{Email:Email}
+        })
+        if(email !== null)
+            throw new Error('O email inserido ja existe')
         var dataPessoa = await pessoas.create({
             Data_Nascimento : Data_Nascimento, 
             Cidade : Cidade, 
@@ -152,6 +171,8 @@ controllers.createOutros_Util = async (req,res) => { //post
         console.log(e);
         statusCode=500; 
         var msgErr = e.original;
+        if(e.toString() === 'Error: O email inserido ja existe')
+            res.status(statusCode).send({status:statusCode,desc:"erro a criar", err:e.toString()})
         var descricao="Erro a criar Outro Util"
         if(dataPessoa != undefined){
             descricao = descricao + " Dados Pessoa Corretos"

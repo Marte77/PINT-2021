@@ -112,7 +112,10 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
-
+        /**
+         * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
+         * @param tempo:     int da quantidade de tipoTempo
+         */
         public static void getDensidadeMediaPorLocal( final Context context, int idLocal, String tipoTempo, int tempo,final volleycallback VCB) throws JSONException {
             String url = urlGeral + "/Report/get_densidade_media_local/"+idLocal;
             RequestQueue request = Volley.newRequestQueue(context);
@@ -248,7 +251,42 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
-
+        /**
+         * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
+         * @param tempo:     int da quantidade de tipoTempo
+         */
+        public static void getListaReportsIndoor(final Context context, int idLocal, String tipoTempo, int tempo, final volleycallback VCB) throws JSONException {
+            String url = urlGeral + "/Report/get_lista_locais_indoor_local/" + idLocal;
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("tempo", tempo);
+            body.put("tipoTempo", tipoTempo);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.PUT, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                        Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                    } catch (Exception e ) {
+                        e.printStackTrace();
+                        Log.i("pedido","Catch ERRO: "+ e);
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesLocais{
@@ -568,6 +606,7 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
         public static void criarOutroUtil(final Context context,JSONObject body, final volleycallback VCB) throws JSONException {
             String url = urlGeral + "/Pessoas/createOutros_Util";
             RequestQueue request = Volley.newRequestQueue(context);
@@ -601,6 +640,7 @@ public class FuncoesApi {
                             } catch (Exception e ) {
                                 e.printStackTrace();
                                 Log.i("pedido","Catch ERRO: "+ e);
+
                                 Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
                             }
                         }
