@@ -256,7 +256,7 @@ public class FuncoesApi {
          * @param tempo:     int da quantidade de tipoTempo
          */
         public static void getListaReportsIndoor(final Context context, int idLocal, String tipoTempo, int tempo, final volleycallback VCB) throws JSONException {
-            String url = urlGeral + "/Report/get_lista_locais_indoor_local/" + idLocal;
+            String url = urlGeral + "/Report/get_lista_reports_indoor_local/" + idLocal;
             RequestQueue request = Volley.newRequestQueue(context);
             JSONObject body = new JSONObject();
             body.put("tempo", tempo);

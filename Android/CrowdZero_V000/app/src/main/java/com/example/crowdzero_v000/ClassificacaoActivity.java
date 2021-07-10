@@ -1,9 +1,16 @@
 package com.example.crowdzero_v000;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -40,14 +47,12 @@ public class ClassificacaoActivity extends NavDrawerActivity {
         txtPontuacaoUtilizador.setTextSize(25f);
         txtPontuacaoUtilizador.setGravity(Gravity.CENTER);
 
-        // TODO: 25/06/2021 terminar design, adicionar circulo branco a volta das pfps
-
         obterPontuacaoEfotoDePerfil();
 
-        colocarTop3Pessoas();
+        colocarTop3Pessoas(getApplicationContext());
     }
 
-    private void colocarTop3Pessoas() {
+    private void colocarTop3Pessoas(final Context appcontext) {
         TextView txtviewNome3lugar, txtviewNome2lugar, txtviewNome1lugar;
         ImageView imgview3lugar, imgview2lugar, imgview1lugar;
         txtviewNome1lugar = findViewById(R.id.textViewNomePessoaPrimeiroLugar);
@@ -74,39 +79,46 @@ public class ClassificacaoActivity extends NavDrawerActivity {
         arrayimgs[1] = imgview2lugar;
         arrayimgs[2] = imgview3lugar;
 
-        final Context appcontext = getApplicationContext();
-        FuncoesApi.FuncoesPessoas.getTopXPessoasComMaisPontos(appcontext, 3, new FuncoesApi.volleycallback() {
-            @Override
-            public void onSuccess(JSONObject jsonObject) throws JSONException {
-                JSONArray top3 = jsonObject.getJSONArray("Top3");
-                //tem sempre a primeira pessoa no index 0
-                String nome, urlImagem;
-                int pontos;
-                for(int i = 0; i<top3.length() || i == 3;i++){
-                    nome = top3.getJSONObject(i).getJSONObject("Pessoa").getString("PNome")
-                            +" "+top3.getJSONObject(i).getJSONObject("Pessoa").getString("UNome");
-                    if(top3.getJSONObject(i).has("Pontos")){
-                        //é util inst
-                        pontos = top3.getJSONObject(i).getInt("Pontos");
-                    }else pontos = top3.getJSONObject(i).getInt("Pontos_Outro_Util");
-                    arraytxts[i].setText(Html.fromHtml("<b>"+nome+"</b>"));
-                    arrayptstxts[i].setText(Html.fromHtml("<b>Pontos: " + pontos+"</b>"));
-                    urlImagem = top3.getJSONObject(i).getJSONObject("Pessoa").getString("Foto_De_Perfil");
-                    final int finalI = i;
-                    FuncoesApi.downloadImagem(appcontext, urlImagem, new FuncoesApi.volleyimagecallback() {
-                        @Override
-                        public void onSuccess(Bitmap bitmap) {
-                            arrayimgs[finalI].setImageBitmap(bitmap);
-                        }
-                    });
+        try {
+            FuncoesApi.FuncoesPessoas.getTopXPessoasComMaisPontos(appcontext, 3, new FuncoesApi.volleycallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) throws JSONException {
+                    Log.i("pedido", jsonObject.toString());
+                    JSONArray top3 = jsonObject.getJSONArray("Top3");
+                    //tem sempre a primeira pessoa no index 0
+                    String nome, urlImagem;
+                    int pontos;
+                    for (int i = 0; i < top3.length() || i == 3; i++) {
+                        nome = top3.getJSONObject(i).getJSONObject("Pessoa").getString("PNome")
+                                + " " + top3.getJSONObject(i).getJSONObject("Pessoa").getString("UNome");
+                        if (top3.getJSONObject(i).has("Pontos")) {
+                            //é util inst
+                            pontos = top3.getJSONObject(i).getInt("Pontos");
+                        } else pontos = top3.getJSONObject(i).getInt("Pontos_Outro_Util");
+                        arraytxts[i].setText(Html.fromHtml("<b>" + nome + "</b>"));
+                        arrayptstxts[i].setText(Html.fromHtml("<b>Pontos: " + pontos + "</b>"));
+                        urlImagem = top3.getJSONObject(i).getJSONObject("Pessoa").getString("Foto_De_Perfil");
+                        final int finalI = i;
+                        if(!urlImagem.equals("null"))
+                            FuncoesApi.downloadImagem(appcontext, urlImagem, new FuncoesApi.volleyimagecallback() {
+                                @Override
+                                public void onSuccess(Bitmap bitmap) {
+                                    arrayimgs[finalI].setImageBitmap(bitmap);
+                                }
+                            });
+
+                    }
                 }
-            }
 
-            @Override
-            public void onError(JSONObject jsonObjectErr) throws JSONException {
-
-            }
-        });
+                @Override
+                public void onError(JSONObject jsonObjectErr) throws JSONException {
+                    Log.i("pedido", jsonObjectErr.toString());
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.i("pedido", "exception colocarTop3Pessoas classiifacao activity: " + e.toString());
+        }
     }
 
 
@@ -116,6 +128,7 @@ public class ClassificacaoActivity extends NavDrawerActivity {
             FuncoesApi.FuncoesPessoas.getInformacoesPessoa(getApplicationContext(), f.getIDPessoa(), new FuncoesApi.volleycallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) throws JSONException {
+                    Log.i("pedido", jsonObject.toString());
                     String pontos;
                     if (f.getTipoPessoa().equals(FuncoesSharedPreferences.outrosUtil)) {
                         int pts = jsonObject.getInt("Pontos_Outro_Util");
@@ -141,6 +154,7 @@ public class ClassificacaoActivity extends NavDrawerActivity {
             });
         }catch(Exception e){
             e.printStackTrace();
+            Log.i("pedido", "exception getinfopesso classiifacao activity: " + e.toString());
         }
         obterPontuacao();
     }
@@ -171,6 +185,7 @@ public class ClassificacaoActivity extends NavDrawerActivity {
             });
         }catch (Exception e){
             e.printStackTrace();
+            Log.i("pedido", "exception obter pontuacao classiifacao activity: " + e.toString());
         }
     }
     void obterFotoDePerfil(String urlFoto){
@@ -180,6 +195,5 @@ public class ClassificacaoActivity extends NavDrawerActivity {
                 fotoDePerfil.setImageBitmap(bitmap);
             }
         });
-
     }
 }

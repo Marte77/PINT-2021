@@ -14,6 +14,7 @@ import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 startActivity(RegistoIntent);
             break;
             case R.id.botaoEntrar://verifica se ja fez login anteriormente
-                FuncoesSharedPreferences sharedPreferences = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+                final FuncoesSharedPreferences sharedPreferences = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
 
                 if(sharedPreferences.getSessaoIniciada()){
                     //sessao esta iniciada
@@ -50,11 +51,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                                 FuncoesApi.encriptarString(sharedPreferences.getPassword()),
                                 new FuncoesApi.volleycallback() {
                                     @Override
-                                    public void onSuccess(JSONObject jsonObject) {
+                                    public void onSuccess(JSONObject jsonObject) throws JSONException {
                                         Intent i = new Intent(getApplicationContext(),PaginaPrincipal.class);
+                                        if(jsonObject.getJSONObject("PessoaLogin").has("Verificado")){//é util instituicao
+                                            sharedPreferences.setVerificacao(jsonObject.getJSONObject("PessoaLogin")
+                                                    .getBoolean("Verificado"));
+                                        }
                                         startActivity(i);
                                     }
-
                                     @Override
                                     public void onError(JSONObject jsonObjectErr) {
                                         Toast.makeText(getApplicationContext(),"Erro a fazer login automatico",Toast.LENGTH_SHORT).show();

@@ -37,8 +37,6 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
 
         idlocal = getIntent().getExtras().getInt("idlocal");
 
-        //Log.i("testar",getIntent().getExtras().getInt("idlocal")+" " +getIntent().getExtras().getBoolean("mapa"));
-
         int alturatb = this.tb.getLayoutParams().height;
         LinearLayout linearLayout = (findViewById(R.id.linearLayoutInstituicoesInformacoes));
         linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());
@@ -52,7 +50,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         imagem = findViewById(R.id.imagemInstituicaoInfo);
         verficarSeLocalEstaFavoritado();
 
-        //TODO:verficar se já é favorito para ligar o botao do fav
+
         verificarSeUtilizadorEmpresa();
         if(!isUtilizadorEmpresa){
             LinearLayout ll = findViewById(R.id.linearLayoutBotaoInteriorInstiuicaoInfo);
@@ -92,6 +90,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         btnReport = findViewById(R.id.botaoReportsInfoInstituicao);
         btnOpiniao = findViewById(R.id.botaoOpinioesInfoInstituicao);
         final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+        //region botao favoritos
         btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,10 +133,12 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
 
             }
         });
+        //endregion
+        //region botao mapa e report
         btnMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                comecarActivityMapa(false);
+                comecarActivityMapa();
             }
         });
         btnReport.setOnClickListener(new View.OnClickListener() {
@@ -152,23 +153,27 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
                 startActivity(i);
             }
         });
+        //endregion
+        //region botao opiniao
         btnOpiniao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-
+        //endregion
+        //region reports interiores
         if(isUtilizadorEmpresa){
             ImageButton btnInterior;
             btnInterior = findViewById(R.id.botaoInteriorInfoInstituicao);
             btnInterior.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    comecarActivityMapa(true);
+
                 }
             });
         }
+        //endregion
     }
     void verificarSeUtilizadorEmpresa(){
         if((new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE))).getTipoPessoa().equals(FuncoesSharedPreferences.utilInst))
@@ -209,7 +214,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         });
     }
 
-    void comecarActivityMapa(boolean isInterior){
+    void comecarActivityMapa(){
         Intent i = new Intent(getApplicationContext(), MapaActivity.class);
         Bundle b = new Bundle();
         if(coordsInstituicao == null) {
@@ -222,8 +227,6 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         i.putExtra("coords",b);
         i.putExtra("opcaoEscolhida","mapa"); // colocar "mapa" na tb e na barra lateral
         i.putExtra("opcaoEscolhidaItemID",nv.getMenu().getItem(5).getItemId());
-        //if(isInterior)
-            //todo:meter a abrir a activity mapa no interior
         startActivity(i);
     }
 }

@@ -50,9 +50,9 @@ public class PaginaPrincipal extends NavDrawerActivity {
                 new FuncoesApi.volleycallback() {
                     @Override
                     public void onSuccess(JSONObject jsonObject) throws JSONException {
-                        Log.i("pedido",jsonObject.toString());
-                        if(jsonObject.getJSONObject("Estado").getBoolean("Verificado"))
-                            f.setVerificacao(true);
+                        if(f.getTipoPessoa().equals("Util_Instituicao"))
+                            if(jsonObject.getJSONObject("Estado").getBoolean("Verificado"))
+                                f.setVerificacao(true);
                     }
 
                     @Override

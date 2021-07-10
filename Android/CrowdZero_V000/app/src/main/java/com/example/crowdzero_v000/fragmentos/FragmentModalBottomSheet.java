@@ -70,7 +70,7 @@ public class FragmentModalBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getContext(),"ola",Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getActivity().getApplicationContext(), ListaReportsInstituicaoActivity.class);
+                Intent i = new Intent(getActivity(), ListaReportsInstituicaoActivity.class);
                 i.putExtra("opcaoEscolhida","Home");
                 i.putExtra("opcaoEscolhidaItemID",-1);
                 i.putExtra("nome",nomeLocal);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/opcaoReportsIndoor"
+        android:title="@string/reportes_indoor"/>
+    <item android:id="@+id/opcaoReportsOutdoor"
+        android:title="@string/reportes_outdoor"/>
+
+<!--isto nao esta a ser usado para nada-->
+</menu>
