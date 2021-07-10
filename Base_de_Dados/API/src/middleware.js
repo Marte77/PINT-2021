@@ -8,24 +8,24 @@ if (token.startsWith('Bearer ')) {
     }
 
 
-    if (token) {
-        var tokenverify  = jwt.sign({email:req.body.Email},config.jwtSecret,{expiresIn:'1h'})
-        jwt.verify(tokenverify, config.jwtSecret, (err, decoded) => {
-            if (err) {
-                return res.json({
-                    success: false,
-                    message: 'O token não é válido.'
-                });
-            } else {
-                req.decoded = decoded;
-                next();
-            }
-        });
-        } else {
+if (token) {
+    var tokenverify  = jwt.sign({email:req.body.Email},config.jwtSecret,{expiresIn:'1h'})
+    jwt.verify(tokenverify, config.jwtSecret, (err, decoded) => {
+        if (err) {
             return res.json({
                 success: false,
-                message: 'Token indisponível.'
+                message: 'O token não é válido.'
             });
+        } else {
+            req.decoded = decoded;
+            next();
         }
-    };
-            module.exports = { checkToken: checkToken}
+    });
+    } else {
+        return res.json({
+            success: false,
+            message: 'Token indisponível.'
+        });
+    }
+};
+module.exports = { checkToken: checkToken}
