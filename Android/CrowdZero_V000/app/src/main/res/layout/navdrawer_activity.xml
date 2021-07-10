@@ -29,6 +29,7 @@
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
                 app:navigationIcon="@drawable/ic_menu_black_24dp"
+                app:menu="@menu/menutoolbar"
                 app:title="@string/titulo_pagina_principal" />
 
         </com.google.android.material.appbar.AppBarLayout>

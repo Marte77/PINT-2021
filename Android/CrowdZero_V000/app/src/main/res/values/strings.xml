@@ -76,5 +76,10 @@
     <string name="medalha">medalha</string>
     <string name="fazer_report_indoor">Fazer Report Indoor</string>
     <string name="local_indoor">Local Indoor</string>
+    <string name="reportes_indoor">Reportes Indoor</string>
+    <string name="reportes_outdoor">Reportes Outdoor</string>
+    <string name="opcoes">Opções</string>
+    <string name="todos_os_reportes">Todos os Reportes</string>
+    <string name="morada">Morada</string>
 
 </resources>

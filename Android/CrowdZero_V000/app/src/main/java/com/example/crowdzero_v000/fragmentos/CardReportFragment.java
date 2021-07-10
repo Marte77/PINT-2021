@@ -37,7 +37,7 @@ public class CardReportFragment extends Fragment {
     boolean botaoDislike = false;
     boolean botaoLike = false;
     boolean botaoCoracao = false;
-    int idReport= -1;
+    public int idReport= -1;
     int idpessoa = 0;
     int nLikes = 0;
     int nDislikes = 0;

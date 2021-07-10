@@ -55,7 +55,6 @@
                 android:id="@+id/textViewCardReportPaginaPrincipal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceHeadline6"
                 android:text="Concentração em Viseu" />
 
             <com.github.mikephil.charting.charts.PieChart

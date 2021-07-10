@@ -1,3 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"/>
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/opcoesToolbarSettings"
+        android:title="@string/opcoes"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        app:showAsAction="always"
+        android:visible="false">
+        <menu>
+            <item android:id="@+id/opcaoReportsIndoor"
+                android:title="@string/reportes_indoor"/>
+            <item android:id="@+id/opcaoReportsOutdoor"
+                android:title="@string/reportes_outdoor"/>
+            <item android:id="@+id/opcaoReportsDoisTipos"
+                android:title="@string/todos_os_reportes"/>
+
+        </menu>
+    </item>
+
+</menu>

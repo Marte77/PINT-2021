@@ -59,6 +59,7 @@ public class CriarReportLocal extends NavDrawerActivity {
         idlocal = getIntent().getExtras().getInt("idlocal");
         tb.setTitle(nome);
 
+
         final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
         inputNivelDensidade = findViewById(R.id.autoCompleteNivelReport);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.lista_niveis_densidade, niveisDensidadeArray);
@@ -68,26 +69,39 @@ public class CriarReportLocal extends NavDrawerActivity {
         isReportIndoor = findViewById(R.id.checkBoxIsReportIndoor);
         menuLayoutLocalIndoor = findViewById(R.id.menuLocaisIndoor);
         inputLocalIndoor = findViewById(R.id.autoCompleteLocaisIndoor);
+        inputLocalIndoor.setEnabled(false);
+        inputLocalIndoor.setAlpha(0.4f);
 
         isReportIndoor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 inputLocalIndoor.setEnabled(isChecked);
-                if(isChecked){
+                if (isChecked) {
                     menuLayoutLocalIndoor.setAlpha(1f);
-                }else menuLayoutLocalIndoor.setAlpha(0.4f);
-
+                } else menuLayoutLocalIndoor.setAlpha(0.4f);
             }
         });
 
         //os inputs comecam desativados pois demora um bocado a obter a localizacao da pessoa relativamente ao local
         desativarOuAtivarInputs(false);
-
+        int i = 0;
         //region verificar coordenadas para fazer report e obter locais indoor
         verificarCoordsParaFazerReport();
-        if(f.getVerificacao()){
-            //obter lista de locais
-            obterLocaisIndoor();
+        if(f.getTipoPessoa().equals("Outros_Util")){
+            isReportIndoor.setAlpha(0);
+            isReportIndoor.setEnabled(false);
+            inputLocalIndoor.setEnabled(false);
+            inputLocalIndoor.setAlpha(0);
+            menuLayoutLocalIndoor.setAlpha(0);
+            menuLayoutLocalIndoor.setEnabled(false);
+        }else {
+            if (f.getVerificacao()) {
+                //obter lista de locais
+                obterLocaisIndoor();
+            } else {
+                isReportIndoor.setEnabled(false);
+                isReportIndoor.setAlpha(0.4f);
+            }
         }
 
         //endregion
@@ -96,8 +110,6 @@ public class CriarReportLocal extends NavDrawerActivity {
         niveisDensidadeArray.add("Pouco Populado");
         niveisDensidadeArray.add("Muito Populado");
         niveisDensidadeArray.add("Extremamente Populado");
-
-
 
 
         //region botao report listener
@@ -245,9 +257,7 @@ public class CriarReportLocal extends NavDrawerActivity {
         FuncoesApi.volleycallback VCB = new FuncoesApi.volleycallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                //Log.i("testar",jsonObject.toString());
                 coordsLocal = new LatLng(jsonObject.getJSONObject("Local").getDouble("Latitude"), jsonObject.getJSONObject("Local").getDouble("Longitude"));
-
                 if (ActivityCompat.checkSelfPermission(CriarReportLocal.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(CriarReportLocal.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     desativarOuAtivarInputs(false);
@@ -290,22 +300,67 @@ public class CriarReportLocal extends NavDrawerActivity {
     }
 
     private void desativarOuAtivarInputs(boolean ativa) {
-        inputDescricaoReport.setEnabled(ativa);
+        /*inputDescricaoReport.setEnabled(ativa);
         inputNivelDensidade.setEnabled(ativa);
         inputLocalIndoor.setEnabled(ativa);
+        menuLayoutLocalIndoor.setEnabled(ativa);
         if(!ativa) {
+
             menuLayoutNivelDensidade.setAlpha(0.4f);
-            menuLayoutLocalIndoor.setAlpha(0.4f);
             findViewById(R.id.descricaoNovoReport).setAlpha(0.4f);
         }else{
             menuLayoutNivelDensidade.setAlpha(1.0f);
-            menuLayoutLocalIndoor.setAlpha(1.0f);
             findViewById(R.id.descricaoNovoReport).setAlpha(1.0f);
         }
         if(!isReportIndoor.isChecked()){
             inputLocalIndoor.setEnabled(false);
-            menuLayoutLocalIndoor.setAlpha(0.4f);
+        }*/
+        TextInputLayout ndensidtextinplay = findViewById(R.id.menuNivelDensidade)
+                ,desctexinplay = findViewById(R.id.descricaoNovoReport)
+                ,loctextinplay = findViewById(R.id.menuLocaisIndoor);
+        AutoCompleteTextView localindoorautocomp = findViewById(R.id.autoCompleteLocaisIndoor),
+                ndensidadeautocomp = findViewById(R.id.autoCompleteNivelReport);
+        TextInputEditText descricaoautocomp = findViewById(R.id.inputDescricaoNovoReport);
+        CheckBox checkbox = findViewById(R.id.checkBoxIsReportIndoor);
+        if(!ativa){
+            ndensidtextinplay.setAlpha(0.4f);
+            ndensidtextinplay.setEnabled(false);
+            desctexinplay.setAlpha(0.4f);
+            desctexinplay.setEnabled(false);
+            loctextinplay.setAlpha(0.4f);
+            loctextinplay.setEnabled(false);
+            localindoorautocomp.setEnabled(false);
+            localindoorautocomp.setAlpha(0.4f);
+            ndensidadeautocomp.setEnabled(false);
+            ndensidadeautocomp.setAlpha(0.4f);
+            descricaoautocomp.setEnabled(false);
+            descricaoautocomp.setAlpha(0.4f);
+            checkbox.setEnabled(false);
+            checkbox.setAlpha(0.4f);
+        }else{
+            ndensidtextinplay.setAlpha(1f);
+            ndensidtextinplay.setEnabled(true);
+            desctexinplay.setAlpha(1f);
+            desctexinplay.setEnabled(true);
+            loctextinplay.setAlpha(1f);
+            loctextinplay.setEnabled(true);
+            localindoorautocomp.setEnabled(true);
+            localindoorautocomp.setAlpha(1f);
+            ndensidadeautocomp.setEnabled(true);
+            ndensidadeautocomp.setAlpha(1f);
+            descricaoautocomp.setEnabled(true);
+            descricaoautocomp.setAlpha(1f);
+            checkbox.setEnabled(true);
+            checkbox.setAlpha(1f);
         }
+        final FuncoesSharedPreferences f = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
+        if(!f.getVerificacao()){
+            isReportIndoor.setEnabled(false);
+            isReportIndoor.setAlpha(0.4f);
+            localindoorautocomp.setEnabled(false);
+            localindoorautocomp.setAlpha(0.4f);
+        }
+
     }
 
     private void obterLocaisIndoor(){
@@ -314,12 +369,10 @@ public class CriarReportLocal extends NavDrawerActivity {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
                 Log.i("pedido", "aaa "+jsonObject.toString());
-                Log.i("testar", "aaa "+jsonObject.toString());
                 JSONArray locais = jsonObject.getJSONArray("LocaisIndoor");
                 for(int i = 0;i < locais.length();i++){
                     String nomelocalindoor = locais.getJSONObject(i).getString("Nome");
                     int idlocalindoor = locais.getJSONObject(i).getInt("ID_Local_Indoor");
-                    Log.i("testar",nomelocalindoor +" " + idlocalindoor);
                     listaParesIDNomeLocalIndoor.add(new Pair<>(idlocalindoor, nomelocalindoor));
                     locaisIndoorArray.add(nomelocalindoor);
                 }

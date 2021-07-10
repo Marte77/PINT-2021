@@ -1,25 +1,17 @@
 package com.example.crowdzero_v000;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -27,7 +19,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
@@ -79,6 +71,7 @@ public class NavDrawerActivity extends AppCompatActivity {
         dl = findViewById(R.id.drawerlayout_navdrawer);
         nv = findViewById(R.id.NavViewNavDrawerBase);
         abl = findViewById(R.id.AppBarrLayout_navdrawerBase);
+
     }
 
     @Override
@@ -261,9 +254,16 @@ public class NavDrawerActivity extends AppCompatActivity {
         tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dl.openDrawer(view.getForegroundGravity());
+                abrirDrawer(view);
             }
         });
+        /*tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                opcaoEscolhidaListarReports(item);
+                return true;
+            }
+        });*/
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -275,6 +275,21 @@ public class NavDrawerActivity extends AppCompatActivity {
         });
 
     }
+
+    protected void abrirDrawer(View view){
+        dl.openDrawer(view.getForegroundGravity());
+    }
+
+    /*protected void opcaoEscolhidaListarReports(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.opcaoReportsIndoor:
+                Log.i("testar","opcaoReportsIndoor");
+                break;
+            case R.id.opcaoReportsOutdoor:
+                Log.i("testar","opcaoReportsOutdoor");
+                break;
+        }
+    }*/
 
     //funcao para abrir a activity escolhida no menu
     @SuppressLint("NonConstantResourceId")

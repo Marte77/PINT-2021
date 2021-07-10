@@ -193,6 +193,7 @@ public class LoginActivity extends AppCompatActivity {
         if(jsonObject.getString("TipoPessoa").equals("Outros_Util")){
 
             sharedPreferences.setIDUtilizador(infoutil.getInt("ID_Outro_Util"));
+            sharedPreferences.setVerificacao(false);
         }else if(jsonObject.getString("TipoPessoa").equals("Util_Instituicao")){
             sharedPreferences.setIDUtilizador(infoutil.getInt("ID_Util"));
             sharedPreferences.setVerificacao(infoutil.getBoolean("Verificado"));

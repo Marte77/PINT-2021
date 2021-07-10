@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -26,7 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class RegistoActivity extends NavDrawerActivity{
-    TextInputEditText emailIn, passwordIn,pNomeIn,uNomeIn, codPostalIn;
+    TextInputEditText emailIn, passwordIn,pNomeIn,uNomeIn, codPostalIn,localizacaoIn;
     Button cidadeBtn, dataNascBtn, fazerRegBtn, instituicaoBtn;
     String pertenceInstituicao="";//tem o nome da instituicao
     int idInstituicao=0;
@@ -39,8 +41,13 @@ public class RegistoActivity extends NavDrawerActivity{
         int alturatb = this.tb.getLayoutParams().height;
         LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.linearLayoutRegistoActivity));
         linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());
-
         inicializacaoEListeners();
+        dl.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override //é feito este override de modo a que o utilizador nao aceda ao menu lateral no registo
+    protected void abrirDrawer(View view) {
+        //do nothing
     }
 
     private void inicializacaoEListeners() {
@@ -54,6 +61,8 @@ public class RegistoActivity extends NavDrawerActivity{
         instituicaoBtn = findViewById(R.id.botaoInstituicaoRegisto);
         pertenceInst = findViewById(R.id.pertenceInstCheckBoxReg);
         codPostalIn = findViewById(R.id.CodigoPostalInputRegisto);
+        localizacaoIn = findViewById(R.id.LocalizacaoInputRegisto);
+
         //region cidadebtn listener
         cidadeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,26 +126,29 @@ public class RegistoActivity extends NavDrawerActivity{
 
 
     public void fazerRegisto() {
-        if(emailIn.getText().toString().isEmpty() || passwordIn.getText().toString().isEmpty()
+        if(localizacaoIn.getText().toString().isEmpty()||emailIn.getText().toString().isEmpty() || passwordIn.getText().toString().isEmpty()
                 || pNomeIn.getText().toString().isEmpty() || uNomeIn.getText().toString().isEmpty()
                 || opcaoCidade == -1 || dataNascBtn.getText().toString().isEmpty()
                 || codPostalIn.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(),"Preencha os campos todos",Toast.LENGTH_LONG).show();
             return;
         }
+
         String passwordEncriptada = null;
         try {
             passwordEncriptada = FuncoesApi.encriptarString(passwordIn.getText().toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i("password","Erro Password:" + e.toString());
+            Log.i("testar","Erro Password:" + e.toString());
+            return;
         }
         final String email = emailIn.getText().toString();
         String pNome = pNomeIn.getText().toString();
         String uNome = uNomeIn.getText().toString();
         String cidadeescolhida = cidades[opcaoCidade];
         String codpostal = codPostalIn.getText().toString();
-
+        String localizacao = localizacaoIn.getText().toString();
+        Log.i("testar",passwordEncriptada);
         if(pertenceInst.isChecked()) {
             //region criar util inst
             try {
@@ -149,6 +161,7 @@ public class RegistoActivity extends NavDrawerActivity{
                 body.put("UNome",uNome);
                 body.put("PNome",pNome);
                 body.put("InstituicaoIDInstituicao",idInstituicao);
+                body.put("Localização", localizacao);
                 FuncoesApi.FuncoesPessoas.criarUtilInstituicao(getApplicationContext(), body, new FuncoesApi.volleycallback() {
                     @Override
                     public void onSuccess(JSONObject jsonObject) throws JSONException {
@@ -158,11 +171,14 @@ public class RegistoActivity extends NavDrawerActivity{
                         idUtil= jsonObject.getJSONObject("Utilizador").getInt("ID_Util");
                         boolean isVerificado = jsonObject.getJSONObject("Utilizador").getBoolean("Verificado");
                         inserirSharedPreferences(true,isVerificado);
+                        Toast.makeText(getApplicationContext(),"Registo feito com sucesso",Toast.LENGTH_LONG);
+                        finish();
                     }
 
                     @Override
                     public void onError(JSONObject jsonObjectErr) throws JSONException {
                         Log.i("pedido",jsonObjectErr.toString());
+                        Toast.makeText(getApplicationContext(),"Erro a fazer registo",Toast.LENGTH_LONG);
                     }
                 });
             }catch (Exception e){
@@ -180,8 +196,8 @@ public class RegistoActivity extends NavDrawerActivity{
                 body.put("Codigo_Postal", codpostal);
                 body.put("UNome", uNome);
                 body.put("PNome", pNome);
+                body.put("Localização", localizacao);
                 body.put("InstituicaoIDInstituicao", idInstituicao);
-                //Log.i("testar", body.toString());
                 FuncoesApi.FuncoesPessoas.criarOutroUtil(getApplicationContext(), body, new FuncoesApi.volleycallback() {
                     @Override
                     public void onSuccess(JSONObject jsonObject) throws JSONException {
@@ -195,8 +211,8 @@ public class RegistoActivity extends NavDrawerActivity{
                     @Override
                     public void onError(JSONObject jsonObjectErr) throws JSONException {
                         Log.i("pedido","Erro"+jsonObjectErr.toString());
-                        if(!jsonObjectErr.getJSONObject("err").getString("detail").isEmpty()){
-                            if(jsonObjectErr.getJSONObject("err").getString("detail").contains("Key (\\\"Email\\\")=("+email+") already exists.")){
+                        if(jsonObjectErr.has("err")){
+                            if(jsonObjectErr.getString("err").equals("Error: O email inserido ja existe")){
                                 Toast.makeText(getApplicationContext(),"O email inserido já existe",Toast.LENGTH_LONG).show();
                             }
                         }
@@ -285,6 +301,7 @@ public class RegistoActivity extends NavDrawerActivity{
             public void onClick(DialogInterface dialogInterface, int i) {
                 pertenceInstituicao=instituicoes[i];
                 idInstituicao=i+1;
+                instituicaoBtn.setText(instituicoes[i]);
             }
         });
         //endregion
