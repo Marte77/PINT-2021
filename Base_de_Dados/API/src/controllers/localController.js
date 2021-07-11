@@ -127,7 +127,9 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
             return;
         }
     }
-    if(typeof(niveldensidade).toString() !== 'number'){
+
+    
+    if(typeof(niveldensidade) !== 'number'){
         res.status(500).send({desc:'Numero de densidade nao e um numero'})
         return;
     }else if(niveldensidade > 3 || niveldensidade < 1){
@@ -176,7 +178,6 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
                 NomeLocal:locale.dataValues.Nome, IDLocal:locale.dataValues.ID_Local,
                 NumeroReports:(reportutils.length + reportoutros.length)
             }
-            console.log(localjson)
             listalocaisEReports.push(localjson)
         }
     } catch (e) {
