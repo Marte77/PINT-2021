@@ -406,4 +406,74 @@ controllers.getListaReportsIndoor = async (req,res)=>{//put
     res.status(200).send({ReportsIndoor:reportsIndoor})
 }
 
+controllers.getReportMaisRelevante = async(req,res)=>{//post
+    const {tempo, tipoTempo} = req.params //tipotempo = hh - horas, mm - minutos, dd - dias
+    let dataAgr = new Date()
+    switch(tipoTempo){
+        case 'hh':{
+            dataAgr.setHours(dataAgr.getHours() - tempo)
+            break;
+        }
+        case 'mm':{
+            dataAgr.setMinutes(dataAgr.getMinutes() - tempo)
+            break;
+        }
+        case 'dd':{
+            dataAgr.setDate(dataAgr.getDate() - tempo)
+            break;
+        }
+        default:{
+            res.status(500).send({desc:"Tipo Invalido",err:"TipoInvalido"})
+            return;
+        }
+    }
+    dataAgr = dataAgr.toISOString()
+    var tiporeport = ""
+    try{
+        var reportmaisrelevante = await Report.findAll({
+            where:{
+                Data:{
+                    [Op.gte]:dataAgr
+                }
+            },
+            order:[['N_Likes','DESC']],
+            limit:1
+        })
+        
+        let idreport = reportmaisrelevante[0].dataValues.ID_Report
+        var reportadjacente =await Report_Indoor.findOne({
+            where:{
+                ReportIDReport:idreport
+            },include:
+                [Util_Instituicao]
+            
+        })
+        
+        if(reportadjacente ===null){
+            reportadjacente = await Report_Outdoor_Util_Instituicao.findOne({
+                where:{
+                    ReportIDReport:idreport
+                },include:
+                    [Util_Instituicao]
+                
+            })
+            if(reportadjacente === null){
+                reportadjacente =await Report_Outdoor_Outros_Util.findOne({
+                    where:{
+                        ReportIDReport:idreport
+                    },include:
+                        [Outro_Util]
+                    
+                })
+                tiporeport = "OutdoorOutro"
+            }else tiporeport = "OutdoorInst"
+        }else tiporeport = "Indoor"
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a selecionar", err:e.toString()})
+    }
+    //res.send({a:reportmaisrelevante})
+    res.send({TipoReport:tiporeport,ReportRelevante:reportmaisrelevante,ReportAdjacente:reportadjacente})
+}
+
 module.exports = controllers;
