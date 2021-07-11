@@ -21,6 +21,23 @@ controllers.listarLocais = async(req,res)=>{
     else res.status(statuscode).send({status:200, Locais: listaLocais})
 }
 
+controllers.getlocais_assocInstituicao=async(req,res)=>{
+    const{idInstituicao}=req.params
+    var statuscode = 200;
+    var errMessage="";
+    try{
+        var listalocaisbyinst=await locais.findAll({
+            where:{
+                InstituicaoIDInstituicao:idInstituicao
+            }
+        })
+    }
+    catch(e){console.log(e);errMessage = e;statuscode = 500;}
+    if(statuscode === 500)
+    res.status(statuscode).send({status: statuscode, err: errMessage});
+    else res.status(statuscode).send({status:200, LocaisInst: listalocaisbyinst})
+}
+
 controllers.getLocalbyId = async(req,res)=>{ //get
     var statuscode = 200;
     var errMessage="";

@@ -348,7 +348,7 @@ controllers.login = async (req,res) => {//post
         return;
     }
     
-        res.status(200).send({desc:"Login com sucesso",TipoPessoa:tipo, login:true,PessoaLogin:tipoUtil,token:token})
+        res.status(200).send({login:true,PessoaLogin:tipoUtil,token:token})
     
     //TipoPessoa retorna Util_Instituicao ou Outros_Util ou Admin
 }
