@@ -477,12 +477,31 @@ controllers.getReportMaisRelevante = async(req,res)=>{//post
                 IDPessoa:idpessoa
             }
         })
+        var local
+        if(tiporeport !== "Indoor"){
+            local = await Local.findOne({
+                where:{
+                    ID_Local:reportadjacente.dataValues.LocalIDLocal
+                }
+            })
+        }else{
+            local = await Local_Indoor.findOne({
+                where:{
+                    ID_Local_Indoor:reportadjacente.dataValues.LocalIndoorIDLocalIndoor
+                }
+            })
+            local = await Local.findOne({
+                where:{
+                    ID_Local:local.dataValues.LocalIDLocal
+                }
+            })
+        }
     }catch(e){
         console.log(e)
         res.status(500).send({desc:"Erro a selecionar", err:e.toString()})
     }
     //res.send({a:reportmaisrelevante})
-    res.send({TipoReport:tiporeport,ReportRelevante:reportmaisrelevante,ReportAdjacente:reportadjacente,Pessoa:PessoaReport})
+    res.send({TipoReport:tiporeport,ReportRelevante:reportmaisrelevante,ReportAdjacente:reportadjacente,Pessoa:PessoaReport, Local: local})
 }
 
 module.exports = controllers;
