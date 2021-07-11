@@ -51,7 +51,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         verficarSeLocalEstaFavoritado();
 
 
-        verificarSeUtilizadorEmpresa();
+        //verificarSeUtilizadorEmpresa();
         if(!isUtilizadorEmpresa){
             LinearLayout ll = findViewById(R.id.linearLayoutBotaoInteriorInstiuicaoInfo);
             LinearLayout llDeFora = findViewById(R.id.linearLayoutBotoesInformacoesInstituicao);

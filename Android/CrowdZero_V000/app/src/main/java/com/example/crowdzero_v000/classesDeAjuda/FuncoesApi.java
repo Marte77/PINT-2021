@@ -2,6 +2,7 @@ package com.example.crowdzero_v000.classesDeAjuda;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,6 +28,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FuncoesApi {
+
+    public static int[] getRGB(final String rgb)
+    {
+        int r = Integer.parseInt(rgb.substring(0, 2), 16); // 16 for hex
+        int g = Integer.parseInt(rgb.substring(2, 4), 16); // 16 for hex
+        int b = Integer.parseInt(rgb.substring(4, 6), 16); // 16 for hex
+        return new int[] {r, g, b};
+    }
+    public static int[] CORES_GRAFICOS ={
+            Color.rgb(getRGB("E7F59E")[0],getRGB("E7F59E")[1],getRGB("E7F59E")[2]),
+            Color.rgb(getRGB("E0EDC5")[0],getRGB("E0EDC5")[1],getRGB("E0EDC5")[2]),
+            Color.rgb(getRGB("92AA83")[0],getRGB("92AA83")[1],getRGB("92AA83")[2]),
+            Color.rgb(getRGB("5C8001")[0],getRGB("5C8001")[1],getRGB("5C8001")[2]),
+            Color.rgb(getRGB("7CB518")[0],getRGB("7CB518")[1],getRGB("7CB518")[2]),
+            Color.rgb(getRGB("F3DE2C")[0],getRGB("F3DE2C")[1],getRGB("F3DE2C")[2]),
+    };
 
     public interface volleycallback{
         void onSuccess(JSONObject jsonObject) throws JSONException;
@@ -263,6 +280,79 @@ public class FuncoesApi {
             body.put("tipoTempo", tipoTempo);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.PUT, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                        Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                    } catch (Exception e ) {
+                        e.printStackTrace();
+                        Log.i("pedido","Catch ERRO: "+ e);
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
+        }
+        /**
+         * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
+         * @param tempo:     int da quantidade de tipoTempo
+         * @param nivelDensidade
+         */
+        public static void getPercentagemReportsLocais(final Context context, int nivelDensidade,String tipoTempo,int tempo, final volleycallback VCB ) throws JSONException {
+            String url = urlGeral + "/Locais/percentagem_reports_locais/" ;
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            body.put("tempo", tempo);
+            body.put("tipoTempo", tipoTempo);
+            body.put("niveldensidade", nivelDensidade);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    //Log.i("pedido",response.toString());
+                    try {
+                        VCB.onSuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    try {
+                        VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                        Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                    } catch (Exception e ) {
+                        e.printStackTrace();
+                        Log.i("pedido","Catch ERRO: "+ e);
+                    }
+                }
+            }
+            );
+            request.add(jsonObjectRequest);
+        }
+        /**
+         * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
+         * @param tempo:     int da quantidade de tipoTempo
+         * @param nivelDensidade
+         */
+        public static void getReportMaisRelevante(final Context context, String tipoTempo, int tempo, final volleycallback VCB){
+            String url = urlGeral + "/Report/get_report_mais_relevante/" +tipoTempo + "/"+tempo;
+            RequestQueue request = Volley.newRequestQueue(context);
+            JSONObject body = new JSONObject();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     //Log.i("pedido",response.toString());

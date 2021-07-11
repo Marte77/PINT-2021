@@ -133,7 +133,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if(inputsvazios)
                     return;
-
                 try{
 
                     FuncoesApi.FuncoesPessoas.fazerLogin(getApplicationContext(),
@@ -141,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                             new FuncoesApi.volleycallback() {
                                 @Override
                                 public void onSuccess(JSONObject jsonObject) throws JSONException {
+                                    Log.i("pedido",jsonObject.toString());
                                     if(!jsonObject.getBoolean("login")){
                                         return;
                                     }
@@ -182,16 +182,14 @@ public class LoginActivity extends AppCompatActivity {
      * Verificado - boolean
      * */
 
-    private boolean colocarNasSharedPreferences(final JSONObject jsonObject) throws JSONException {
+    private void colocarNasSharedPreferences(final JSONObject jsonObject) throws JSONException {
 
 
         JSONObject infoutil= jsonObject.getJSONObject("PessoaLogin");
         JSONObject infopessoa= infoutil.getJSONObject("Pessoa");
-
         FuncoesSharedPreferences sharedPreferences = new FuncoesSharedPreferences(getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE));
 
         if(jsonObject.getString("TipoPessoa").equals("Outros_Util")){
-
             sharedPreferences.setIDUtilizador(infoutil.getInt("ID_Outro_Util"));
             sharedPreferences.setVerificacao(false);
         }else if(jsonObject.getString("TipoPessoa").equals("Util_Instituicao")){
@@ -200,14 +198,12 @@ public class LoginActivity extends AppCompatActivity {
 
         }else{
             Toast.makeText(getApplicationContext(),"Contas admin não podem usar a app", Toast.LENGTH_SHORT).show();
-            return true;
+            return;
         }
         sharedPreferences.setTipoPessoa(jsonObject.getString("TipoPessoa"));
         sharedPreferences.setIDPessoa(infopessoa.getInt("IDPessoa"));
         sharedPreferences.setEmail(emailTxt.getText().toString());
         sharedPreferences.setPassword(passwordTxt.getText().toString());
         sharedPreferences.setSessaoIniciada(true);
-
-        return false;
     }
 }
