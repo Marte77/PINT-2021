@@ -448,7 +448,6 @@ controllers.getReportMaisRelevante = async(req,res)=>{//post
                 [Util_Instituicao]
             
         })
-        
         if(reportadjacente ===null){
             reportadjacente = await Report_Outdoor_Util_Instituicao.findOne({
                 where:{
@@ -470,7 +469,7 @@ controllers.getReportMaisRelevante = async(req,res)=>{//post
         }else tiporeport = "Indoor"
         var idpessoa
         if(tiporeport === "OutdoorOutro"){
-            idpessoa = reportadjacente.dataValues.Outros_Utils.PessoaIDPessoa
+            idpessoa = reportadjacente.dataValues.Outros_Util.PessoaIDPessoa
         }else idpessoa = reportadjacente.dataValues.Utils_Instituicao.PessoaIDPessoa
 
         var PessoaReport = await Pessoas.findOne({
