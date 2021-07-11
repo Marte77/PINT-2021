@@ -331,7 +331,7 @@ controllers.login = async (req,res) => {//post
             })
             if(tipoUtil === null) //é admin
             {
-                    tipoUtil = await admin.findOne({
+                tipoUtil = await admin.findOne({
                     where:{
                         PessoaIDPessoa: pessoalogin.dataValues.IDPessoa
                     },
@@ -348,7 +348,7 @@ controllers.login = async (req,res) => {//post
         return;
     }
     
-        res.status(200).send({login:true,PessoaLogin:tipoUtil,token:token})
+        res.status(200).send({login:true,PessoaLogin:tipoUtil,token:token,TipoPessoa:tipo})
     
     //TipoPessoa retorna Util_Instituicao ou Outros_Util ou Admin
 }

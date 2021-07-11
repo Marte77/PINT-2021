@@ -468,12 +468,22 @@ controllers.getReportMaisRelevante = async(req,res)=>{//post
                 tiporeport = "OutdoorOutro"
             }else tiporeport = "OutdoorInst"
         }else tiporeport = "Indoor"
+        var idpessoa
+        if(tiporeport === "OutdoorOutro"){
+            idpessoa = reportadjacente.dataValues.Outros_Utils.PessoaIDPessoa
+        }else idpessoa = reportadjacente.dataValues.Utils_Instituicao.PessoaIDPessoa
+
+        var PessoaReport = await Pessoas.findOne({
+            where:{
+                IDPessoa:idpessoa
+            }
+        })
     }catch(e){
         console.log(e)
         res.status(500).send({desc:"Erro a selecionar", err:e.toString()})
     }
     //res.send({a:reportmaisrelevante})
-    res.send({TipoReport:tiporeport,ReportRelevante:reportmaisrelevante,ReportAdjacente:reportadjacente})
+    res.send({TipoReport:tiporeport,ReportRelevante:reportmaisrelevante,ReportAdjacente:reportadjacente,Pessoa:PessoaReport})
 }
 
 module.exports = controllers;
