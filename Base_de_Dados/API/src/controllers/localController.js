@@ -9,7 +9,8 @@ const Local_Indoor = require('../model/Local_Indoor');
 const localindoor = require('../model/Local_Indoor')
 const Report = require('../model/Reports/Report')
 const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outros_Util')
-const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao')
+const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao');
+const Instituicao = require('../model/Instituicao');
 controllers.listarLocais = async(req,res)=>{
     var statuscode = 200;
     var errMessage="";
@@ -37,7 +38,38 @@ controllers.getlocais_assocInstituicao=async(req,res)=>{
     res.status(statuscode).send({status: statuscode, err: errMessage});
     else res.status(statuscode).send({status:200, LocaisInst: listalocaisbyinst})
 }
-
+controllers.getlocaisindoor_byinstituicao= async(req,res)=>{ //get
+{
+    const{idInstituicao}=req.params
+    var statuscode = 200;
+    var errMessage="";
+    try{
+        var arraylocaisindoor = new Array();
+        var listalocais = await locais.findAll({
+            where:{
+                InstituicaoIDInstituicao:idInstituicao
+            }
+        })
+        for(let local of listalocais){
+            var locaisindoor = await Local_Indoor.findAll({
+                where:{
+                    LocalIDLocal:local.dataValues.ID_Local
+                }
+            })
+            for(let localindoor of locaisindoor){
+                arraylocaisindoor.push(localindoor)
+            }
+        
+}
+        }
+    
+    catch(e){console.log(e);errMessage = e;statuscode = 500;}
+    if(statuscode === 500)
+    res.status(statuscode).send({status: statuscode, err: errMessage});
+    else res.status(statuscode).send({status:200, LocaisIndor: arraylocaisindoor})
+    
+}
+}
 controllers.getLocalbyId = async(req,res)=>{ //get
     var statuscode = 200;
     var errMessage="";

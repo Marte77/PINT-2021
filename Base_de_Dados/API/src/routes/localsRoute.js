@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/listlocaisout/:idInstituicao',localController.getlocais_assocInstituicao);
+router.get('/listlocaisindoor/:idInstituicao',localController.getlocaisindoor_byinstituicao);
 router.get('/listar',localController.listarLocais);
 router.get('/getLocalPorId/:id',localController.getLocalbyId)
 router.post('/criar_novo_local_indoor',localController.criarLocalIndoor)
