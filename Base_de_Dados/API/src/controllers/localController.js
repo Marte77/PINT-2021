@@ -144,7 +144,9 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
             return;
         }
     }
-    if(typeof(niveldensidade).toString() !== 'number'){
+
+    
+    if(typeof(niveldensidade) !== 'number'){
         res.status(500).send({desc:'Numero de densidade nao e um numero'})
         return;
     }else if(niveldensidade > 3 || niveldensidade < 1){
@@ -162,7 +164,7 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
                     model:Report,
                     where:{
                         Nivel_Densidade:{
-                            [Op.gt]:niveldensidade
+                            [Op.eq]:niveldensidade
                         },Data:{
                             [Op.gte]:dataAgr
                         }
@@ -177,7 +179,7 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
                     model:Report,
                     where:{
                         Nivel_Densidade:{
-                            [Op.gt]:niveldensidade
+                            [Op.eq]:niveldensidade
                         },Data:{
                             [Op.gte]:dataAgr
                         }
@@ -196,20 +198,23 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
             console.log(localjson)
             listalocaisEReports.push(localjson)
         }
+        
     } catch (e) {
         console.log(e)
         res.status(500).send({desc:'Erro a selecionar',err:e.original})
     }
     var resposta = new Array();
-    for(let local of listalocaisEReports){
+    if(nReportsTotal>0){
+        for(let local of listalocaisEReports){
         let percentagemlocal = (local.NumeroReports / nReportsTotal) *100
         resposta.push({
             IDLocal:local.IDLocal,
             NomeLocal:local.NomeLocal,
             PercentagemLocal:percentagemlocal
         })
+        }
     }
-    res.send({Resultado:resposta})
+    res.send({Resultado:resposta, NumeroReportsTotal:nReportsTotal})
 }
 
 module.exports = controllers;
