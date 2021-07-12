@@ -52,6 +52,7 @@ controllers.getlocaisindoor_byinstituicao= async(req,res)=>{ //get
         })
         for(let local of listalocais){
             var locaisindoor = await Local_Indoor.findAll({
+                include:[locais],
                 where:{
                     LocalIDLocal:local.dataValues.ID_Local
                 }
