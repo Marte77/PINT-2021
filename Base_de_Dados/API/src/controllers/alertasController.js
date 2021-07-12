@@ -9,6 +9,8 @@ var admin = require('../model/Pessoas/Admin');
 var alerta = require('../model/Alertas');
 var tipo_alerta = require('../model/Tipo_Alertas');
 var sequelize = require('../model/database');
+const locais = require('../model/Local');
+
 const controllers = {}
 
 controllers.createTipoAlerta = async (req,res) => { //post
@@ -32,6 +34,45 @@ controllers.createTipoAlerta = async (req,res) => { //post
 
    
 }
+
+controllers.getlistaalertas_byinstituicao= async(req,res)=>{ //get
+   {
+       const{idInstituicao}=req.params
+       var statuscode = 200;
+       var errMessage="";
+       try{
+          var arrayalertas=new Array();
+          var listalocais=await locais.findAll({
+             where:{
+               InstituicaoIDInstituicao:idInstituicao
+             }
+          })
+         for(let local of listalocais){
+            var listaalertas=await alerta.findAll({
+               include:[locais,tipo_alerta],
+               
+               where:
+               {
+                  LocalIDLocal:local.dataValues.ID_Local
+               }
+            })
+            for(let alerta of listaalertas){
+               arrayalertas.push(alerta)
+            }
+       }
+       
+      }
+    
+      catch(e){console.log(e);errMessage = e;statuscode = 500;}
+      if(statuscode === 500)
+      res.status(statuscode).send({status: statuscode, err: errMessage});
+      else res.status(statuscode).send({status:200, Alertas: arrayalertas})
+      
+  }
+  }
+
+
+
 
 controllers.createAlerta = async (req,res) => { //post
    // data
