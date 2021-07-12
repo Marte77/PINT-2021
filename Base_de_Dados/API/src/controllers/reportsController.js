@@ -504,4 +504,53 @@ controllers.getReportMaisRelevante = async(req,res)=>{//post
     res.send({TipoReport:tiporeport,ReportRelevante:reportmaisrelevante,ReportAdjacente:reportadjacente,Pessoa:PessoaReport, Local: local})
 }
 
+controllers.getPessoaFromIDReport = async(req,res)=>{
+    const {IDReport} = req.params
+    try {
+        var pessoa
+        var reportadjacente = await Report_Indoor.findOne({
+            where:{
+                ReportIDReport:IDReport
+            }
+        })
+        if(reportadjacente !== null)
+            pessoa = await Util_Instituicao.findOne({
+                where:{
+                    ID_Util:reportadjacente.dataValues.UtilsInstituicaoIDUtil
+                },include:[Pessoas]
+            })
+        else{
+            reportadjacente = await Report_Outdoor_Util_Instituicao.findOne({
+                where:{
+                    ReportIDReport:IDReport
+                }
+            })
+            if(reportadjacente !== null)
+                pessoa = await Util_Instituicao.findOne({
+                    where:{
+                        ID_Util:reportadjacente.dataValues.UtilsInstituicaoIDUtil
+                    },include:[Pessoas]
+                })
+            else{
+                reportadjacente = await Report_Outdoor_Outros_Util.findOne({
+                    where:{
+                        ReportIDReport:IDReport
+                    }
+                })
+                if(reportadjacente !== null)
+                    pessoa = await Outro_Util.findOne({
+                        where:{
+                            ID_Outro_Util:reportadjacente.dataValues.OutrosUtilIDOutroUtil
+                        },include:[Pessoas]
+                    })
+            }
+        }
+    } catch (e) {
+        console.log(e)
+    } 
+    if(reportadjacente !== null)
+        res.send({PessoaReport:pessoa})
+    else res.status(500).send({desc:'Pessoa ou report nao existe'})
+}
+
 module.exports = controllers;
