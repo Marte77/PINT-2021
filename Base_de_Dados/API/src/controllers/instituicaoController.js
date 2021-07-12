@@ -51,5 +51,33 @@ controllers.getInstituicao = async (req,res) => {//get
 
 }
 
+controllers.updateinstituicao=async(req,res)=>{
+
+    const{idInstituicao}=req.params
+    const{nomeinst,emailinst,telefoneinst,poucoinst,moderadoinst,elevadoinst,descrinst}=req.body;
+    const data=await Instituicao.update({
+        Nome:nomeinst,
+        Email:emailinst,
+        Telefone:telefoneinst,
+        Descricao:descrinst,
+        Lotacao_Pouco:poucoinst,
+        Lotacao_Moderado:moderadoinst,
+        Lotacao_Elevado:elevadoinst
+    },
+    {
+        where: { ID_Instituicao: idInstituicao}
+    })
+    .then(function(data)
+    {
+        return data;
+    })
+    .catch(error => {
+        return error;
+        })
+        res.json({success:true, data:data, message:"Updated successful"});
+        
+}
+
+    
 
 module.exports = controllers;
