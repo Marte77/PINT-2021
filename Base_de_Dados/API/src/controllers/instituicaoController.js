@@ -34,9 +34,14 @@ controllers.createInstituicao = async (req,res) => { //post
 } 
 
 controllers.getInstituicao = async (req,res) => {//get
+    const{idInstituicao}=req.params
+       var statuscode = 200;
+       var errMessage="";
     try {
         var instituicoes =await Instituicao.findAll({
-            attributes:['ID_Instituicao','Nome']
+            where:{
+                ID_Instituicao:idInstituicao
+              }
         })
         
     } catch (e) {
