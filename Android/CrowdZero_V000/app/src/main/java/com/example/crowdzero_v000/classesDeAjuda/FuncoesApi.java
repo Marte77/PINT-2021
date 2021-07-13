@@ -606,6 +606,38 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
+        public static void getNReportsUltimosXDias(Context context, int nDias, int idLocal, final volleycallback VCB){
+            RequestQueue request = Volley.newRequestQueue(context);
+            String url =urlGeral+"/Report/get_nreports_ultimos_dias/"+nDias+"/"+idLocal;
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesPessoas{
