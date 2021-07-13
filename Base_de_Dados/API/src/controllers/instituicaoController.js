@@ -55,6 +55,34 @@ controllers.updateinstituicao=async(req,res)=>{
 
     const{idInstituicao}=req.params
     const{nomeinst,emailinst,telefoneinst,poucoinst,moderadoinst,elevadoinst,descrinst}=req.body;
+    const data=await instituicao.update({
+        Nome:nomeinst,
+        Email:emailinst,
+        Telefone:telefoneinst,
+        Descricao:descrinst,
+        Lotacao_Pouco:poucoinst,
+        Lotacao_Moderado:moderadoinst,
+        Lotacao_Elevado:elevadoinst
+    },
+    {
+        where: { ID_Instituicao: idInstituicao}
+    })
+    .then(function(data)
+    {
+        return data;
+    })
+    .catch(error => {
+        return error;
+        })
+        res.json({success:true, data:data, message:"Updated successful"});
+        
+}
+
+//outra forma de fazer update
+/*controllers.updateinstituicao=async(req,res)=>{
+
+    const{idInstituicao}=req.params
+    const{nomeinst,emailinst,telefoneinst,poucoinst,moderadoinst,elevadoinst,descrinst}=req.body;
     try{
         var a= await instituicao.findOne({
             where:{
@@ -76,7 +104,7 @@ controllers.updateinstituicao=async(req,res)=>{
     }
     res.send({Instituicoes:a})
 
-}
+}*/
 
     
 
