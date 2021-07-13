@@ -169,7 +169,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
             btnInterior.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Toast.makeText(getApplicationContext(),"Ao ver a lista de reports pode escolher entre tipos de reports e pode tambem fazer outros tipos de reports",Toast.LENGTH_LONG).show();
                 }
             });
         }

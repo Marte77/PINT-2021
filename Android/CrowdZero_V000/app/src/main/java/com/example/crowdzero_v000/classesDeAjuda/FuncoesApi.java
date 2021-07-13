@@ -1125,6 +1125,7 @@ public class FuncoesApi {
                 null, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i("pedido","ErroImagem!");
                 Log.i("pedido","ErroImagem: " +new String(error.networkResponse.data, StandardCharsets.UTF_8));
             }
         });
@@ -1145,6 +1146,7 @@ public class FuncoesApi {
                 null, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i("pedido","ErroImagem!");
                 Log.i("pedido","ErroImagem: "+ new String(error.networkResponse.data, StandardCharsets.UTF_8));
             }
         });

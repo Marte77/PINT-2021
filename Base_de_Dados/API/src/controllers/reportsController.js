@@ -1,4 +1,4 @@
-var sequelize = require('../model/database');
+const sequelize = require('../model/database');
 const {Op} = require('sequelize')
 const controllers = {}
 const Report = require('../model/Reports/Report')
@@ -12,8 +12,9 @@ const Local = require('../model/Local')
 const Local_Indoor = require('../model/Local_Indoor')
 const Instituicao = require('../model/Instituicao');
 const Tabela_LikesDislikes = require('../model/Reports/Tabela_LikesDislikes');
-
+const Sequelize = require('sequelize')
 controllers.criarReportOutdoorOutrosUtil = async (req,res) => { //post
+    await atualizarRanking()
     const { DescricaoReport,NivelDensidade,IDLocal,idOutroUtil}= req.body
     let n_LikesDislikes = 0
     let statusCode = 200;
@@ -47,6 +48,7 @@ controllers.criarReportOutdoorOutrosUtil = async (req,res) => { //post
     else res.send({status:statusCode,Report:reportNovo,ReportOut:reportOutdoorOutrosNovo })
 } 
 controllers.criarReportOutdoorUtilInstituicao = async (req,res) => { //post
+    await atualizarRanking()
     const { DescricaoReport,NivelDensidade,IDLocal,idUtilInst}= req.body
     let n_LikesDislikes = 0
     let statusCode = 200;
@@ -553,4 +555,122 @@ controllers.getPessoaFromIDReport = async(req,res)=>{
     else res.status(500).send({desc:'Pessoa ou report nao existe'})
 }
 
+controllers.getNReportsUltimosXDias = async(req,res)=>{
+    //AINDA ESTA A SER FEITA NAO APAGUEM
+    //SO DEI COMMIT PQ FIZ ALTERACOES NO MOBILE E AQUI
+    const {nDias, IDLocal} = req.params
+    var arrayReportsPorDia = new Array()
+    var dataAgr = new Date()
+    var opcoesselect = {raw:false,type:Sequelize.QueryTypes.SELECT}
+    try {
+        var NreportsOutrosUtil
+        var NreportsUtilInst
+        for(let i = 0; i<nDias;i++){
+            let datadiaanterior = new Date(dataAgr.getFullYear()+'-'+ dataAgr.getMonth()+'-'+(dataAgr.getDate()-i-1))
+            let datadiaposterior = new Date(dataAgr.getFullYear()+'-'+ dataAgr.getMonth()+'-'+(dataAgr.getDate()-i+1))
+            //datadiaanterior = formatDate(datadiaanterior)
+            //datadiaposterior = formatDate(datadiaposterior)
+            console.log(datadiaanterior,datadiaposterior)
+            
+
+            NreportsOutrosUtil = await Report_Outdoor_Outros_Util.count({
+                
+            })
+
+            
+            /*NreportsOutrosUtil = await sequelize.query('select count(*)  from "Reports" inner join "Report_Outdoor_Outros_Utils"'+
+            'on "Reports"."ID_Report" = "Report_Outdoor_Outros_Utils"."ID_Report_Out_Util"'+
+            'group by "Data","LocalIDLocal" '+
+            'having to_date(to_char("Data",'+"'YYYY-MM-DD'"+"),"+"'YYYY-MM-DD'"+') > to_timestamp('
+            +"'"+datadiaanterior.toISOString() +"'"+",'YYYY-MM-DD')"+
+            'and to_date(to_char("Data",'+"'YYYY-MM-DD'),'YYYY-MM-DD') < to_timestamp("
+            +"'"+datadiaposterior.toISOString() +"'"+",'YYYY-MM-DD')"+
+            'and "LocalIDLocal" = ' +IDLocal,opcoesselect)
+
+            NreportsUtilInst = await sequelize.query('select count(*)  from "Reports" inner join "Report_Outdoor_Util_Instituicaos"'+
+            'on "Reports"."ID_Report" = "Report_Outdoor_Util_Instituicaos"."ID_Report_Out_Insti"'+
+            'group by "Data","LocalIDLocal"'+
+            'having to_date(to_char("Data",'+"'YYYY-MM-DD'"+"),"+"'YYYY-MM-DD'"+') > to_timestamp('
+            +"'"+datadiaanterior.toISOString() +"'"+",'YYYY-MM-DD')"+
+            'and to_date(to_char("Data",'+"'YYYY-MM-DD'),'YYYY-MM-DD') < to_timestamp("
+            +"'"+datadiaposterior.toISOString() +"'"+",'YYYY-MM-DD')"+
+            'and "LocalIDLocal" = ' +IDLocal,opcoesselect)*/
+            console.log(NreportsUtilInst,NreportsOutrosUtil)
+            /*NreportsOutrosUtil = await Report_Outdoor_Outros_Util.count({
+                include:[{
+                    model:Report,
+                    where: {
+                        [Op.and]: [
+                            {Data:{[Op.gt]:datadiaanterior}},
+                            {Data:{[Op.lt]:datadiaanterior}}
+                        ]
+                    }
+                }],
+                where:{
+                    LocalIDLocal:IDLocal
+                }
+            })
+            NreportsUtilInst = await Report_Outdoor_Util_Instituicao.count({
+                include:[{
+                    model:Report,
+                    where: {
+                        [Op.and]: [
+                            {Data:{[Op.gt]:datadiaanterior}},
+                            {Data:{[Op.lt]:datadiaanterior}}
+                        ]
+                    }
+                }],
+                where:{
+                    LocalIDLocal:IDLocal
+                }
+            })
+            console.log(NreportsOutrosUtil,NreportsUtilInst)*/
+            //arrayReportsPorDia.push([dataAgr,NreportsOutrosUtil+NreportsUtilInst])
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+async function atualizarRanking(){
+    console.log("atualizar ranking")
+    let querystring = 'do '+
+    '$do$ '+
+        'declare cursorranking cursor for '+
+        'with cte_ranking as('+
+            'select "PessoaIDPessoa" as idp,rank() over (ORDER by "Pontuacao" desc), "tipo" from '+
+            '(select "PessoaIDPessoa","Pontos" as "Pontuacao",'+"'UI'"+' as "tipo" from "Utils_Instituicaos" '+
+            'union select "PessoaIDPessoa","Pontos_Outro_Util" as "Pontuacao",'+"'IO' "+ 
+            'as "tipo" from "Outros_Utils") as tabelaranking) '+
+        'select * from cte_ranking;'+
+        'begin '+
+            //--open cursorranking;
+            ' for linha in cursorranking loop '+
+                ' if linha.tipo = '+"'IO'"+' then '+//--é outro util
+                    ' update "Outros_Utils" set "Ranking" = linha.rank where "PessoaIDPessoa" = linha.idp; '+
+                ' else '+
+                    'update "Utils_Instituicaos" set "Ranking" = linha.rank where "PessoaIDPessoa" = linha.idp; '+
+                'end if; '+
+            'end loop; '+
+            //--close cursorranking;
+            //--deallocate cursorranking;
+        'end '+
+    '$do$; '
+    
+    await sequelize.query(querystring)
+}
 module.exports = controllers;

@@ -88,6 +88,9 @@ public class CardReportFragment extends Fragment {
         txtLikesDislikes = v.findViewById(R.id.textViewLikesReport);
         atualizarTextViewLikes();
 
+        if(idReport == -1)
+            return v;
+
         //region listeners
         final ImageButton IBDislike = v.findViewById(R.id.botaoDislikeReport);
         IBDislike.setOnClickListener(new View.OnClickListener() {
@@ -234,23 +237,6 @@ public class CardReportFragment extends Fragment {
             e.printStackTrace();
         }
 
-        try{
-            FuncoesApi.FuncoesPessoas.getInformacoesPessoa(getActivity().getApplicationContext(), idpessoa, new FuncoesApi.volleycallback() {
-                @Override
-                public void onSuccess(JSONObject jsonObject) throws JSONException {
-                    String urlPessoa = jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil");
-                    if(!urlPessoa.equals("null"))
-                        obterImagem(urlPessoa,v);
-                }
-                @Override
-                public void onError(JSONObject jsonObjectErr) throws JSONException {
-                    Log.i("pedido","Erro obter info pessoa: " +jsonObjectErr.toString());
-                }
-            });
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         //obter pontuacao da pessoa que fez o report para meter o overlay da imagem
         try{
             FuncoesApi.FuncoesPessoas.getPessoaFromReport(getActivity(), idReport, new FuncoesApi.volleycallback() {
@@ -262,6 +248,9 @@ public class CardReportFragment extends Fragment {
                         pontosPessoaQueFezReport = pessoa.getInt("Pontos_Outro_Util");
                     }else pontosPessoaQueFezReport = pessoa.getInt("Pontos");
                     colocarBordaCorrespondenteAosPontos(v);
+                    String urlPessoa = pessoa.getJSONObject("Pessoa").getString("Foto_De_Perfil");
+                    if(!urlPessoa.equals("null"))
+                        obterImagem(urlPessoa,v);
                 }
 
                 @Override
