@@ -55,27 +55,27 @@ controllers.updateinstituicao=async(req,res)=>{
 
     const{idInstituicao}=req.params
     const{nomeinst,emailinst,telefoneinst,poucoinst,moderadoinst,elevadoinst,descrinst}=req.body;
-    const data=await Instituicao.update({
-        Nome:nomeinst,
-        Email:emailinst,
-        Telefone:telefoneinst,
-        Descricao:descrinst,
-        Lotacao_Pouco:poucoinst,
-        Lotacao_Moderado:moderadoinst,
-        Lotacao_Elevado:elevadoinst
-    },
-    {
-        where: { ID_Instituicao: idInstituicao}
-    })
-    .then(function(data)
-    {
-        return data;
-    })
-    .catch(error => {
-        return error;
+    try{
+        var a= await instituicao.findOne({
+            where:{
+                ID_Instituicao: idInstituicao
+            }
         })
-        res.json({success:true, data:data, message:"Updated successful"});
-        
+        a.Nome=nomeinst,
+        a.Email=emailinst,
+        a.Telefone=telefoneinst,
+        a.Descricao=descrinst,
+        a.Lotacao_Pouco=poucoinst,
+        a.Lotacao_Moderado=moderadoinst,
+        a.Lotacao_Elevado=elevadoinst
+        await a.save()
+    }   
+    catch (e) {
+        console.log(e)
+        res.send({desc:"Erro a fazer update",err:e.original})
+    }
+    res.send({Instituicoes:a})
+
 }
 
     
