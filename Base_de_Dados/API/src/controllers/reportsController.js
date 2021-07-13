@@ -556,80 +556,27 @@ controllers.getPessoaFromIDReport = async(req,res)=>{
 }
 
 controllers.getNReportsUltimosXDias = async(req,res)=>{
-    //AINDA ESTA A SER FEITA NAO APAGUEM
-    //SO DEI COMMIT PQ FIZ ALTERACOES NO MOBILE E AQUI
     const {nDias, IDLocal} = req.params
     var arrayReportsPorDia = new Array()
     var dataAgr = new Date()
-    var opcoesselect = {raw:false,type:Sequelize.QueryTypes.SELECT}
     try {
-        var NreportsOutrosUtil
-        var NreportsUtilInst
-        for(let i = 0; i<nDias;i++){
-            let datadiaanterior = new Date(dataAgr.getFullYear()+'-'+ dataAgr.getMonth()+'-'+(dataAgr.getDate()-i-1))
-            let datadiaposterior = new Date(dataAgr.getFullYear()+'-'+ dataAgr.getMonth()+'-'+(dataAgr.getDate()-i+1))
-            //datadiaanterior = formatDate(datadiaanterior)
-            //datadiaposterior = formatDate(datadiaposterior)
-            console.log(datadiaanterior,datadiaposterior)
-            
+        for(let i = 0; i<nDias;i++){            
+            let datadiaanterior = new Date(dataAgr.getFullYear()+'-'+ (dataAgr.getMonth()+1)+'-'+(dataAgr.getDate()-i))
+            let datadiaposterior = new Date(dataAgr.getFullYear()+'-'+ (dataAgr.getMonth()+1)+'-'+(dataAgr.getDate()-i+1))
+            let diadasemana = datadiaanterior.toDateString()
+            diadasemana = diadasemana.substr(0,3)
 
-            NreportsOutrosUtil = await Report_Outdoor_Outros_Util.count({
-                
-            })
+            datadiaanterior = ((datadiaanterior.toISOString()).split("T"))[0]
+            datadiaposterior = ((datadiaposterior.toISOString()).split("T"))[0]
+            let nreports = await obterNReports(datadiaanterior,datadiaposterior,IDLocal)
 
-            
-            /*NreportsOutrosUtil = await sequelize.query('select count(*)  from "Reports" inner join "Report_Outdoor_Outros_Utils"'+
-            'on "Reports"."ID_Report" = "Report_Outdoor_Outros_Utils"."ID_Report_Out_Util"'+
-            'group by "Data","LocalIDLocal" '+
-            'having to_date(to_char("Data",'+"'YYYY-MM-DD'"+"),"+"'YYYY-MM-DD'"+') > to_timestamp('
-            +"'"+datadiaanterior.toISOString() +"'"+",'YYYY-MM-DD')"+
-            'and to_date(to_char("Data",'+"'YYYY-MM-DD'),'YYYY-MM-DD') < to_timestamp("
-            +"'"+datadiaposterior.toISOString() +"'"+",'YYYY-MM-DD')"+
-            'and "LocalIDLocal" = ' +IDLocal,opcoesselect)
-
-            NreportsUtilInst = await sequelize.query('select count(*)  from "Reports" inner join "Report_Outdoor_Util_Instituicaos"'+
-            'on "Reports"."ID_Report" = "Report_Outdoor_Util_Instituicaos"."ID_Report_Out_Insti"'+
-            'group by "Data","LocalIDLocal"'+
-            'having to_date(to_char("Data",'+"'YYYY-MM-DD'"+"),"+"'YYYY-MM-DD'"+') > to_timestamp('
-            +"'"+datadiaanterior.toISOString() +"'"+",'YYYY-MM-DD')"+
-            'and to_date(to_char("Data",'+"'YYYY-MM-DD'),'YYYY-MM-DD') < to_timestamp("
-            +"'"+datadiaposterior.toISOString() +"'"+",'YYYY-MM-DD')"+
-            'and "LocalIDLocal" = ' +IDLocal,opcoesselect)*/
-            console.log(NreportsUtilInst,NreportsOutrosUtil)
-            /*NreportsOutrosUtil = await Report_Outdoor_Outros_Util.count({
-                include:[{
-                    model:Report,
-                    where: {
-                        [Op.and]: [
-                            {Data:{[Op.gt]:datadiaanterior}},
-                            {Data:{[Op.lt]:datadiaanterior}}
-                        ]
-                    }
-                }],
-                where:{
-                    LocalIDLocal:IDLocal
-                }
-            })
-            NreportsUtilInst = await Report_Outdoor_Util_Instituicao.count({
-                include:[{
-                    model:Report,
-                    where: {
-                        [Op.and]: [
-                            {Data:{[Op.gt]:datadiaanterior}},
-                            {Data:{[Op.lt]:datadiaanterior}}
-                        ]
-                    }
-                }],
-                where:{
-                    LocalIDLocal:IDLocal
-                }
-            })
-            console.log(NreportsOutrosUtil,NreportsUtilInst)*/
-            //arrayReportsPorDia.push([dataAgr,NreportsOutrosUtil+NreportsUtilInst])
+            arrayReportsPorDia.push({info:nreports,dia:diadasemana})
         }
     } catch (e) {
         console.log(e)
+        res.status(500).send({desc:'erro a selecionar', err:e})
     }
+    res.send({NReportsArray:arrayReportsPorDia})
 }
 
 function formatDate(date) {
@@ -672,5 +619,39 @@ async function atualizarRanking(){
     '$do$; '
     
     await sequelize.query(querystring)
+}
+
+async function obterNReports(datainferior, datasuperior, idlocal){
+    let querystring1 = 'select count(*),AVG("Nivel_Densidade") from "Report_Outdoor_Outros_Utils"'+
+    ' inner join "Reports" on "Reports"."ID_Report" = "Report_Outdoor_Outros_Utils"."ReportIDReport"'+
+    ' where "Data" >= :datainferior  and "Data" < :dataposterior'+
+    ' and "LocalIDLocal" = :IDLocal'
+    let res1 = await sequelize.query(querystring1,{replacements:{
+        datainferior:datainferior,dataposterior:datasuperior,IDLocal:idlocal}
+        ,type:sequelize.QueryTypes.SELECT})
+    let querystring2 = 
+    'select count(*),AVG("Nivel_Densidade") from "Report_Outdoor_Util_Instituicaos"'+
+    ' inner join "Reports" on "Reports"."ID_Report" = "Report_Outdoor_Util_Instituicaos"."ReportIDReport"'+
+    ' where "Data" >= :datainferior  and "Data" < :dataposterior'+
+    ' and "LocalIDLocal" = :IDLocal'
+    let res2 = await sequelize.query(querystring2,{replacements:{
+        datainferior:datainferior,dataposterior:datasuperior,IDLocal:idlocal}
+        ,type:sequelize.QueryTypes.SELECT})
+    res1 = res1[0];res2 = res2[0];
+    let media
+    let count
+    if(res1.avg !== null && res2.avg !== null ){
+        media = Math.round((res1.avg+res2.avg)/2)
+        count = res1.count + res2.count
+        
+    }else{
+        
+        if(res1.avg !== null)
+            media = Math.round(res1.avg) 
+        else media = Math.round(res2.avg) 
+        count = res1.count + res2.count
+        
+    }
+    return {media:media, nreports:count}
 }
 module.exports = controllers;
