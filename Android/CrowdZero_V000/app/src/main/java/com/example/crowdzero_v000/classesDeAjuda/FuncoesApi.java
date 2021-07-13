@@ -1044,6 +1044,38 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
+        public static void getPessoaFromReport(final Context context, int idReport, final volleycallback VCB){
+            String url = urlGeral + "/Report/get_pessoa_from_report/" + idReport;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesInstituicoes{

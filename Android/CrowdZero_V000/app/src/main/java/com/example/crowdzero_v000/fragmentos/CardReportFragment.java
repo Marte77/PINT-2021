@@ -3,8 +3,12 @@ package com.example.crowdzero_v000.fragmentos;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -28,6 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CardReportFragment#newInstance} factory method to
@@ -42,6 +48,7 @@ public class CardReportFragment extends Fragment {
     int nLikes = 0;
     int nDislikes = 0;
     TextView txtLikesDislikes;
+    int pontosPessoaQueFezReport = 0;
     /**
      * O NOME TEM DE TER SEMPRE UM '\n' DO GENERO
      *  "nome pessoa\ndata e hora
@@ -243,7 +250,52 @@ public class CardReportFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        //obter pontuacao da pessoa que fez o report para meter o overlay da imagem
+        try{
+            FuncoesApi.FuncoesPessoas.getPessoaFromReport(getActivity(), idReport, new FuncoesApi.volleycallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) throws JSONException {
+                    Log.i("pedido",jsonObject.toString());
+                    JSONObject pessoa = jsonObject.getJSONObject("PessoaReport");
+                    if(pessoa.has("ID_Outro_Util")){
+                        pontosPessoaQueFezReport = pessoa.getInt("Pontos_Outro_Util");
+                    }else pontosPessoaQueFezReport = pessoa.getInt("Pontos");
+                    colocarBordaCorrespondenteAosPontos(v);
+                }
+
+                @Override
+                public void onError(JSONObject jsonObjectErr) throws JSONException {
+                    Log.i("pedido",jsonObjectErr.toString());
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.i("pedido","Catch erro pedido get [pessoa from report: " + e);
+        }
+
         return v;
+    }
+
+    void colocarBordaCorrespondenteAosPontos(View v){
+        if(pontosPessoaQueFezReport>=200){
+            ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.borda200pontos)
+            );
+        }else if(pontosPessoaQueFezReport>=50){
+            ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.borda50pontos)
+            );
+        }else if(pontosPessoaQueFezReport>=10){
+            ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.borda10pontos)
+            );
+        }else{
+            //isto é feito para nao ficar uma imagem verde em cima visto que a foto de perfil é colocada no background da imagem
+            ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.imagemtransparent)
+            );
+        }
     }
 
     private void atualizarTextViewLikes() {
@@ -251,10 +303,12 @@ public class CardReportFragment extends Fragment {
     }
 
     void obterImagem(String urlImagem, final View v){
-        FuncoesApi.downloadImagem(getActivity().getApplicationContext(), urlImagem, new FuncoesApi.volleyimagecallback() {
+        FuncoesApi.downloadImagem(getActivity(), urlImagem, new FuncoesApi.volleyimagecallback() {
             @Override
             public void onSuccess(Bitmap bitmap) {
-                ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageBitmap(bitmap);
+                //((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageBitmap(bitmap);
+                Drawable drawable = new BitmapDrawable(getResources(),bitmap);
+                ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setBackground(drawable);
             }
         });
     }
