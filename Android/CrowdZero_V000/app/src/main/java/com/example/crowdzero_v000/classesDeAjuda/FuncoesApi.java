@@ -1144,6 +1144,9 @@ public class FuncoesApi {
         }
     }
 
+    public static class FuncoesComentarios{
+        
+    }
 
     @Deprecated
     static public void downloadImagem(Context context, String url, final ImageView imageView){

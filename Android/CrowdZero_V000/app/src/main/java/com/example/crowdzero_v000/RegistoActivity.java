@@ -38,6 +38,7 @@ public class RegistoActivity extends NavDrawerActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registo);
+        this.mudarNomeToolBar("Registo");
         int alturatb = this.tb.getLayoutParams().height;
         LinearLayout linearLayout = ((LinearLayout) findViewById(R.id.linearLayoutRegistoActivity));
         linearLayout.setPadding(linearLayout.getLeft(), alturatb, linearLayout.getRight(), linearLayout.getBottom());

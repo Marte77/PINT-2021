@@ -212,11 +212,14 @@ public class ClassificacaoActivity extends NavDrawerActivity {
     }
     public static void colocarBordaPontuacao(Context context,ImageView fotoDePerfil,int pontuacao){
         if(pontuacao>=200){
-            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda200pontos));
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.gold));
+            //fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda200pontos));
         }else if(pontuacao>=50){
-            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda50pontos));
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.silver));
+            //fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda50pontos));
         }else if(pontuacao>=10){
-            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda10pontos));
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.bronze));
+            //fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda10pontos));
         }else{
             //isto é feito para nao ficar uma imagem verde em cima visto que a foto de perfil é colocada no background da imagem
             fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.imagemtransparent));

@@ -269,15 +269,18 @@ public class CardReportFragment extends Fragment {
     void colocarBordaCorrespondenteAosPontos(View v){
         if(pontosPessoaQueFezReport>=200){
             ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
-                    AppCompatResources.getDrawable(requireActivity(),R.drawable.borda200pontos)
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.gold)
+                    //AppCompatResources.getDrawable(requireActivity(),R.drawable.borda200pontos)
             );
         }else if(pontosPessoaQueFezReport>=50){
             ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
-                    AppCompatResources.getDrawable(requireActivity(),R.drawable.borda50pontos)
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.silver)
+                    //AppCompatResources.getDrawable(requireActivity(),R.drawable.borda50pontos)
             );
         }else if(pontosPessoaQueFezReport>=10){
             ((ImageView)(v.findViewById(R.id.fotoPerfilReportCard))).setImageDrawable(
-                    AppCompatResources.getDrawable(requireActivity(),R.drawable.borda10pontos)
+                    AppCompatResources.getDrawable(requireActivity(),R.drawable.bronze)
+                    //AppCompatResources.getDrawable(requireActivity(),R.drawable.borda10pontos)
             );
         }else{
             //isto é feito para nao ficar uma imagem verde em cima visto que a foto de perfil é colocada no background da imagem

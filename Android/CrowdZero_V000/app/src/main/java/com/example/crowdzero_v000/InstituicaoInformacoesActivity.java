@@ -114,7 +114,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
                 }
             });
         } catch(Exception e){
-            Log.i("testar",e.getMessage());
+            Log.i("pedido",e.getMessage());
             e.printStackTrace();
         }
     }
@@ -273,7 +273,13 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         btnOpiniao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(),OpinioesActivity.class);
+                i.putExtra("opcaoEscolhida","Home");
+                i.putExtra("opcaoEscolhidaItemID",-1);
+                i.putExtra("nome",nome);
+                i.putExtra("descricao",descricao);
+                i.putExtra("idlocal",idlocal);
+                startActivity(i);
             }
         });
         //endregion

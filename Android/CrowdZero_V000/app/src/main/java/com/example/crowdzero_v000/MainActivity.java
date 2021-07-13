@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         switch (id){
             case R.id.botaoRegistoMain:
                 Intent RegistoIntent = new Intent(MainActivity.this,RegistoActivity.class);
+                RegistoIntent.putExtra("opcaoEscolhida","Home");
+                RegistoIntent.putExtra("opcaoEscolhidaItemID",-1);
+                RegistoIntent.putExtra("nome","Registo");
+                RegistoIntent.putExtra("descricao","descricao");
+                RegistoIntent.putExtra("idlocal",-1);
                 startActivity(RegistoIntent);
             break;
             case R.id.botaoEntrar://verifica se ja fez login anteriormente
