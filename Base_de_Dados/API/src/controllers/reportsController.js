@@ -640,18 +640,21 @@ async function obterNReports(datainferior, datasuperior, idlocal){
     res1 = res1[0];res2 = res2[0];
     let media
     let count
-    if(res1.avg !== null && res2.avg !== null ){
-        media = Math.round((res1.avg+res2.avg)/2)
-        count = res1.count + res2.count
-        
-    }else{
-        
-        if(res1.avg !== null)
-            media = Math.round(res1.avg) 
-        else media = Math.round(res2.avg) 
-        count = res1.count + res2.count
-        
+    if(res1.avg === null && res2.avg === null){
+        media = 0
+        count =0
     }
+    else if(res1.avg !== null && res2.avg !== null ){
+        media = Math.round((parseFloat(res1.avg)+parseFloat(res2.avg))/2)
+        count = res1.count + res2.count
+    }else{
+        if(res1.avg !== null)
+            media = Math.round(parseFloat(res1.avg)) 
+        else media = Math.round(parseFloat(res2.avg)) 
+        count = res1.count + res2.count
+    }
+    
+    console.log(media)
     return {media:media, nreports:count}
 }
 module.exports = controllers;
