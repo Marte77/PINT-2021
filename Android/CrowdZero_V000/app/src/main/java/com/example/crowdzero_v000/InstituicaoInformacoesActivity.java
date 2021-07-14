@@ -3,6 +3,7 @@ package com.example.crowdzero_v000;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +18,23 @@ import android.widget.Toast;
 
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesApi;
 import com.example.crowdzero_v000.classesDeAjuda.FuncoesSharedPreferences;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.card.MaterialCardView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class InstituicaoInformacoesActivity extends NavDrawerActivity {
 
@@ -60,6 +74,107 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
             llDeFora.removeView(ll);
         }
         colocarListenersNosBotoes();
+        criarGraficoNReportsUltimosDias(7);
+        //criarGraficoComDados(null,null);
+    }
+
+    //String[] DIAS = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+    ArrayList<String> DIAS;
+    private void criarGraficoNReportsUltimosDias(int nDias) {
+        try{
+            FuncoesApi.FuncoesLocais.getNReportsUltimosXDias(getApplicationContext(), nDias, idlocal, new FuncoesApi.volleycallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) throws JSONException {
+                    Log.i("pedido", jsonObject.toString());
+                    JSONArray diasRep = jsonObject.getJSONArray("NReportsArray");
+                    ArrayList<BarEntry> barEntries = new ArrayList<>();
+                    ArrayList<String> dias = new ArrayList<>();
+                    for (int i = 0; i < diasRep.length(); i++) {
+                        JSONObject a = diasRep.getJSONObject(i);
+                        JSONObject info = a.getJSONObject("info");
+                        dias.add(a.getString("dia"));
+                        int numeroDia =0;
+                        //for(int x = 0;x<DIAS.length;x++){
+                        //    if(DIAS[x].equals(a.getString("dia"))){
+                        //        numeroDia = x;
+                        //        break;
+                        //    }
+                        //}
+                        //este 6-i é para obter o numero oposto ao i no intervalo [0,6]
+                        barEntries.add(new BarEntry((float)6-i, (float) info.getDouble("media")));
+
+                    }
+
+                    criarGraficoComDados(barEntries, dias);
+                }
+
+                @Override
+                public void onError(JSONObject jsonObjectErr) throws JSONException {
+
+                }
+            });
+        } catch(Exception e){
+            Log.i("pedido",e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    public static class MyBarDataSet extends BarDataSet{
+        public MyBarDataSet(List<BarEntry> yVals, String label) {
+            super(yVals, label);
+        }
+
+        @Override
+        public int getColor(int index) {
+            float valor = getEntryForIndex(index).getY();
+            //set.setColors(Color.RED, Color.YELLOW,Color.GREEN);
+            if(valor>=2.5) return mColors.get(0);
+            if(valor>=1.5) return mColors.get(1);
+            else return mColors.get(2);
+        }
+    }
+
+    void criarGraficoComDados(ArrayList<BarEntry> barEntries, final ArrayList<String> dias){
+        MaterialCardView mcv = findViewById(R.id.cardBarChartInstituicaoReports);
+        BarChart barChart = findViewById(R.id.barchartInstituicaoReports);
+        barChart.setMinimumHeight(100);
+        barChart.getDescription().setEnabled(false);
+        barChart.getLegend().setTextSize(15f);
+        barChart.setTouchEnabled(false);
+        barChart.setDragEnabled(false);
+
+        barChart.getAxisRight().setYOffset(25f);
+        barChart.getAxisRight().setEnabled(true);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setAxisMaximum(0f);
+        barChart.getAxisRight().setAxisMaximum(3f);
+        barChart.getAxisRight().setGranularity(1f);
+        barChart.getAxisLeft().setAxisMinimum(0f);
+        barChart.getAxisLeft().setAxisMinimum(0f);
+        barChart.getAxisLeft().setGranularity(0.1f);
+        barChart.getAxisLeft().setEnabled(false);
+        barChart.animateY(600);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return dias.get((int) value);
+            }
+        });
+        xAxis.setTextSize(12f);
+
+        MyBarDataSet set = new MyBarDataSet(barEntries, "Média Reports na última semana");
+        set.setColors(Color.RED, Color.YELLOW,Color.GREEN);
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set);
+        set.setDrawValues(false);
+        BarData data = new BarData(dataSets);
+        barChart.setData(data);
+        barChart.invalidate();
+
     }
 
     void verficarSeLocalEstaFavoritado(){
@@ -158,7 +273,13 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
         btnOpiniao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(),OpinioesActivity.class);
+                i.putExtra("opcaoEscolhida","Home");
+                i.putExtra("opcaoEscolhidaItemID",-1);
+                i.putExtra("nome",nome);
+                i.putExtra("descricao",descricao);
+                i.putExtra("idlocal",idlocal);
+                startActivity(i);
             }
         });
         //endregion
@@ -169,7 +290,7 @@ public class InstituicaoInformacoesActivity extends NavDrawerActivity {
             btnInterior.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Toast.makeText(getApplicationContext(),"Ao ver a lista de reports pode escolher entre tipos de reports e pode tambem fazer outros tipos de reports",Toast.LENGTH_LONG).show();
                 }
             });
         }

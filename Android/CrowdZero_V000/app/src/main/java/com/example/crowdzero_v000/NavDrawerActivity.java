@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -165,15 +167,16 @@ public class NavDrawerActivity extends AppCompatActivity {
                             TextView tvNome = LL.findViewById(R.id.NomeUtilizadorHeaderNavBar);
                             String nome = jsonObject.getJSONObject("Pessoa").getString("PNome") + " " + jsonObject.getJSONObject("Pessoa").getString("UNome");
                             tvNome.setText(nome);
+                            int pts;
                             if (funcoesSharedPreferences.getTipoPessoa().equals(FuncoesSharedPreferences.outrosUtil)) {
-                                int pts = jsonObject.getInt("Pontos_Outro_Util");
+                                pts = jsonObject.getInt("Pontos_Outro_Util");
                                 String pontos;
                                 if(pts > 1)
                                     pontos = pts + " Pontos";
                                 else pontos = pts + " Ponto";
                                 tvPontos.setText(pontos);
                             } else {
-                                int pts = jsonObject.getInt("Pontos");
+                                pts = jsonObject.getInt("Pontos");
                                 String pontos;
                                 if(pts > 1)
                                     pontos = pts + " Pontos";
@@ -181,12 +184,18 @@ public class NavDrawerActivity extends AppCompatActivity {
                                 tvPontos.setText(pontos);
                             }
                             if (!jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil").toString().equals("null")) {
-                                FuncoesApi.downloadImagem(getApplicationContext(), jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil"), new FuncoesApi.volleyimagecallback() {
-                                    @Override
-                                    public void onSuccess(Bitmap bitmap) {
-                                        ((ImageView) (LL.findViewById(R.id.fotoPerfilUtilizadorHeaderNavBar))).setImageBitmap(bitmap);
-                                    }
-                                });
+                                {
+                                    final int ptsfinal = pts;
+                                    FuncoesApi.downloadImagem(getApplicationContext(), jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil"), new FuncoesApi.volleyimagecallback() {
+                                        @Override
+                                        public void onSuccess(Bitmap bitmap) {
+                                            Drawable d = new BitmapDrawable(getResources(),bitmap);
+                                            ((ImageView) (LL.findViewById(R.id.fotoPerfilUtilizadorHeaderNavBar))).setBackground(d);
+                                            ClassificacaoActivity.colocarBordaPontuacao(getApplicationContext(),((ImageView) (LL.findViewById(R.id.fotoPerfilUtilizadorHeaderNavBar))),
+                                                    ptsfinal);
+                                        }
+                                    });
+                                }
                             }
                         }
 

@@ -173,7 +173,7 @@ public class PaginaPrincipal extends NavDrawerActivity {
                 public void onError(JSONObject jsonObjectErr) {
                     Log.i("pedido",jsonObjectErr.toString());
                     CardReportFragment cardInicial = CardReportFragment.newInstance("Martinho","às 09:47 de 20/05/21","Muitas pessoas na fila da cantina assustei-me"
-                            ,1,"ERROOOO",getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0),
+                            ,-1,"ERROOOO",getSharedPreferences("InfoPessoa", Context.MODE_PRIVATE).getInt("IDUtil",0),
                             0,0);
                     adicionarCard(cardInicial,"Camâra de Viseu");
                 }

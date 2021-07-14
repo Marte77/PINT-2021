@@ -55,7 +55,7 @@ controllers.updateinstituicao=async(req,res)=>{
 
     const{idInstituicao}=req.params
     const{nomeinst,emailinst,telefoneinst,poucoinst,moderadoinst,elevadoinst,descrinst}=req.body;
-    const data=await Instituicao.update({
+    const data=await instituicao.update({
         Nome:nomeinst,
         Email:emailinst,
         Telefone:telefoneinst,
@@ -77,6 +77,34 @@ controllers.updateinstituicao=async(req,res)=>{
         res.json({success:true, data:data, message:"Updated successful"});
         
 }
+
+//outra forma de fazer update
+/*controllers.updateinstituicao=async(req,res)=>{
+
+    const{idInstituicao}=req.params
+    const{nomeinst,emailinst,telefoneinst,poucoinst,moderadoinst,elevadoinst,descrinst}=req.body;
+    try{
+        var a= await instituicao.findOne({
+            where:{
+                ID_Instituicao: idInstituicao
+            }
+        })
+        a.Nome=nomeinst,
+        a.Email=emailinst,
+        a.Telefone=telefoneinst,
+        a.Descricao=descrinst,
+        a.Lotacao_Pouco=poucoinst,
+        a.Lotacao_Moderado=moderadoinst,
+        a.Lotacao_Elevado=elevadoinst
+        await a.save()
+    }   
+    catch (e) {
+        console.log(e)
+        res.send({desc:"Erro a fazer update",err:e.original})
+    }
+    res.send({Instituicoes:a})
+
+}*/
 
     
 

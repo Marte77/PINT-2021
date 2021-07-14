@@ -186,6 +186,7 @@ controllers.createOutros_Util = async (req,res) => { //post
 }
 
 controllers.getTop3Pessoas=async (req,res) => { //get
+    await atualizarRanking()
     var {numerotoppessoas} = req.params
     try{
         var top3outrosUtil = await outros_util.findAll({
@@ -251,6 +252,7 @@ controllers.getTop3Pessoas=async (req,res) => { //get
 }
 
 controllers.getInfoPessoa=async (req,res) => {//get
+    await atualizarRanking()
     var {idpessoa}= req.params
     try{
         var infopessoa = await outros_util.findOne({
@@ -407,7 +409,6 @@ controllers.List_Utils_Espera= async (req, res) => { // para o home frontend
     res.send({Utils:arrayNovo})
 }
 
-
 function organizarPessoasPorPontos(arraypessoas)
 {
     for(let i = 0; i<arraypessoas.length-1;i++){
@@ -434,5 +435,31 @@ function organizarPessoasPorPontos(arraypessoas)
     return arraypessoas
 }
 
-
+async function atualizarRanking(){
+    console.log("atualizar ranking")
+    let querystring = 'do '+
+    '$do$ '+
+        'declare cursorranking cursor for '+
+        'with cte_ranking as('+
+            'select "PessoaIDPessoa" as idp,rank() over (ORDER by "Pontuacao" desc), "tipo" from '+
+            '(select "PessoaIDPessoa","Pontos" as "Pontuacao",'+"'UI'"+' as "tipo" from "Utils_Instituicaos" '+
+            'union select "PessoaIDPessoa","Pontos_Outro_Util" as "Pontuacao",'+"'IO' "+ 
+            'as "tipo" from "Outros_Utils") as tabelaranking) '+
+        'select * from cte_ranking;'+
+        'begin '+
+            //--open cursorranking;
+            ' for linha in cursorranking loop '+
+                ' if linha.tipo = '+"'IO'"+' then '+//--é outro util
+                    ' update "Outros_Utils" set "Ranking" = linha.rank where "PessoaIDPessoa" = linha.idp; '+
+                ' else '+
+                    'update "Utils_Instituicaos" set "Ranking" = linha.rank where "PessoaIDPessoa" = linha.idp; '+
+                'end if; '+
+            'end loop; '+
+            //--close cursorranking;
+            //--deallocate cursorranking;
+        'end '+
+    '$do$; '
+    
+    await sequelize.query(querystring)
+}
 module.exports= controllers;

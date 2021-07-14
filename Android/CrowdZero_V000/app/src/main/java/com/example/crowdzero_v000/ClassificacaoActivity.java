@@ -1,10 +1,12 @@
 package com.example.crowdzero_v000;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -12,6 +14,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -99,13 +103,18 @@ public class ClassificacaoActivity extends NavDrawerActivity {
                         arrayptstxts[i].setText(Html.fromHtml("<b>Pontos: " + pontos + "</b>"));
                         urlImagem = top3.getJSONObject(i).getJSONObject("Pessoa").getString("Foto_De_Perfil");
                         final int finalI = i;
-                        if(!urlImagem.equals("null"))
+                        if(!urlImagem.equals("null")) {
+                            final int pontuacaofinal = pontos;
                             FuncoesApi.downloadImagem(appcontext, urlImagem, new FuncoesApi.volleyimagecallback() {
                                 @Override
                                 public void onSuccess(Bitmap bitmap) {
-                                    arrayimgs[finalI].setImageBitmap(bitmap);
+                                    //arrayimgs[finalI].setImageBitmap(bitmap);
+                                    Drawable d = new BitmapDrawable(getResources(),bitmap);
+                                    arrayimgs[finalI].setBackground(d);
+                                    colocarBordaPontuacao(getApplicationContext(),arrayimgs[finalI],pontuacaofinal);
                                 }
                             });
+                        }
 
                     }
                 }
@@ -130,21 +139,23 @@ public class ClassificacaoActivity extends NavDrawerActivity {
                 public void onSuccess(JSONObject jsonObject) throws JSONException {
                     Log.i("pedido", jsonObject.toString());
                     String pontos;
+                    int pts;
                     if (f.getTipoPessoa().equals(FuncoesSharedPreferences.outrosUtil)) {
-                        int pts = jsonObject.getInt("Pontos_Outro_Util");
+                        pts = jsonObject.getInt("Pontos_Outro_Util");
                         if (pts == 1)
                             pontos = pts + " Ponto";
                         else pontos = pts + " Pontos";
                     } else {
-                        int pts = jsonObject.getInt("Pontos");
+                        pts = jsonObject.getInt("Pontos");
                         if (pts == 1)
                             pontos = pts + " Ponto";
                         else pontos = pts + " Pontos";
                     }
                     txtPontuacaoUtilizador.setText(pontos);
                     if (!jsonObject.getJSONObject("Pessoa").get("Foto_De_Perfil").toString().equals("null")) {
-                        obterFotoDePerfil(jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil"));
+                        obterFotoDePerfil(jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil"), pts);
                     }
+
                 }
 
                 @Override
@@ -188,12 +199,30 @@ public class ClassificacaoActivity extends NavDrawerActivity {
             Log.i("pedido", "exception obter pontuacao classiifacao activity: " + e.toString());
         }
     }
-    void obterFotoDePerfil(String urlFoto){
+    void obterFotoDePerfil(String urlFoto, final int pontuacao){
         FuncoesApi.downloadImagem(getApplicationContext(), urlFoto, new FuncoesApi.volleyimagecallback() {
             @Override
             public void onSuccess(Bitmap bitmap) {
-                fotoDePerfil.setImageBitmap(bitmap);
+                //fotoDePerfil.setImageBitmap(bitmap);
+                Drawable d = new BitmapDrawable(getResources(),bitmap);
+                fotoDePerfil.setBackground(d);
+                colocarBordaPontuacao(getApplicationContext(),fotoDePerfil,pontuacao);
             }
         });
+    }
+    public static void colocarBordaPontuacao(Context context,ImageView fotoDePerfil,int pontuacao){
+        if(pontuacao>=200){
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.gold));
+            //fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda200pontos));
+        }else if(pontuacao>=50){
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.silver));
+            //fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda50pontos));
+        }else if(pontuacao>=10){
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.bronze));
+            //fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.borda10pontos));
+        }else{
+            //isto é feito para nao ficar uma imagem verde em cima visto que a foto de perfil é colocada no background da imagem
+            fotoDePerfil.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.imagemtransparent));
+        }
     }
 }

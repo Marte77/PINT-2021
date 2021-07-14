@@ -131,6 +131,18 @@
 
 
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cardBarChartInstituicaoReports">
+            <com.github.mikephil.charting.charts.BarChart
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:id="@+id/barchartInstituicaoReports"/>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

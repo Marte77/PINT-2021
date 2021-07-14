@@ -606,6 +606,38 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
+        public static void getNReportsUltimosXDias(Context context, int nDias, int idLocal, final volleycallback VCB){
+            RequestQueue request = Volley.newRequestQueue(context);
+            String url =urlGeral+"/Report/get_nreports_ultimos_dias/"+nDias+"/"+idLocal;
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesPessoas{
@@ -1044,6 +1076,38 @@ public class FuncoesApi {
             );
             request.add(jsonObjectRequest);
         }
+
+        public static void getPessoaFromReport(final Context context, int idReport, final volleycallback VCB){
+            String url = urlGeral + "/Report/get_pessoa_from_report/" + idReport;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     public static class FuncoesInstituicoes{
@@ -1080,6 +1144,9 @@ public class FuncoesApi {
         }
     }
 
+    public static class FuncoesComentarios{
+        
+    }
 
     @Deprecated
     static public void downloadImagem(Context context, String url, final ImageView imageView){
@@ -1093,6 +1160,7 @@ public class FuncoesApi {
                 null, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i("pedido","ErroImagem!");
                 Log.i("pedido","ErroImagem: " +new String(error.networkResponse.data, StandardCharsets.UTF_8));
             }
         });
@@ -1113,6 +1181,7 @@ public class FuncoesApi {
                 null, null, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i("pedido","ErroImagem!");
                 Log.i("pedido","ErroImagem: "+ new String(error.networkResponse.data, StandardCharsets.UTF_8));
             }
         });
