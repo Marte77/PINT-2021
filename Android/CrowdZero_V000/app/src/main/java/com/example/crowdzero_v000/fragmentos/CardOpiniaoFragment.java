@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -71,8 +72,10 @@ public class CardOpiniaoFragment extends Fragment {
     }
 
     void atualizarTextViews(TextView descricao, TextView nomedata){
+        String dataeditada = data;
+        dataeditada = data.split("T")[0];
         descricao.setText(this.descricao);
-        String nomeda = "<b>" + this.nomePessoa + "</b><br>" + data;
+        String nomeda = "<b>" + this.nomePessoa + "</b><br>" + dataeditada;
         nomedata.setText(Html.fromHtml(nomeda));
     }
     void atualizarEstrelas(ImageView[] estrelas){
@@ -121,6 +124,7 @@ public class CardOpiniaoFragment extends Fragment {
                 String urlimagem = jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil");
                 if(!urlimagem.equals("null"))
                     FuncoesApi.downloadImagem(getContext(),jsonObject.getJSONObject("Pessoa").getString("Foto_De_Perfil"),volleyimagecallbackImagem);
+                else fotodeperfil.setBackground(AppCompatResources.getDrawable(getContext(),R.drawable.ic_launcher_background));
             }
 
             @Override

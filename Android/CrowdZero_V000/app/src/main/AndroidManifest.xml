@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OpinioesActivity"></activity>
+        <activity android:name=".CriarEditarOpiniao"></activity>
+        <activity android:name=".OpinioesActivity" />
         <activity android:name=".CriarReportLocal" />
         <activity android:name=".ListaReportsInstituicaoActivity" />
         <activity android:name=".InstituicaoInformacoesActivity" />

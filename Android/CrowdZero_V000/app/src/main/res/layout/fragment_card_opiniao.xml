@@ -22,14 +22,16 @@
 
                 <ImageView
                     android:id="@+id/fotoPerfilOpiniaoCard"
-                    android:layout_width="0dp"
+                    android:layout_width="285dp"
                     android:layout_height="146dp"
                     android:layout_weight="1"
                     android:src="@drawable/ic_launcher_background" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:paddingStart="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -45,28 +47,28 @@
 
                         <ImageView
                             android:id="@+id/estrela1"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_star_outline_black_24dp"/>
                         <ImageView
                             android:id="@+id/estrela2"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_star_outline_black_24dp"/>
                         <ImageView
                             android:id="@+id/estrela3"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_star_outline_black_24dp"/>
                         <ImageView
                             android:id="@+id/estrela4"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_star_outline_black_24dp"/>
                         <ImageView
                             android:id="@+id/estrela5"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/ic_star_outline_black_24dp"/>
                     </LinearLayout>
 
