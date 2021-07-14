@@ -24,7 +24,8 @@ controllers.get_utilizadores =  async (req,res) => {
             var listautilizadores=await  utilizadoresInst.findAll({
                 include:[pessoas],
                 where:{
-                     ID_Util:util_inst.dataValues.UtilsInstituicaoIDUtil    
+                     ID_Util:util_inst.dataValues.UtilsInstituicaoIDUtil,
+                     Verificado:true 
                 }
             })
             for (let utilizadores of listautilizadores)
