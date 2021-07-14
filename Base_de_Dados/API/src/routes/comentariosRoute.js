@@ -7,4 +7,5 @@ router.post('/update_comentario',comentariosController.updateComentario);
 router.get('/get_comentario/:IDLocal/:IDPessoa',comentariosController.getComentario)
 router.delete('/delete_comentario/:IDLocal/:IDPessoa',comentariosController.apagarComentario)
 router.get('/opinioes/:idInstituicao', comentariosController.get_comentarios);
+router.get('/get_todos_comentarios_local/:IDLocal',comentariosController.getTodosComentariosLocal)
 module.exports=router

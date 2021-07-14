@@ -56,7 +56,7 @@ controllers.getComentario= async(req,res)=>{ //post
 }
 
 controllers.updateComentario = async(req,res)=>{ //post
-    const { Descricao,Classificacao,IDLocal,IDPessoa, Data}= req.body
+    const { Descricao,Classificacao,IDLocal,IDPessoa}= req.body
     let dataAgr = new Date()
     dataAgr = dataAgr.toISOString()
     try {
@@ -69,7 +69,6 @@ controllers.updateComentario = async(req,res)=>{ //post
         {
             var comentario = await Comentario.findOne({
                 where:{
-                    Data:Data,
                     LocalIDLocal:IDLocal,
                     PessoaIDPessoa:IDPessoa
                 }
@@ -143,5 +142,19 @@ controllers.get_comentarios =  async (req,res) => {
     
 }
     
-
+controllers.getTodosComentariosLocal = async(req,res)=>{
+    const {IDLocal} = req.params
+    try{
+        var comentariostodos = await Comentario.findAll({
+            where:{
+                LocalIDLocal:IDLocal
+            },
+            include:[Pessoas]
+        })
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc:"Erro a pesquisar", err:e.original})
+    }
+    res.send({Comentarios: comentariostodos})
+}
 module.exports = controllers;
