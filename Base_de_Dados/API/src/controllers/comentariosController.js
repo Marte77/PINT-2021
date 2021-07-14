@@ -2,6 +2,8 @@ var sequelize = require('../model/database');
 const controllers = {}
 const Comentario = require('../model/Comentarios');
 const e = require('express');
+const Pessoas = require('../model/Pessoas/Pessoas');
+const Local = require('../model/Local');
 
 controllers.criarComentario = async (req,res) => { //post
     const { Descricao,Classificacao,IDLocal,IDPessoa}= req.body
@@ -104,5 +106,42 @@ controllers.apagarComentario = async(req,res)=>{
         res.send({desc:'Apagado com sucesso'})
     else res.status(500).send({desc:'Esta pessoa nao deu opiniao sobre este local'})
 }
+
+
+controllers.get_comentarios =  async (req,res) => {
+
+    const{idInstituicao}=req.params
+    var statuscode = 200;
+    var errMessage="";
+
+    try{
+        var arraycomentarios=new Array();
+        var listalocais=await Local.findAll({
+            where:{
+                InstituicaoIDInstituicao:idInstituicao
+            }
+        })
+        for(let local of listalocais)
+        {
+            var listacomentarios=await  Comentario.findAll({
+                include:[Local,Pessoas],
+                where:{
+                     LocalIDLocal:local.dataValues.ID_Local    
+                }
+            })
+            for (let comentario of listacomentarios)
+            {
+                arraycomentarios.push(comentario)
+            }
+        }
+    }
+
+    catch(e){console.log(e);errMessage = e;statuscode = 500;}
+    if(statuscode === 500)
+    res.status(statuscode).send({status: statuscode, err: errMessage});
+    else res.status(statuscode).send({data: arraycomentarios})
+    
+}
+    
 
 module.exports = controllers;

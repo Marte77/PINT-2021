@@ -6,4 +6,5 @@ router.post('/novo_comentario',comentariosController.criarComentario);
 router.post('/update_comentario',comentariosController.updateComentario);
 router.get('/get_comentario/:IDLocal/:IDPessoa',comentariosController.getComentario)
 router.delete('/delete_comentario/:IDLocal/:IDPessoa',comentariosController.apagarComentario)
+router.get('/opinioes/:idInstituicao', comentariosController.get_comentarios);
 module.exports=router
