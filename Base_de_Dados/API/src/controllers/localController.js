@@ -11,6 +11,7 @@ const Report = require('../model/Reports/Report')
 const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outros_Util')
 const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao');
 const Instituicao = require('../model/Instituicao');
+
 controllers.listarLocais = async(req,res)=>{
     var statuscode = 200;
     var errMessage="";
@@ -21,6 +22,7 @@ controllers.listarLocais = async(req,res)=>{
         res.status(statuscode).send({status: statuscode, err: errMessage});
     else res.status(statuscode).send({status:200, Locais: listaLocais})
 }
+
 
 controllers.getlocais_assocInstituicao=async(req,res)=>{
     const{idInstituicao}=req.params
@@ -38,6 +40,7 @@ controllers.getlocais_assocInstituicao=async(req,res)=>{
     res.status(statuscode).send({status: statuscode, err: errMessage});
     else res.status(statuscode).send({status:200, LocaisInst: listalocaisbyinst})
 }
+
 controllers.getlocaisindoor_byinstituicao= async(req,res)=>{ //get
 {
     const{idInstituicao}=req.params
@@ -71,6 +74,7 @@ controllers.getlocaisindoor_byinstituicao= async(req,res)=>{ //get
     
 }
 }
+
 controllers.getLocalbyId = async(req,res)=>{ //get
     var statuscode = 200;
     var errMessage="";
@@ -104,6 +108,31 @@ controllers.criarLocal = async(req,res)=>{//post
     }
     res.send({Local:novoLocal})
 }
+
+controllers.CriarLocal_WEB= async(req,res)=>{
+
+    const{nome, codigopostal,descricao,urlimagem,localizacao, longitude, latitude, idinstituicao} = req.body
+
+    
+        const novoLocal = await locais.create({
+            Nome:nome,
+            Codigo_Postal: codigopostal,
+            Descricao:descricao,
+            URL_Imagem: urlimagem,
+            Localizacao:localizacao,
+            Longitude:longitude,
+            Latitude:latitude,
+            InstituicaoIDInstituicao:idinstituicao
+        })
+        .then(function(novoLocal){  return novoLocal;   })
+            .catch(error =>{ console.log("Erro: "+error)
+              return error;
+            })
+            // return res
+            res.status(200).json({success: true,   message:"Registado",  novoLocal: novoLocal  });
+            
+        }
+
 
 controllers.criarLocalIndoor = async(req,res)=>{//post
     const{nome, descricao, piso, idlocal} = req.body
