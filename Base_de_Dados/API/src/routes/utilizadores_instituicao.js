@@ -4,4 +4,5 @@ const router = express.Router();
 const utilizadoresController = require('../controllers/utilizadores_instituicao');
 const middleware = require('../middleware');
 
-//router.get('/listutilizadores', utilizadoresController.)
+router.get('/listutilizadores/:idInstituicao', utilizadoresController.get_utilizadores)
+module.exports=router

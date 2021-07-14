@@ -51,6 +51,16 @@ controllers.getInstituicao = async (req,res) => {//get
 
 }
 
+controllers.getListaInstituicoes = async(req,res)=>{
+    try {
+        var instituicoes = await Instituicao.findAll()
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({desc:"Erro a selecionar", err:e.original})
+    }
+    res.send({Instituicoes:instituicoes})
+}   
+
 controllers.updateinstituicao=async(req,res)=>{
 
     const{idInstituicao}=req.params
