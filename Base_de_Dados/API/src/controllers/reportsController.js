@@ -660,34 +660,4 @@ async function obterNReports(datainferior, datasuperior, idlocal){
 }
 
 
-/*
-controllers.getTotalAlertasInst=async(req,res)=>{
-    const{idInstituicao}=req.params
-    var statuscode = 200;
-    var counttotal =0;
-    var errMessage="";
-    try{
-        var listaLocais=await Local.findAll({ //PEGA TODOS OS LOCAIS DA INSTITUICAO
-            where:{
-                InstituicaoIDInstituicao:idInstituicao
-            }
-        })
-        var listaAlertas=await Alertas.findAll({ //Pega todos os reports desses locais
-            where:{
-                  for(let a = 0; i<listaLocais.length;a++){
-                    if(listaLocais[a].ID_Local === LocalIDLocal)
-                    {
-                         counttotal++;
-                    }
-                }
-
-            }
-        })
-    }
-    catch(e){console.log(e);errMessage = e;statuscode = 500;}
-    if(statuscode === 500)
-    res.status(statuscode).send({status: statuscode, err: errMessage});
-    else res.status(statuscode).send({status:200, total: counttotal})
-}
-*/
 module.exports = controllers;
