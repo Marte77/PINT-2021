@@ -134,6 +134,25 @@ controllers.CriarLocal_WEB= async(req,res)=>{
         }
 
 
+controllers.CriarLocalindoor_WEB= async(req,res)=>{
+
+        const{nome, descricao,piso,idlocal} = req.body
+        
+            const novoLocal = await localindoor.create({
+                Nome:nome,
+                Descricao: descricao,
+                Piso:piso,
+                LocalIDLocal: idlocal,
+            })
+            .then(function(novoLocal){  return novoLocal;   })
+                .catch(error =>{ console.log("Erro: "+error)
+                    return error;
+                })
+                // return res
+                res.status(200).json({success: true,   message:"Registado",  novoLocal: novoLocal  });
+                
+ }
+
 controllers.criarLocalIndoor = async(req,res)=>{//post
     const{nome, descricao, piso, idlocal} = req.body
     try{

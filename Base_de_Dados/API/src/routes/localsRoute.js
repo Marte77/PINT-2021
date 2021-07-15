@@ -12,5 +12,7 @@ router.post('/criar_novo_local',localController.criarLocal)
 router.get('/get_lista_locais_indoor_local/:idLocal',localController.getListaLocaisIndoor)
 router.post('/percentagem_reports_locais',localController.getPercentagemDeReportsDeCadaLocal)
 router.post('/criarLocalWeb',localController.CriarLocal_WEB)
+router.post('/criarLocalWebINDOOR',localController.CriarLocalindoor_WEB)
+
 
 module.exports = router;
