@@ -121,7 +121,95 @@ controllers.updateinstituicao=async(req,res)=>{
 
 }*/
 
+controllers.getNReportsXDiasInstituicao = async(req,res)=>{
+    const {idinstituicao,nDias} = req.params
+    let dataAgr = new Date()
+    var arrayDiasNReports = new Array()
+    try {
+        var locaisinst = await Local.findAll({
+            where:{
+                InstituicaoIDInstituicao:idinstituicao
+            }
+        })
+        
 
+        for(let i = 0;i<nDias; i++){
+            let nTotalReports = 0
+            let densidademedia = 0
+            let datadia = new Date(new Date().setHours(25,0,0,0))
+            let datadiasup = new Date(new Date().setHours(25,0,0,0))
+            datadia.setDate(datadia.getDate()-1)
+            datadia.setDate(datadia.getDate()-i)
+            datadiasup.setDate(datadiasup.getDate()-i+1)
+            datadia = (datadia.toISOString()).split('T')[0]
+            datadiasup = datadiasup.toISOString().split('T')[0]
+            for(let local of locaisinst){
+                let reportsoututilinst = await Report_Outdoor_Util_Instituicao.findAll({
+                    where:{
+                        LocalIDLocal:local.dataValues.ID_Local,
+                    },
+                    include:[{
+                        model:Report,
+                        where:{
+                            Data:{
+                                [Op.between]:[datadia,datadiasup]
+                            }
+                        }
+                    }]
+                })
+                /*let reportsindutilinst = await Report_Indoor.count({
+                    where:{
+                        LocalIDLocal:local.dataValues.ID_Local,
+                    },
+                    include:{
+                        model:Report,
+                        where:{
+                            Data:{
+                                [Op.and]:{
+                                    [Op.gte]:{
+                                        datadia
+                                    },
+                                    [Op.lt]:{
+                                        datadiasup
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })*/
+                let reportsoutrosutil = await Report_Outdoor_Outros_Util.findAll({
+                    where:{
+                        LocalIDLocal:local.dataValues.ID_Local,
+                    },
+                    include:[{
+                        model:Report,
+                        where:{
+                            Data:{
+                                [Op.between]:[datadia,datadiasup]
+                            }
+                        }
+                    }]
+                })
+                nTotalReports = nTotalReports+ reportsoutrosutil.length + reportsoututilinst.length
+                //todo talvez fazer densidade media?
+                //densidademedia = soma das densidades 
+            }
+            //densidademedia = densidademedia / nTotalReports
+            let dia = new Date(new Date().setHours(25,0,0,0))
+            dia.setDate(dia.getDate()-1-i)
+            arrayDiasNReports.push({
+                NReports:nTotalReports,
+                dia:dia.getDate(),
+                diasemana:dia.getDay()
+                //densidademedia: densidademedia
+            })
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({desc:"Erro a selecionar", er:e.original})
+    }
+    res.send({res:arrayDiasNReports})
+}
 
     
 
