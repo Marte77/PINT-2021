@@ -131,8 +131,6 @@ controllers.getNReportsXDiasInstituicao = async(req,res)=>{
                 InstituicaoIDInstituicao:idinstituicao
             }
         })
-        
-
         for(let i = 0;i<nDias; i++){
             let nTotalReports = 0
             let densidademedia = 0
@@ -191,17 +189,24 @@ controllers.getNReportsXDiasInstituicao = async(req,res)=>{
                     }]
                 })
                 nTotalReports = nTotalReports+ reportsoutrosutil.length + reportsoututilinst.length
-                //todo talvez fazer densidade media?
-                //densidademedia = soma das densidades 
+                for(let rep of reportsoututilinst){
+                    densidademedia = densidademedia + rep.Report.Nivel_Densidade
+                }
+                for(let rep of reportsoutrosutil){
+                    densidademedia = densidademedia + rep.Report.Nivel_Densidade
+                }
             }
-            //densidademedia = densidademedia / nTotalReports
+            if(nTotalReports !==0)
+                densidademedia = Math.round(densidademedia / nTotalReports)
+            
+            
             let dia = new Date(new Date().setHours(25,0,0,0))
             dia.setDate(dia.getDate()-1-i)
             arrayDiasNReports.push({
                 NReports:nTotalReports,
                 dia:dia.getDate(),
-                diasemana:dia.getDay()
-                //densidademedia: densidademedia
+                diasemana:dia.getDay(),
+                densidademedia: densidademedia
             })
         }
     } catch (e) {
