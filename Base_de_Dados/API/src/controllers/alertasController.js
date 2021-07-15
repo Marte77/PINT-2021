@@ -10,6 +10,7 @@ var alerta = require('../model/Alertas');
 var tipo_alerta = require('../model/Tipo_Alertas');
 var sequelize = require('../model/database');
 const locais = require('../model/Local');
+const tipoalertas=require('../model/Tipo_Alertas');
 
 const controllers = {}
 
@@ -72,6 +73,21 @@ controllers.getlistaalertas_byinstituicao= async(req,res)=>{ //get
   }
 }
 
+
+controllers.gettipoalertas = async(req,res)=>{
+   
+      const todostipos=await tipoalertas.findAll({
+
+      })
+
+      .then(function(data){
+         return data;
+         })
+         .catch(error =>{
+         return error;
+         })
+         res.json({ ListipoAlertas: todostipos });
+}
 
 controllers.getTotalAlertasPorLocalDeInstituicao = async(req,res)=>{
    const {IDInstituicao} = req.params
