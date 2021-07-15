@@ -392,6 +392,17 @@ controllers.deletelocal= async (req, res) => {
     res.json({success:true,deleted:del,message:"Deleted successful"});
 
 }
+controllers.deletelocalint= async (req, res) => {
+    const { id } = req.body;
+    const del=await localindoor.destroy({
+        where:
+        {
+            ID_Local_Indoor:id
+        }
+    })
+    res.json({success:true,deleted:del,message:"Deleted successful"});
+
+}
 
 
 module.exports = controllers;

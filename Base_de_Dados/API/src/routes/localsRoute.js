@@ -18,6 +18,7 @@ router.post('/updatelocais/:idlocal',localController.editlocal)
 router.get('/getlocalint/:idlocal',localController.getlocalint)
 router.post('/updatelocaisindoor/:idlocal',localController.editlocalint)
 router.post('/deleteLocal',localController.deletelocal)
+router.post('/deleteLocalInt',localController.deletelocalint)
 
 
 
