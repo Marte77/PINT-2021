@@ -298,4 +298,49 @@ controllers.getPercentagemDeReportsDeCadaLocal = async(req,res)=>{//post
     res.send({Resultado:resposta, NumeroReportsTotal:nReportsTotal})
 }
 
+
+controllers.getlocalout= async (req,res) => {
+    const{idlocal}=req.params;
+    const data= await locais.findAll({
+        where:{
+            ID_Local:idlocal
+        }
+    })
+    .then(function(data){
+        return data;
+        })
+        .catch(error =>{
+        return error;
+        })
+        res.json({ success: true, data: data });
+        
+}
+
+controllers.editlocal= async (req,res) => {
+    const{idlocal}=req.params;
+    const{nome,cp, descri,urlimg, locali,long,lati}=req.body;
+    const data= await locais.update({
+        Nome:nome,
+        Codigo_Postal:cp,
+        Descricao:descri,
+        URL_Imagem:urlimg,
+        Localizacao:locali,
+        Longitude:long,
+        Latitude:lati
+    },
+    {
+        where:{ID_Local:idlocal}
+    
+    })
+    .then( function(data){
+        return data;
+        })
+        .catch(error => {
+        return error;
+        })
+        res.json({success:true, data:data, message:"Updated successful"});
+        
+}
+
+
 module.exports = controllers;

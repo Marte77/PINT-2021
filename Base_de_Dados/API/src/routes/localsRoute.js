@@ -13,6 +13,9 @@ router.get('/get_lista_locais_indoor_local/:idLocal',localController.getListaLoc
 router.post('/percentagem_reports_locais',localController.getPercentagemDeReportsDeCadaLocal)
 router.post('/criarLocalWeb',localController.CriarLocal_WEB)
 router.post('/criarLocalWebINDOOR',localController.CriarLocalindoor_WEB)
+router.get('/getlocal/:idlocal',localController.getlocalout)
+router.post('/updatelocais/:idlocal',localController.editlocal)
+
 
 
 module.exports = router;
