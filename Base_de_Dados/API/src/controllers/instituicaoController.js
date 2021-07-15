@@ -229,16 +229,9 @@ controllers.getPercentagemUtilizadoresInst = async(req,res)=>{
                 InstituicaoIDInstituicao:idinst
             }
         })
-        var utilsinst = await Util_pertence_Inst.count({
-            where:{
-                InstituicaoIDInstituicao:idinst
-            },include:{
-                model: Utils_Instituicao,
-                where:{
-                    Verificado:true
-                }
-            }
-        })
+        
+        var utilsinst = await sequelize.query('select count(*) from "Util_pertence_Insts" inner join "Utils_Instituicaos" on "UtilsInstituicaoIDUtil"= "ID_Util"')
+        utilsinst = utilsinst[0][0].count
     } catch (e) {
         console.log(e)
         res.status(500).send({desc:"erro a selecionar", err:e.original})
