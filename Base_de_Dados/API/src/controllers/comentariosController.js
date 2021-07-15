@@ -157,4 +157,17 @@ controllers.getTodosComentariosLocal = async(req,res)=>{
     }
     res.send({Comentarios: comentariostodos})
 }
+
+controllers.delete_Comentario = async(req,res)=>{
+    const {ID}= req.params
+    const comentario = await Comentario.destroy({
+        where:{
+            ID_Comentario:ID
+        }
+    })
+    res.json({success:true,message:"Deleted successful"});
+}
+
+
+
 module.exports = controllers;
