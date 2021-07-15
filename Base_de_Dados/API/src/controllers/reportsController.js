@@ -9,6 +9,7 @@ const Outro_Util = require('../model/Pessoas/Outros_Util')
 const Util_Instituicao = require('../model/Pessoas/Utils_Instituicao')
 const Pessoas = require('../model/Pessoas/Pessoas')
 const Local = require('../model/Local')
+const Alertas = require('../model/Alertas')
 const Local_Indoor = require('../model/Local_Indoor')
 const Instituicao = require('../model/Instituicao');
 const Tabela_LikesDislikes = require('../model/Reports/Tabela_LikesDislikes');
@@ -657,4 +658,6 @@ async function obterNReports(datainferior, datasuperior, idlocal){
     console.log(media)
     return {media:media, nreports:count}
 }
+
+
 module.exports = controllers;

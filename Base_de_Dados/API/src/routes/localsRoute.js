@@ -11,5 +11,15 @@ router.get('/apagar_local_indoor/:idLocal/:idLocalIndoor',localController.apagar
 router.post('/criar_novo_local',localController.criarLocal)
 router.get('/get_lista_locais_indoor_local/:idLocal',localController.getListaLocaisIndoor)
 router.post('/percentagem_reports_locais',localController.getPercentagemDeReportsDeCadaLocal)
+router.post('/criarLocalWeb',localController.CriarLocal_WEB)
+router.post('/criarLocalWebINDOOR',localController.CriarLocalindoor_WEB)
+router.get('/getlocal/:idlocal',localController.getlocalout)
+router.post('/updatelocais/:idlocal',localController.editlocal)
+router.get('/getlocalint/:idlocal',localController.getlocalint)
+router.post('/updatelocaisindoor/:idlocal',localController.editlocalint)
+router.post('/deleteLocal',localController.deletelocal)
+router.post('/deleteLocalInt',localController.deletelocalint)
+
+
 
 module.exports = router;

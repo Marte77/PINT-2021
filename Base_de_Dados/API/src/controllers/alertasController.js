@@ -37,16 +37,16 @@ controllers.createTipoAlerta = async (req,res) => { //post
 
 controllers.getlistaalertas_byinstituicao= async(req,res)=>{ //get
    {
-       const{idInstituicao}=req.params
-       var statuscode = 200;
-       var errMessage="";
-       try{
-          var arrayalertas=new Array();
-          var listalocais=await locais.findAll({
-             where:{
+      const{idInstituicao}=req.params
+      var statuscode = 200;
+      var errMessage="";
+      try{
+         var arrayalertas=new Array();
+         var listalocais=await locais.findAll({
+            where:{
                InstituicaoIDInstituicao:idInstituicao
-             }
-          })
+            }
+         })
          for(let local of listalocais){
             var listaalertas=await alerta.findAll({
                include:[locais,tipo_alerta],
@@ -59,20 +59,48 @@ controllers.getlistaalertas_byinstituicao= async(req,res)=>{ //get
             for(let alerta of listaalertas){
                arrayalertas.push(alerta)
             }
-       }
-       
       }
-    
-      catch(e){console.log(e);errMessage = e;statuscode = 500;}
+      
+      }
+      catch(e){
+         console.log(e);errMessage = e;statuscode = 500;
+      }
       if(statuscode === 500)
       res.status(statuscode).send({status: statuscode, err: errMessage});
       else res.status(statuscode).send({status:200, Alertas: arrayalertas})
       
   }
-  }
+}
 
 
+controllers.getTotalAlertasPorLocalDeInstituicao = async(req,res)=>{
+   const {IDInstituicao} = req.params
+   try {
+      let todoslocais = await locais.findAll({
+         where:{
+            InstituicaoIDInstituicao:IDInstituicao
+         }
+      })
+      var arrayTotAlertas = new Array()
+      for(let local of todoslocais){
+         let alertas = await alerta.count({
+            where:{
+               LocalIDLocal:local.dataValues.ID_Local
+            }
+         })
+         arrayTotAlertas.push({
+            NomeLocal:local.Nome,
+            NumeroAlertas:alertas,
+            ID_Local:local.ID_Local
+         })
+      }
 
+   } catch (e) {
+      console.log(e)
+      res.status(500).send({desc:"Erro a selecionar", err:e.original})
+   }
+   res.send({alertas:arrayTotAlertas})
+}
 
 controllers.createAlerta = async (req,res) => { //post
    // data

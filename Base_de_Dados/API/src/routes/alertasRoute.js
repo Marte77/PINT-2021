@@ -8,6 +8,7 @@ require('../controllers/alertasController')
 router.post('/createTipoAlerta',alertasController.createTipoAlerta);
 router.post('/createAlerta',alertasController.createAlerta);
 router.get('/listalertas/:idInstituicao',alertasController.getlistaalertas_byinstituicao);
+router.get('/totalalertaslocais/:IDInstituicao',alertasController.getTotalAlertasPorLocalDeInstituicao);
 
 //router.post('/update/:id', filmeController.update);
 //router.post('/delete', filmeController.delete);

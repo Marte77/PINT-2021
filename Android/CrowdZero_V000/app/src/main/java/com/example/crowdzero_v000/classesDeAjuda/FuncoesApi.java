@@ -307,7 +307,6 @@ public class FuncoesApi {
         /**
          * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
          * @param tempo:     int da quantidade de tipoTempo
-         * @param nivelDensidade
          */
         public static void getPercentagemReportsLocais(final Context context, int nivelDensidade,String tipoTempo,int tempo, final volleycallback VCB ) throws JSONException {
             String url = urlGeral + "/Locais/percentagem_reports_locais/" ;
@@ -345,12 +344,10 @@ public class FuncoesApi {
         /**
          * @param tipoTempo: = hh - horas, mm - minutos, dd - dias
          * @param tempo:     int da quantidade de tipoTempo
-         * @param nivelDensidade
-         */
+         **/
         public static void getReportMaisRelevante(final Context context, String tipoTempo, int tempo, final volleycallback VCB){
             String url = urlGeral + "/Report/get_report_mais_relevante/" +tipoTempo + "/"+tempo;
             RequestQueue request = Volley.newRequestQueue(context);
-            JSONObject body = new JSONObject();
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
@@ -1112,7 +1109,7 @@ public class FuncoesApi {
 
     public static class FuncoesInstituicoes{
         public static void getListaInstituicoes(final Context context, final volleycallback VCB){
-            String url = urlGeral + "/Instituicao/get_instituicoes";
+            String url = urlGeral + "/Instituicao/lista_instituicoes";
             RequestQueue request = Volley.newRequestQueue(context);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET, url,null,
@@ -1145,7 +1142,179 @@ public class FuncoesApi {
     }
 
     public static class FuncoesComentarios{
-        
+        public static void getComentario(final Context context, int idLocal, int idPessoa, final volleycallback VCB){
+            String url = urlGeral + "/Comentarios/get_comentario/" + idLocal + "/"+idPessoa;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void criarEditarNovoComentario(boolean isEditar,final Context context,String descricao, int classificacao, int idLocal, int idPessoa, final volleycallback VCB) throws JSONException {
+            String url = urlGeral;
+            if(!isEditar)
+                url = urlGeral + "/Comentarios/novo_comentario";
+            else url = urlGeral + "/Comentarios/update_comentario";
+            JSONObject  body = new JSONObject();
+            body.put("Descricao",descricao);
+            body.put("Classificacao",classificacao);
+            body.put("IDLocal",idLocal);
+            body.put("IDPessoa",idPessoa);
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url,body,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void editarComentario(final Context context,String data,String descricao, int classificacao, int idLocal, int idPessoa, final volleycallback VCB ) throws JSONException {
+            String url = urlGeral + "/Comentarios/novo_comentario";
+            JSONObject  body = new JSONObject();
+            body.put("Descricao",descricao);
+            body.put("Classificacao",classificacao);
+            body.put("IDLocal",idLocal);
+            body.put("IDPessoa",idPessoa);
+            body.put("Data",data);
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST, url,body,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void apagarComentario(final Context context, int idLocal, int idPessoa, final volleycallback VCB){
+            String url = urlGeral + "/Comentarios/delete_comentario/"+idLocal+"/"+idPessoa;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.DELETE, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
+
+        public static void getTodosComentariosLocal(final Context context, int idLocal, final volleycallback VCB){
+            String url = urlGeral +"/Comentarios/get_todos_comentarios_local/"+idLocal;
+            RequestQueue request = Volley.newRequestQueue(context);
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET, url,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                VCB.onSuccess(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                VCB.onError(new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8)));
+                                Log.i("pedido","ERRO: " + new String(error.networkResponse.data, StandardCharsets.UTF_8));
+                            } catch (Exception e ) {
+                                e.printStackTrace();
+                                Log.i("pedido","Catch ERRO: "+ e);
+                                Toast.makeText(context,"Erro de conexão",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            );
+            request.add(jsonObjectRequest);
+        }
     }
 
     @Deprecated
