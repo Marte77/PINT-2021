@@ -7,5 +7,7 @@ router.get('/get_instituicoes/:idInstituicao',instituicaoController.getInstituic
 router.post('/updateinstituicao/:idInstituicao',instituicaoController.updateinstituicao);
 router.get('/lista_instituicoes',instituicaoController.getListaInstituicoes)
 router.get('/numero_reports_x_dias/:idinstituicao/:nDias',instituicaoController.getNReportsXDiasInstituicao)
+router.get('/percentagem_util_por_inst/:idinst',instituicaoController.getPercentagemUtilizadoresInst)
+
 
 module.exports = router;

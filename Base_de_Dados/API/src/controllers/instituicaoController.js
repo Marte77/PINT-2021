@@ -8,6 +8,10 @@ const Report = require('../model/Reports/Report');
 const Report_Indoor = require('../model/Reports/Report_Indoor');
 const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outros_Util');
 const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao');
+const Pessoas = require('../model/Pessoas/Pessoas');
+const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
+const Admin = require('../model/Pessoas/Admin');
+const Util_pertence_Inst = require('../model/Util_pertence_Inst');
 controllers.createInstituicao = async (req,res) => { //post
     let statusCode = 200;
     const { Nome, Codigo_Postal,Email, Telefone, Descricao, URL_Imagem, Longitude, Latitude, Localizacao, Codigo_Empresa
@@ -216,6 +220,30 @@ controllers.getNReportsXDiasInstituicao = async(req,res)=>{
     res.send({res:arrayDiasNReports})
 }
 
+controllers.getPercentagemUtilizadoresInst = async(req,res)=>{
+    const {idinst} = req.params
+    try {
+        var totalutilizadores = await Pessoas.count()
+        var admins = await Admin.count({
+            where:{
+                InstituicaoIDInstituicao:idinst
+            }
+        })
+        var utilsinst = await Util_pertence_Inst.count({
+            where:{
+                InstituicaoIDInstituicao:idinst
+            }
+        })
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({desc:"erro a selecionar", err:e.original})
+    }
+    res.send({
+        ntotalPessoas:totalutilizadores,
+        ntotalPessoasInst:(admins + utilsinst),
+        percentagem:((admins + utilsinst)/totalutilizadores)
+    })
+}
     
 
 module.exports = controllers;
