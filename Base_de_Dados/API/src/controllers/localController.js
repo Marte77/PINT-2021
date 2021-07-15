@@ -381,5 +381,17 @@ controllers.editlocalint= async (req,res) => {
         
 }
 
+controllers.deletelocal= async (req, res) => {
+    const { id } = req.body;
+    const del=await locais.destroy({
+        where:
+        {
+            ID_Local:id
+        }
+    })
+    res.json({success:true,deleted:del,message:"Deleted successful"});
+
+}
+
 
 module.exports = controllers;
