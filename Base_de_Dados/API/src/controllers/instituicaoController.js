@@ -232,6 +232,11 @@ controllers.getPercentagemUtilizadoresInst = async(req,res)=>{
         var utilsinst = await Util_pertence_Inst.count({
             where:{
                 InstituicaoIDInstituicao:idinst
+            },include:{
+                model: Utils_Instituicao,
+                where:{
+                    Verificado:true
+                }
             }
         })
     } catch (e) {
