@@ -1,8 +1,13 @@
 var sequelize = require('../model/database');
+const {Op} = require('sequelize')
 const Instituicao = require('../model/Instituicao');
 const controllers = {}
 const instituicao = require('../model/Instituicao')
-
+const Local = require('../model/Local');
+const Report = require('../model/Reports/Report');
+const Report_Indoor = require('../model/Reports/Report_Indoor');
+const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outros_Util');
+const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao');
 controllers.createInstituicao = async (req,res) => { //post
     let statusCode = 200;
     const { Nome, Codigo_Postal,Email, Telefone, Descricao, URL_Imagem, Longitude, Latitude, Localizacao, Codigo_Empresa
@@ -115,6 +120,93 @@ controllers.updateinstituicao=async(req,res)=>{
     res.send({Instituicoes:a})
 
 }*/
+
+controllers.getNReportsXDiasInstituicao = async(req,res)=>{
+    const {idinstituicao,nDias} = req.params
+    let dataAgr = new Date()
+    var arrayDiasNReports = new Array()
+    try {
+        var locaisinst = await Local.findAll({
+            where:{
+                InstituicaoIDInstituicao:idinstituicao
+            }
+        })
+        for(let i = 0;i<nDias; i++){
+            let nTotalReports = 0
+            let densidademedia = 0
+            let datadia = new Date()
+            let datadiasup = new Date()
+            datadia.setDate(datadia.getDate()-nDias+i)
+            datadiasup.setDate(datadiasup.getDate()-nDias+i+1)
+            datadia = (datadia.toISOString()).split('T')[0]
+            datadiasup = datadiasup.toISOString().split('T')[0]
+            for(let local of locaisinst){
+                let reportsoututilinst = await Report_Outdoor_Util_Instituicao.findAll({
+                    where:{
+                        LocalIDLocal:local.dataValues.ID_Local,
+                    },
+                    include:[{
+                        model:Report,
+                        where:{
+                            Data:{
+                                [Op.between]:[datadia,datadiasup]
+                            }
+                        }
+                    }]
+                })
+                /*let reportsindutilinst = await Report_Indoor.count({
+                    where:{
+                        LocalIDLocal:local.dataValues.ID_Local,
+                    },
+                    include:{
+                        model:Report,
+                        where:{
+                            Data:{
+                                [Op.and]:{
+                                    [Op.gte]:{
+                                        datadia
+                                    },
+                                    [Op.lt]:{
+                                        datadiasup
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })*/
+                let reportsoutrosutil = await Report_Outdoor_Outros_Util.findAll({
+                    where:{
+                        LocalIDLocal:local.dataValues.ID_Local,
+                    },
+                    include:[{
+                        model:Report,
+                        where:{
+                            Data:{
+                                [Op.between]:[datadia,datadiasup]
+                            }
+                        }
+                    }]
+                })
+                nTotalReports = nTotalReports+ reportsoutrosutil.length + reportsoututilinst.length
+                //todo talvez fazer densidade media?
+                //densidademedia = soma das densidades 
+            }
+            //densidademedia = densidademedia / nTotalReports
+            let dia = new Date()
+            dia.setDate(dia.getDate()-nDias+i)
+            dia = dia.getDate()+1
+            arrayDiasNReports.push({
+                NReports:nTotalReports,
+                dia:dia,
+                //densidademedia: densidademedia
+            })
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(desc:"Erro a selecionar", er:e.original)
+    }
+    res.send({res:arrayDiasNReports})
+}
 
     
 
