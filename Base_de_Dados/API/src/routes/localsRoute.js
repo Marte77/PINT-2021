@@ -15,6 +15,8 @@ router.post('/criarLocalWeb',localController.CriarLocal_WEB)
 router.post('/criarLocalWebINDOOR',localController.CriarLocalindoor_WEB)
 router.get('/getlocal/:idlocal',localController.getlocalout)
 router.post('/updatelocais/:idlocal',localController.editlocal)
+router.get('/getlocalint/:idlocal',localController.getlocalint)
+router.post('/updatelocaisindoor/:idlocal',localController.editlocalint)
 
 
 

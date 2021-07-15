@@ -342,5 +342,44 @@ controllers.editlocal= async (req,res) => {
         
 }
 
+controllers.getlocalint= async (req,res) => {
+    const{idlocal}=req.params;
+    const data= await localindoor.findAll({
+        where:{
+            ID_Local_Indoor:idlocal
+        }
+    })
+    .then(function(data){
+        return data;
+        })
+        .catch(error =>{
+        return error;
+        })
+        res.json({ success: true, data: data });
+        
+}
+
+controllers.editlocalint= async (req,res) => {
+    const{idlocal}=req.params;
+    const{nome,descri, piso}=req.body;
+    const data= await localindoor.update({
+        Nome:nome,
+        Descricao:descri,
+        Piso:piso
+    },
+    {
+        where:{ID_Local_Indoor:idlocal}
+    
+    })
+    .then( function(data){
+        return data;
+        })
+        .catch(error => {
+        return error;
+        })
+        res.json({success:true, data:data, message:"Updated successful"});
+        
+}
+
 
 module.exports = controllers;
