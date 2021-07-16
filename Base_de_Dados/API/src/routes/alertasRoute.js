@@ -13,6 +13,8 @@ router.get('/listalertas/:idInstituicao',alertasController.getlistaalertas_byins
 router.get('/totalalertaslocais/:IDInstituicao',alertasController.getTotalAlertasPorLocalDeInstituicao);
 router.get('/gettipoalerta',alertasController.gettipoalertas);
 router.post('/createalertaweb',alertasController.createAlerta_web);
+router.post('/deletalerta',alertasController.deletalerta);
+
 //router.post('/update/:id', filmeController.update);
 //router.post('/delete', filmeController.delete);
 //router.get('/testdata',filmeController.testdata );

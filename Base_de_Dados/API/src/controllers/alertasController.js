@@ -164,4 +164,16 @@ controllers.createAlerta_web = async (req,res) => { //post
       res.status(200).json({success: true,   message:"Registado",  novoLocal: dataAlerta  });
 }
 
+controllers.deletalerta= async (req, res) => {
+   const { id } = req.body;
+   const del=await alerta.destroy({
+       where:
+       {
+           ID_alerta:id
+       }
+   })
+   res.json({success:true,deleted:del,message:"Deleted successful"});
+
+}
+
 module.exports= controllers;
