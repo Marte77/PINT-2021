@@ -12,6 +12,7 @@ const Pessoas = require('../model/Pessoas/Pessoas');
 const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
 const Admin = require('../model/Pessoas/Admin');
 const Util_pertence_Inst = require('../model/Util_pertence_Inst');
+const Local_Indoor = require('../model/Local_Indoor');
 controllers.createInstituicao = async (req,res) => { //post
     let statusCode = 200;
     const { Nome, Codigo_Postal,Email, Telefone, Descricao, URL_Imagem, Longitude, Latitude, Localizacao, Codigo_Empresa
@@ -243,5 +244,91 @@ controllers.getPercentagemUtilizadoresInst = async(req,res)=>{
     })
 }
     
+controllers.getReportsTodosPorTempo = async(req,res)=>{
+    const {idinstituicao} = req.params;
+    const {tempo, tipoTempo} = req.body //tipotempo = hh - horas, mm - minutos, dd - dias
+    let dataAgr = new Date()
+    switch(tipoTempo){
+        case 'hh':{
+            dataAgr.setHours(dataAgr.getHours() - tempo)
+            break;
+        }
+        case 'mm':{
+            dataAgr.setMinutes(dataAgr.getMinutes() - tempo)
+            break;
+        }
+        case 'dd':{
+            dataAgr.setDate(dataAgr.getDate() - tempo)
+            break;
+        }
+        default:{
+            res.status(500).send({desc:"Tipo Invalido",err:"TipoInvalido"})
+            return;
+        }
+    }
+    dataAgr = dataAgr.toISOString()
+    let arrayfinal = new Array()
+    try {
+        let reportsoutdooroutros = await Report_Outdoor_Outros_Util.findAll({
+            include:[{
+                model:Report, 
+                where:{
+                    Data:{
+                        [Op.gte]:dataAgr
+                    }
+                }
+            },{
+                model:Local,
+                where:{
+                    InstituicaoIDInstituicao:idinstituicao
+                }
+            }]
+        })
+        let reportsoutdoorutilisnt = await Report_Outdoor_Util_Instituicao.findAll({
+            include:[{
+                model:Report, 
+                where:{
+                    Data:{
+                        [Op.gte]:dataAgr
+                    }
+                }
+            },{
+                model:Local,
+                where:{
+                    InstituicaoIDInstituicao:idinstituicao
+                }
+            }]
+        })
+        for(let rep of reportsoutdooroutros)
+            arrayfinal.push(rep)
+        for(let rep of reportsoutdoorutilisnt)
+            arrayfinal.push(rep)
+        let locais = await Local.findAll({
+            where:{
+                InstituicaoIDInstituicao:idinstituicao
+            }
+        })
+        for(let local of locais){
+            let repsindoor = await Report_Indoor.findAll({
+                include:[{
+                    model:Report, 
+                    where:{
+                        Data:{
+                            [Op.gte]:dataAgr
+                        }
+                    }
+                },Local_Indoor],where:{
+                    LocalIndoorIDLocalIndoor:local.dataValues.ID_Local
+                }
+            })
+            for(let rep of repsindoor)
+                arrayfinal.push(rep)
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({desc:"Erro a selecionar",err:e.original})
+    }
+    res.send({reports:arrayfinal})
+}
 
 module.exports = controllers;
