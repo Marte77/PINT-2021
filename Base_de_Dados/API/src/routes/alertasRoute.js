@@ -14,7 +14,7 @@ router.get('/totalalertaslocais/:IDInstituicao',alertasController.getTotalAlerta
 router.get('/gettipoalerta',alertasController.gettipoalertas);
 router.post('/createalertaweb',alertasController.createAlerta_web);
 router.post('/deletalerta',alertasController.deletalerta);
-
+router.get('/get_ultimo_alerta_desinfecao/:idinstituicao',alertasController.getUltimoAlertaDesinfecaoInstituicao)
 //router.post('/update/:id', filmeController.update);
 //router.post('/delete', filmeController.delete);
 //router.get('/testdata',filmeController.testdata );
