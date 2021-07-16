@@ -42,4 +42,24 @@ controllers.get_utilizadores =  async (req,res) => {
     
 }
 
+controllers.deleteutil= async (req, res) => {
+    const { id } = req.body;
+    const del=await util_pert_inst.destroy({
+        where:
+        {
+            UtilsInstituicaoIDUtil:id
+        }
+    })
+    const deleteu=await utilizadoresInst.destroy({
+        where:{
+            ID_Util:id
+        }
+        
+    })
+    res.json({success:true,deleted:del,deleted2:deleteu,message:"Deleted successful"});
+
+
+
+}
+
 module.exports = controllers;

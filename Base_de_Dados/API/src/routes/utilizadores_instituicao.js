@@ -5,4 +5,5 @@ const utilizadoresController = require('../controllers/utilizadores_instituicao'
 const middleware = require('../middleware');
 
 router.get('/listutilizadores/:idInstituicao', utilizadoresController.get_utilizadores)
+router.post('/deleteutil',utilizadoresController.deleteutil)
 module.exports=router
