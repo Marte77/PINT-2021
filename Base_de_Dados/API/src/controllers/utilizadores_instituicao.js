@@ -6,6 +6,7 @@ const util_pert_inst = require('../model/Util_pertence_Inst');
 var pessoas = require('../model/Pessoas/Pessoas');
 const Instituicao = require('../model/Instituicao');
 const Util_pertence_Inst = require('../model/Util_pertence_Inst');
+const Pessoas = require('../model/Pessoas/Pessoas');
 
 controllers.get_utilizadores =  async (req,res) => {
 
@@ -194,6 +195,12 @@ controllers.editutilizador= async (req,res) => {
 controllers.recuseutilizador= async (req,res) =>
 {
     const{idutil,idinst}=req.params;
+    let util = await utilizadoresInst.findOne({
+        where:{
+            ID_Util:idutil
+        }
+    })
+    util = util.dataValues.PessoaIDPessoa
     const del=await Util_pertence_Inst.destroy({
         where:
         {
@@ -207,6 +214,12 @@ controllers.recuseutilizador= async (req,res) =>
             ID_Util:idutil
         }
     })
+    const deltepessoa = await Pessoas.destroy({
+        where:{
+            IDPessoa:util
+        }
+    })
+
     res.json({success:true,deleted:del,deleted2:deleteu,message:"Deleted successful"});
 
 }
