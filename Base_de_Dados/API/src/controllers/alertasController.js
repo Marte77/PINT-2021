@@ -141,4 +141,30 @@ controllers.createAlerta = async (req,res) => { //post
       res.status(500).send({status:statusCode, desc:"Erro a criar Alerta", err:msgErr})
    else res.status(200).send({status:statusCode,Alerta:dataAlerta})
 }
+
+
+controllers.createAlerta_web = async (req,res) => { //post
+   // data
+   sequelize.sync()
+   const { Descricao,dataalerta,LocalIDLocal, AdminIDAdmin, TipoAlertaIDTipoAlerta} = req.body;
+   var statusCode = 200;
+   try{
+      var dataAlerta = await alerta.create({
+         Descricao: Descricao,
+         Data:dataalerta,
+         LocalIDLocal:LocalIDLocal,
+         AdminIDAdmin:AdminIDAdmin,
+         TipoAlertaIDTipoAlerta:TipoAlertaIDTipoAlerta
+      })
+   }catch(e){
+      var msgErr = e.original;
+      console.log(e);
+      statusCode =500;
+   }
+   
+   if(statusCode ===500)
+      res.status(500).send({status:statusCode, desc:"Erro a criar Alerta", err:msgErr})
+   else res.status(200).send({status:statusCode,Alerta:dataAlerta})
+}
+
 module.exports= controllers;
