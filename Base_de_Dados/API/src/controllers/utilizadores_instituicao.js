@@ -171,4 +171,23 @@ controllers.count_utilizadores_NOverify =  async (req,res) => {
     
 }
 
+controllers.editutilizador= async (req,res) => {
+    const{idutil}=req.params;
+    const data= await utilizadoresInst.update({
+        Verificado:'true'
+    },
+    {
+        where:{ID_Util:idutil}
+    
+    })
+    .then( function(data){
+        return data;
+        })
+        .catch(error => {
+        return error;
+        })
+        res.json({success:true, data:data, message:"Updated successful"});
+        
+}
+
 module.exports = controllers;
