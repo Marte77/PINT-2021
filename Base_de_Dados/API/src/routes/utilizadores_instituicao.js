@@ -11,4 +11,5 @@ router.get('/countUtilVerify/:idInstituicao', utilizadoresController.count_utili
 router.get('/countUtilNOVerify/:idInstituicao', utilizadoresController.count_utilizadores_NOverify)
 router.get('/listutilizadoresNoVerify/:idInstituicao',utilizadoresController.getUtilNoverify)
 router.post('/updateUtilVerify/:idutil',controllers.editutilizador)
+router.post('/recusarutil/:idutil/:idinst',controllers.recuseutilizador)
 module.exports=router

@@ -5,6 +5,7 @@ const utilizadoresInst = require('../model/Pessoas/Utils_Instituicao');
 const util_pert_inst = require('../model/Util_pertence_Inst');
 var pessoas = require('../model/Pessoas/Pessoas');
 const Instituicao = require('../model/Instituicao');
+const Util_pertence_Inst = require('../model/Util_pertence_Inst');
 
 controllers.get_utilizadores =  async (req,res) => {
 
@@ -189,5 +190,26 @@ controllers.editutilizador= async (req,res) => {
         res.json({success:true, data:data, message:"Updated successful"});
         
 }
+
+controllers.recuseutilizador= async (req,res) =>
+{
+    const{idutil,idinst}=req.params;
+    const del=await Util_pertence_Inst.destroy({
+        where:
+        {
+            InstituicaoIDInstituicao:idinst,
+            UtilsInstituicaoIDUtil:idutil
+        }
+    })
+    const deleteu=await utilizadoresInst.destroy({
+        where:
+        {
+            ID_Util:idutil
+        }
+    })
+    res.json({success:true,deleted:del,deleted2:deleteu,message:"Deleted successful"});
+
+}
+
 
 module.exports = controllers;
