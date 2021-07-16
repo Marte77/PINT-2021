@@ -57,9 +57,81 @@ controllers.deleteutil= async (req, res) => {
         
     })
     res.json({success:true,deleted:del,deleted2:deleteu,message:"Deleted successful"});
+}
+
+controllers.count_utilizadores_verify =  async (req,res) => {
+
+    const{idInstituicao}=req.params
+    var statuscode = 200;
+    var errMessage="";
+
+    try{
+        var arrayutilizadores=new Array();
+        var listautils_inst=await util_pert_inst.findAll({
+            where:{
+                InstituicaoIDInstituicao:idInstituicao
+            }
+        })
+        for(let util_inst of listautils_inst)
+        {
+            var listautilizadores=await  utilizadoresInst.findAll({
+                
+                where:{
+                     ID_Util:util_inst.dataValues.UtilsInstituicaoIDUtil,
+                     Verificado:true 
+                }
+            })
+            for (let utilizadores of listautilizadores)
+            {
+                arrayutilizadores.push(utilizadores)
+            }
+        }
+        var count=arrayutilizadores.length;
+    }
+
+    catch(e){console.log(e);errMessage = e;statuscode = 500;}
+    if(statuscode === 500)
+    res.status(statuscode).send({status: statuscode, err: errMessage});
+    else res.status(statuscode).send({status:200, NumeroUtilizadores: count})
+    
+}
 
 
+controllers.count_utilizadores_NOverify =  async (req,res) => {
 
+    const{idInstituicao}=req.params
+    var statuscode = 200;
+    var errMessage="";
+
+    try{
+        var arrayutilizadores=new Array();
+        var listautils_inst=await util_pert_inst.findAll({
+            where:{
+                InstituicaoIDInstituicao:idInstituicao
+            }
+        })
+        for(let util_inst of listautils_inst)
+        {
+            var listautilizadores=await  utilizadoresInst.findAll({
+                
+                where:{
+                     ID_Util:util_inst.dataValues.UtilsInstituicaoIDUtil,
+                     Verificado:false 
+                }
+            })
+            for (let utilizadores of listautilizadores)
+            {
+                arrayutilizadores.push(utilizadores)
+            }
+        }
+        var count=arrayutilizadores.length;
+    }
+
+    catch(e){console.log(e);errMessage = e;statuscode = 500;}
+    if(statuscode === 500)
+    res.status(statuscode).send({status: statuscode, err: errMessage});
+    else res.status(statuscode).send({status:200, NumeroUtilizadores: count})
+    
 }
 
 module.exports = controllers;
