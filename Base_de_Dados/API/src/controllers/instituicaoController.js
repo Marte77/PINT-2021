@@ -13,6 +13,7 @@ const Utils_Instituicao = require('../model/Pessoas/Utils_Instituicao');
 const Admin = require('../model/Pessoas/Admin');
 const Util_pertence_Inst = require('../model/Util_pertence_Inst');
 const Local_Indoor = require('../model/Local_Indoor');
+const Outros_Util = require('../model/Pessoas/Outros_Util');
 controllers.createInstituicao = async (req,res) => { //post
     let statusCode = 200;
     const { Nome, Codigo_Postal,Email, Telefone, Descricao, URL_Imagem, Longitude, Latitude, Localizacao, Codigo_Empresa
@@ -282,7 +283,7 @@ controllers.getReportsTodosPorTempo = async(req,res)=>{
                 where:{
                     InstituicaoIDInstituicao:idinstituicao
                 }
-            }]
+            },Outros_Util]
         })
         let reportsoutdoorutilisnt = await Report_Outdoor_Util_Instituicao.findAll({
             include:[{
@@ -297,7 +298,7 @@ controllers.getReportsTodosPorTempo = async(req,res)=>{
                 where:{
                     InstituicaoIDInstituicao:idinstituicao
                 }
-            }]
+            },Utils_Instituicao]
         })
         for(let rep of reportsoutdooroutros)
             arrayfinal.push(rep)
@@ -317,7 +318,7 @@ controllers.getReportsTodosPorTempo = async(req,res)=>{
                             [Op.gte]:dataAgr
                         }
                     }
-                },Local_Indoor],where:{
+                },Local_Indoor, Utils_Instituicao],where:{
                     LocalIndoorIDLocalIndoor:local.dataValues.ID_Local
                 }
             })
