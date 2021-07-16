@@ -283,7 +283,15 @@ controllers.getReportsTodosPorTempo = async(req,res)=>{
                 where:{
                     InstituicaoIDInstituicao:idinstituicao
                 }
-            },Outros_Util]
+            },{
+                model:Outros_Util,
+                include:{
+                    model:Pessoas,
+                    attributes:{
+                        exclude:['Password']
+                    },required:false
+                }
+            }]
         })
         let reportsoutdoorutilisnt = await Report_Outdoor_Util_Instituicao.findAll({
             include:[{
@@ -298,7 +306,15 @@ controllers.getReportsTodosPorTempo = async(req,res)=>{
                 where:{
                     InstituicaoIDInstituicao:idinstituicao
                 }
-            },Utils_Instituicao]
+            },{
+                model:Utils_Instituicao,
+                include:{
+                    model:Pessoas,
+                    attributes:{
+                        exclude:['Password']
+                    },required:false
+                }
+            }]
         })
         for(let rep of reportsoutdooroutros)
             arrayfinal.push(rep)
@@ -318,7 +334,15 @@ controllers.getReportsTodosPorTempo = async(req,res)=>{
                             [Op.gte]:dataAgr
                         }
                     }
-                },Local_Indoor, Utils_Instituicao],where:{
+                },Local_Indoor,{
+                    model:Utils_Instituicao,
+                    include:{
+                        model:Pessoas,
+                        attributes:{
+                            exclude:['Password']
+                        },required:false
+                    }
+                }],where:{
                     LocalIndoorIDLocalIndoor:local.dataValues.ID_Local
                 }
             })
