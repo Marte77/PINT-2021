@@ -12,4 +12,5 @@ router.put('/get_lista_reports_indoor_local/:idlocal',reportesController.getList
 router.get('/get_report_mais_relevante/:tipoTempo/:tempo',reportesController.getReportMaisRelevante)
 router.get('/get_pessoa_from_report/:IDReport',reportesController.getPessoaFromIDReport)
 router.get('/get_nreports_ultimos_dias/:nDias/:IDLocal',reportesController.getNReportsUltimosXDias)
+router.delete('/apgar_report/:idReport',reportesController.apagarReport)
 module.exports=router
