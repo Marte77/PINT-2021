@@ -659,5 +659,40 @@ async function obterNReports(datainferior, datasuperior, idlocal){
     return {media:media, nreports:count}
 }
 
+controllers.apagarReport = async(req,res)=>{
+    const {idReport} = req.params
+    try {
+        var report =await  Report.findByPk(idReport)
+        var reportespecifico = await Report_Indoor.findOne({
+            where:{
+                ReportIDReport:idReport
+            }
+        })
+        if( reportespecifico === null){
+            reportespecifico = await Report_Outdoor_Util_Instituicao.findOne({
+                where:{
+                    ReportIDReport:idReport
+                }
+            })
+            if(reportespecifico === null){
+                reportespecifico = await Report_Outdoor_Outros_Util.findOne({
+                    where:{
+                        ReportIDReport:idReport
+                    }
+                })
+            }
+        }
+        await reportespecifico.destroy()
+        await report.destroy()
+        
+    } catch (e) {
+        console.log(e)
+        res.status(500).send({desc:"erro a apagar",err:e.original})
+    }
+    res.send({success:true})
+}
+
+
+
 
 module.exports = controllers;
