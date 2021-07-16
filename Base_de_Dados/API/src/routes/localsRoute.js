@@ -19,7 +19,8 @@ router.get('/getlocalint/:idlocal',localController.getlocalint)
 router.post('/updatelocaisindoor/:idlocal',localController.editlocalint)
 router.post('/deleteLocal',localController.deletelocal)
 router.post('/deleteLocalInt',localController.deletelocalint)
-
+router.get('/get_dados_tabela_lotacao/:idinstituicao/:dataliminf/:datalimsup',localController.getdadostabeladalotacao)
+//datas limite exemplo: localhost:3000/Locais/get_dados_tabela_lotacao/1/2021-07-16/2021-07-16/
 
 
 module.exports = router;
