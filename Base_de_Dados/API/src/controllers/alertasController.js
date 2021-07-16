@@ -148,7 +148,7 @@ controllers.createAlerta_web = async (req,res) => { //post
    sequelize.sync()
    const { Descricao,dataalerta,LocalIDLocal, AdminIDAdmin, TipoAlertaIDTipoAlerta} = req.body;
    var statusCode = 200;
-   try{
+   
       var dataAlerta = await alerta.create({
          Descricao: Descricao,
          Data:dataalerta,
@@ -156,15 +156,12 @@ controllers.createAlerta_web = async (req,res) => { //post
          AdminIDAdmin:AdminIDAdmin,
          TipoAlertaIDTipoAlerta:TipoAlertaIDTipoAlerta
       })
-   }catch(e){
-      var msgErr = e.original;
-      console.log(e);
-      statusCode =500;
-   }
-   
-   if(statusCode ===500)
-      res.status(500).send({status:statusCode, desc:"Erro a criar Alerta", err:msgErr})
-   else res.status(200).send({status:statusCode,Alerta:dataAlerta})
+      .then(function(dataAlerta){  return dataAlerta;   })
+      .catch(error =>{ console.log("Erro: "+error)
+        return error;
+      })
+      // return res
+      res.status(200).json({success: true,   message:"Registado",  novoLocal: dataAlerta  });
 }
 
 module.exports= controllers;
