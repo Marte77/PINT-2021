@@ -1,6 +1,7 @@
 //todo: fazer listagem de locais
 //todo: depois ir ao mobile, apanhar esses locais e tentar fazer reports
 var sequelize = require('../model/database');
+var Sequelize = require('sequelize');
 const {Op} = require('sequelize')
 const Local = require('../model/Local');
 const controllers = {}
@@ -11,6 +12,7 @@ const Report = require('../model/Reports/Report')
 const Report_Outdoor_Outros_Util = require('../model/Reports/Report_Outdoor_Outros_Util')
 const Report_Outdoor_Util_Instituicao = require('../model/Reports/Report_Outdoor_Util_Instituicao');
 const Instituicao = require('../model/Instituicao');
+const Report_Indoor = require('../model/Reports/Report_Indoor');
 
 controllers.listarLocais = async(req,res)=>{
     var statuscode = 200;
@@ -131,7 +133,7 @@ controllers.CriarLocal_WEB= async(req,res)=>{
             // return res
             res.status(200).json({success: true,   message:"Registado",  novoLocal: novoLocal  });
             
-        }
+}
 
 
 controllers.CriarLocalindoor_WEB= async(req,res)=>{
@@ -151,7 +153,7 @@ controllers.CriarLocalindoor_WEB= async(req,res)=>{
                 // return res
                 res.status(200).json({success: true,   message:"Registado",  novoLocal: novoLocal  });
                 
- }
+}
 
 controllers.criarLocalIndoor = async(req,res)=>{//post
     const{nome, descricao, piso, idlocal} = req.body
@@ -402,6 +404,154 @@ controllers.deletelocalint= async (req, res) => {
     })
     res.json({success:true,deleted:del,message:"Deleted successful"});
 
+}
+
+async function getNReportsOutDoorParaCadaDensidade(local,dataliminf,datalimsup){
+    let array = new Array()
+    for(let i =0;i<3;i++){
+        let nreportsutilsinstout = await Report_Outdoor_Util_Instituicao.count({
+            where:{
+                LocalIDLocal:local.dataValues.ID_Local
+            },include:{
+                model:Report,
+                where:{
+                    Data:{
+                        [Op.between]:[dataliminf,datalimsup]
+                    },
+                    Nivel_Densidade:i+1
+                }
+            }
+        })
+        let nreportsoutrosutilt = await Report_Outdoor_Util_Instituicao.count({
+            where:{
+                LocalIDLocal:local.dataValues.ID_Local
+            },include:{
+                model:Report,
+                where:{
+                    Data:{
+                        [Op.between]:[dataliminf,datalimsup]
+                    },
+                    Nivel_Densidade:i+1
+                }
+            }
+        })
+        array.push([i+1,nreportsoutrosutilt+nreportsutilsinstout])
+    }
+    return array
+} 
+
+async function getNReportsIndoorParaCadaDensidade(localindor,dataliminf,datalimsup){
+    let array = new Array()
+    for(let i =0;i<3;i++){
+        let nreports = await Report_Indoor.count({
+            where:{
+                LocalIndoorIDLocalIndoor:localindor.dataValues.ID_Local_Indoor
+            },include:{
+                model:Report,
+                where:{
+                    Data:{
+                        [Op.between]:[dataliminf,datalimsup]
+                    },
+                    Nivel_Densidade:i+1
+                }
+            }
+        })
+        array.push([i+1,nreports])
+    }
+    return array
+}
+
+controllers.getdadostabeladalotacao = async (req,res)=>{
+let obtermediareportsoutdooroutrosutil = 'select AVG("Nivel_Densidade") from "Report_Outdoor_Outros_Utils" inner join "Reports" on "ID_Report" = "ReportIDReport" where "Data" between :dataliminf and :datalimsup and "LocalIDLocal" = :idlocal;'
+let obtermediareportsoutdoorutilinst = 'select AVG("Nivel_Densidade") from "Report_Outdoor_Util_Instituicaos" inner join "Reports" on "ID_Report" = "ReportIDReport" where "Data" between :dataliminf and :datalimsup and "LocalIDLocal" = :idlocal;'
+let obtermediareportsindoor = 'select AVG("Nivel_Densidade") from "Report_Indoors" inner join "Reports" on "ID_Report" = "ReportIDReport" where "Data" between :dataliminf and :datalimsup and "LocalIndoorIDLocalIndoor" = :idlocalindoor'
+    const {idinstituicao,dataliminf,datalimsup} = req.params
+    let arrayZonasCrowdZero = new Array()
+    arrayZonasCrowdZero.push({ZonasOutdoor:[],ZonasIndoor:[]})
+    let arrayZonasIndoor = new Array()
+    let arrayZonasOutdoor = new Array()
+    try{
+        var locais = await Local.findAll({
+            where:{
+                InstituicaoIDInstituicao:idinstituicao
+            }
+        })
+        var locaisindoor = new Array()
+        for(let local of locais){
+            let localindoor = await Local_Indoor.findAll({
+                where:{
+                    LocalIDLocal:local.dataValues.ID_Local
+                }
+            })
+            locaisindoor.push(localindoor)
+        }
+        
+        for(let local of locais){
+            let arrayzonascrowdzerooutdoor = arrayZonasCrowdZero[0].ZonasOutdoor
+            let repoutoutrosutil = await sequelize.query(obtermediareportsoutdooroutrosutil,{
+                type:Sequelize.QueryTypes.SELECT,
+                replacements:{
+                    idlocal:local.ID_Local,
+                    datalimsup:datalimsup,
+                    dataliminf:dataliminf
+                }
+            })
+            let reportutilsinstout = await sequelize.query(obtermediareportsoutdoorutilinst,{
+                type:Sequelize.QueryTypes.SELECT,
+                replacements:{
+                    idlocal:local.ID_Local,
+                    datalimsup:datalimsup,
+                    dataliminf:dataliminf
+                }
+            })
+            let arrayNReports = await getNReportsOutDoorParaCadaDensidade(local,dataliminf,datalimsup)
+            if(reportutilsinstout[0].avg === null && repoutoutrosutil[0].avg === null){
+                arrayzonascrowdzerooutdoor.push({Local:local,Media:0, Nreports:arrayNReports})
+            }else if(reportutilsinstout[0].avg === null && repoutoutrosutil[0].avg !== null){
+                if(repoutoutrosutil[0].avg <1.5){
+                    arrayzonascrowdzerooutdoor.push({Local:local,Media:repoutoutrosutil[0].avg, Nreports:arrayNReports})
+                }else arrayZonasOutdoor.push({Local:local,Media:repoutoutrosutil[0].avg, Nreports:arrayNReports})
+            }else if(reportutilsinstout[0].avg !== null && repoutoutrosutil[0].avg === null){
+                if(reportutilsinstout[0].avg <1.5){
+                    arrayzonascrowdzerooutdoor.push({Local:local,Media:reportutilsinstout[0].avg, Nreports:arrayNReports})
+                }else arrayZonasOutdoor.push({Local:local,Media:reportutilsinstout[0].avg, Nreports:arrayNReports})
+            }else{
+                mediatot = (reportutilsinstout[0].avg +repoutoutrosutil[0].avg )/2
+                if(mediatot<1.5)
+                    arrayzonascrowdzerooutdoor.push({Local:local,Media:mediatot, Nreports:arrayNReports})
+                else arrayZonasOutdoor.push({Local:local,Media:mediatot, Nreports:arrayNReports})
+            }
+            
+        }
+        if(locaisindoor.length !== 0)
+            //for(let i = 0;i<locaisindoor.length;i++)
+            //if(i === 1)
+            //    console.log(locaisindoor[i].length)
+            for(let arrlocalindor of locaisindoor){
+                for(let localindor of arrlocalindor){
+                    let arrayzonascrowdzeroindoor = arrayZonasCrowdZero[0].ZonasIndoor
+                    let nreportstotal = await getNReportsIndoorParaCadaDensidade(localindor, dataliminf,datalimsup)
+                    let media = await sequelize.query(obtermediareportsindoor,{
+                        type:Sequelize.QueryTypes.SELECT,
+                        replacements:{
+                            idlocalindoor:localindor.ID_Local_Indoor,
+                            datalimsup:datalimsup,
+                            dataliminf:dataliminf
+                        }
+                    })
+                    if(media[0].avg === null)
+                        arrayzonascrowdzeroindoor.push({LocalIndoor:localindor,Media:0,Nreports:nreportstotal})
+                    else if(media[0].avg < 1.5)
+                        arrayzonascrowdzeroindoor.push({LocalIndoor:localindor,Media:media[0].avg,Nreports:nreportstotal})
+                    else arrayZonasIndoor.push({LocalIndoor:localindor,Media:media[0].avg,Nreports:nreportstotal})
+                }
+            }
+
+    }catch(e){
+        console.log(e)
+        res.status(500).send({desc: "Erro a selecionar", er:e.original})
+    }
+    res.send({ZonasCrowdZero:arrayZonasCrowdZero,ZonasNotCrowdZero:{ZonasOutdoor:arrayZonasOutdoor,ZonasIndoor:arrayZonasIndoor}})
 }
 
 
