@@ -13,6 +13,7 @@ const locais = require('../model/Local');
 const tipoalertas=require('../model/Tipo_Alertas');
 const Local = require('../model/Local');
 const Alertas = require('../model/Alertas');
+const Tipo_Alertas = require('../model/Tipo_Alertas');
 
 const controllers = {}
 
@@ -205,5 +206,25 @@ controllers.getUltimoAlertaDesinfecaoInstituicao = async(req,res)=>{
    }
    res.send({Alertas:arrayalertas})
 }
+
+controllers.get_tipoalerta = async(req,res)=>{
+   const {ID} = req.params
+   const todostipos=await Alertas.findAll({
+      include:[Tipo_Alertas, locais],
+      where:{
+         ID_alerta:ID
+      }
+   })
+   res.json({Tipo:todostipos})
+
+   .then(function(data){
+      return data;
+      })
+      .catch(error =>{
+      return error
+      })
+      res.json({ data: todostipos });
+}
+
 
 module.exports= controllers;
