@@ -11,6 +11,8 @@ var tipo_alerta = require('../model/Tipo_Alertas');
 var sequelize = require('../model/database');
 const locais = require('../model/Local');
 const tipoalertas=require('../model/Tipo_Alertas');
+const Local = require('../model/Local');
+const Alertas = require('../model/Alertas');
 
 const controllers = {}
 
@@ -174,6 +176,34 @@ controllers.deletalerta= async (req, res) => {
    })
    res.json({success:true,deleted:del,message:"Deleted successful"});
 
+}
+
+controllers.getUltimoAlertaDesinfecaoInstituicao = async(req,res)=>{
+   const {idinstituicao} = req.params
+   try {
+      let locaisinst = await Local.findAll({
+         where:{
+            InstituicaoIDInstituicao:idinstituicao
+         }
+      })
+      var arrayalertas = new Array()
+      for(let local of locaisinst){
+         let alertas = await Alertas.findAll({
+            where:{
+               LocalIDLocal:local.dataValues.ID_Local,
+               TipoAlertaIDTipoAlerta:1
+            },
+            limit:1,
+            order:[['Data','DESC']]
+         })
+         arrayalertas.push({Local:local,alerta:alertas})
+      }
+
+   } catch (e) {
+      console.log(e)
+      res.status(500).send({desc:"Erro a selecionar", err:e.original})
+   }
+   res.send({Alertas:arrayalertas})
 }
 
 module.exports= controllers;
